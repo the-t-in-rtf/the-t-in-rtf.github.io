@@ -3,7 +3,7 @@
       xmlns:og="http://ogp.me/ns#"
       xmlns:fb="https://www.facebook.com/2008/fbml">
 <head>
-    <title>Hello, everyone...</title>
+    <title>Why Pelican?</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -12,9 +12,9 @@
     <!-- Open Graph tags -->
 
             <meta property="og:type" content="article"/>
-            <meta property="og:title" content="Hello, everyone..."/>
-            <meta property="og:url" content="http://the-t-in-rtf.github.io/hello-everyone.html"/>
-            <meta property="og:description" content="Hello, everyone..."/>
+            <meta property="og:title" content="Why Pelican?"/>
+            <meta property="og:url" content="http://the-t-in-rtf.github.io/why-pelican.html"/>
+            <meta property="og:description" content="So, why did I pick Pelican for this site? Read on for a brief bit of background."/>
 
     <!-- Bootstrap -->
         <link rel="stylesheet" href="http://the-t-in-rtf.github.io/theme/css/bootstrap.min.css" type="text/css"/>
@@ -40,10 +40,10 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                        <li >
+                        <li class="active">
                             <a href="http://the-t-in-rtf.github.io/category/code.html">Code</a>
                         </li>
-                        <li class="active">
+                        <li >
                             <a href="http://the-t-in-rtf.github.io/category/non-code.html">Non-code</a>
                         </li>
             </ul>
@@ -62,10 +62,10 @@
         <article>
             <header class="page-header">
                 <h1>
-                    <a href="http://the-t-in-rtf.github.io/hello-everyone.html"
+                    <a href="http://the-t-in-rtf.github.io/why-pelican.html"
                        rel="bookmark"
-                       title="Permalink to Hello, everyone...">
-                        Hello, everyone...
+                       title="Permalink to Why Pelican?">
+                        Why Pelican?
                     </a>
                 </h1>
             </header>
@@ -81,10 +81,20 @@
 
 
 <span class="label label-default">Tags</span>
-	<a href="http://the-t-in-rtf.github.io/tag/.html"></a>
+	<a href="http://the-t-in-rtf.github.io/tag/html.html">HTML</a>
 </footer><!-- /.post-info -->                    </div>
                 </div>
-                <p>Hello, everyone.  I've just started working with <a href="http://raisingthefloor.org/" title="Raising the Floor">Raising the Floor</a>.  I'm currently working on the <a href="http://wiki.gpii.net/index.php/Common_Terms_Registry" title="Common Terms Registry">Common Terms Registry</a>, and will soon be working on the <a href="http://wiki.gpii.net/index.php/Unified_Listing" title="Unified Listing">Unified Listing</a>.  I will be using this blog to share things I learn as part of my journey with the team.</p>
+                <p>There are blogs used by the team I'm working with, but in talking with Avtar, he was suggesting that they are not happy with their current solution and are exploring static site generation tools.</p>
+<p>Static site generation tools give some great options for building a full web site from a bit of content and a few template files, and for refactoring an entire site easily to suit changing tastes.</p>
+<p>Avtar recommended <a href="http://blog.getpelican.com/" title="Pelican">Pelican</a>, a content generation tool written in Python.  Before committing, I wanted to review the full range of options to see what suited me best.</p>
+<p>In my initial research, I found <a href="http://staticsitegenerators.net/" title="Static Site Generators">Static Site Generators</a>, a site that includes both a listing of the site generators out there as well as the raw JSON data used to generate the site.  The analyst in me loves getting access to the raw data, although I ended up mostly sticking to their simple sortable table.</p>
+<p>I was looking for something lightweight, that let me get the most for the least effort.  I didn't want to fight the template language or data formatting conventions too much.  I also frankly wanted something with a good theme system, that I could see myself adapting for use with our <a href="http://fluidproject.org/products/infusion/" title="Fluid component library">Fluid component library</a> down the road.</p>
+<p>Since the list is over two hundred entries long, I let the wisdom of the crowd do my first cull for me and sorted by the number of stars each solution had received.  I worked my way down, skipping now and then if I saw something that piqued my interest or that I had already heard of.  I read up on <a href="http://harpjs.com/" title="Harp">Harp</a>, <a href="http://wintersmith.io/" title="WinterSmith">WinterSmith</a>, <a href="http://laktek.github.com/punch" title="Punch">Punch</a>, and others.  I looked through their available template languages (no Jade, please), their conventions for storing blog and page content, the size of their community, the language they were based on.</p>
+<p>I ended up finally coming back to Pelican, just as Avtar had recommended.</p>
+<p>Why commit to Pelican?  Even though I like its features and overall ease of use, ultimately I chose Pelican because of its community.  As I said, support for themes was one of my key criteria.  Of the top tools I tried, Pelican was the only one I saw that not only supported themes, but that had a clear community of people contributing themes, and a showcase for those themes.</p>
+<p>That tells me that care not only about features, but about how people use them, about showcasing the work of their community.  Want confirmation?  Check out <a href="https://github.com/getpelican/pelican-themes/graphs/contributors" title="the graph of contributors">the graph of contributors</a>.  They have a steady stream of people keeping the software alive.</p>
+<p>Once they had me, I was impressed with the quality of their documentation and the polish of their bundled tools.  I encountered only small glitches, and those were either obvious or easily Googleable.</p>
+<p>That's basically it.  Convince me your project is alive, and don't turn me off too badly as I'm getting started.</p>
             </div>
             <!-- /.entry-content -->
     <hr />
@@ -94,8 +104,8 @@
         <script type="text/javascript">
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'thetinrtf'; // required: replace example with your forum shortname
-            var disqus_identifier = 'hello-everyone';
-            var disqus_url = 'http://the-t-in-rtf.github.io/hello-everyone.html';
+            var disqus_identifier = 'why-pelican';
+            var disqus_url = 'http://the-t-in-rtf.github.io/why-pelican.html';
 
             /* * * DON'T EDIT BELOW THIS LINE * * */
             (function () {
