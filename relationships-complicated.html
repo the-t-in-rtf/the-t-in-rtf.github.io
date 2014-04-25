@@ -89,7 +89,7 @@
 </footer><!-- /.post-info -->                    </div>
                 </div>
                 <h1>The Common Tools Registry is All About Relationships</h1>
-<p>One of the requirements for the Common Terms Registry is that we store records in a flat format.  For this, CouchDb is perfect.</p>
+<p>One of the <a href="wiki.gpii.net/index.php/Common_Terms_Registry">requirements</a> for the <a href="https://terms.raisingthefloor.org/">Common Terms Registry</a> is that we store records in a flat format.  For this, <a href="http://couchdb.apache.org/">CouchDb</a> is perfect.</p>
 <p>However, another core requirement is that we clearly represent the relationship between standard terms and variations on those terms (aliases and translations, for example).  This is not something CouchDb is good at handling.</p>
 <p>There is <a href="http://www.cmlenz.net/archives/2007/10/couchdb-joins">a blog article by Christopher Lenz</a> that goes over a few strategies to handle relationships in CouchDb.  We took that as our starting point, tried a few approaches in depth, and ended up using a combination of CouchDb, Lucene, and Express to meet all of our requirements.</p>
 <h1>Our Requirements</h1>
@@ -137,7 +137,8 @@
 <p>With that approach, we can check for cache misses for just the paged set of results and make a single call to look up and cache all of the misses.</p>
 <p>This should limit the amount of memory used by the caches and ensure that only one instance of each parent record is stored in the cache at a time.</p>
 <h1>Conclusion</h1>
-<p>Why am I writing this down (besides the fact that my shoulder angel told me to)?  Because we want feedback on whether this is a sane and complete approach before we go much further with it.  Please comment if you have ideas about how to do what we're trying to do.</p>
+<p>Why am I writing this down (besides the fact that my shoulder angel told me to)?</p>
+<p>Because we want feedback on whether this is a sane and complete approach before we go much further with it.  Please comment if you have ideas about how to do what we're trying to do.</p>
             </div>
             <!-- /.entry-content -->
     <hr />
@@ -188,18 +189,13 @@
 
                 <li class="list-group-item"><a href="http://the-t-in-rtf.github.io/tags.html"><h4><i class="icon-tags icon-large"></i>Tags</h4></a></li>
                         <li class="list-group-item tag-4">
-                            <a href="http://the-t-in-rtf.github.io/tag/express.html">
-                                Express
-                            </a>
-                        </li>
-                        <li class="list-group-item tag-4">
-                            <a href="http://the-t-in-rtf.github.io/tag/couch.html">
-                                Couch
-                            </a>
-                        </li>
-                        <li class="list-group-item tag-4">
                             <a href="http://the-t-in-rtf.github.io/tag/.html">
                                 
+                            </a>
+                        </li>
+                        <li class="list-group-item tag-4">
+                            <a href="http://the-t-in-rtf.github.io/tag/express.html">
+                                Express
                             </a>
                         </li>
                         <li class="list-group-item tag-4">
@@ -210,6 +206,11 @@
                         <li class="list-group-item tag-4">
                             <a href="http://the-t-in-rtf.github.io/tag/lucene.html">
                                 Lucene
+                            </a>
+                        </li>
+                        <li class="list-group-item tag-4">
+                            <a href="http://the-t-in-rtf.github.io/tag/couch.html">
+                                Couch
                             </a>
                         </li>
         </ul>
