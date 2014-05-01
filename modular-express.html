@@ -87,7 +87,7 @@
                 <h1>A bit of background...</h1>
 <p>In some ways, <a href="http://expressjs.com/">express</a> is very modular, just like node itself.  You can easily bring in any of a large collection of standard modules to help in building your applications, and many of them are well known to anyone working with node.js.  Your dependencies can manage their own dependencies, it's all very civilized.</p>
 <p>This all starts to fall apart when you want to build a set of nested modules. <a href="http://justjs.com/posts/creating-reusable-express-modules-with-their-own-routes-views-and-static-assets">Here's a blog that covers some of the pitfalls</a>.</p>
-<p>In summary, you need to wire your routes together entirely from the top, and either:</p>
+<p>In summary, you need to wire your routes (which control which code handles which path) together entirely from the top, and either:</p>
 <ol>
 <li>Configure all your routes from your main app.js file.</li>
 <li>Pass the top-level app object to a module and let the module add its own paths (and hopefully be smart enough to avoid path conflicts while doing so).</li>
@@ -236,8 +236,8 @@
                             </a>
                         </li>
                         <li class="list-group-item tag-4">
-                            <a href="http://the-t-in-rtf.github.io/tag/couch.html">
-                                Couch
+                            <a href="http://the-t-in-rtf.github.io/tag/lucene.html">
+                                Lucene
                             </a>
                         </li>
                         <li class="list-group-item tag-4">
@@ -246,8 +246,8 @@
                             </a>
                         </li>
                         <li class="list-group-item tag-4">
-                            <a href="http://the-t-in-rtf.github.io/tag/lucene.html">
-                                Lucene
+                            <a href="http://the-t-in-rtf.github.io/tag/couch.html">
+                                Couch
                             </a>
                         </li>
                         <li class="list-group-item tag-4">
