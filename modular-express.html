@@ -86,7 +86,7 @@
                 </div>
                 <h1>A bit of background...</h1>
 <p>In some ways, <a href="http://expressjs.com/">express</a> is very modular, just like node itself.  You can easily bring in any of a large collection of standard modules to help in building your applications, and many of them are well known to anyone working with node.js.  Your dependencies can manage their own dependencies, it's all very civilized.</p>
-<p>This all starts to fall apart when you want to build a set of nested modules. <a href="Here's%20a%20blog%20that%20covers%20some%20of%20the%20pitfalls">http://justjs.com/posts/creating-reusable-express-modules-with-their-own-routes-views-and-static-assets</a>.</p>
+<p>This all starts to fall apart when you want to build a set of nested modules. <a href="http://justjs.com/posts/creating-reusable-express-modules-with-their-own-routes-views-and-static-assets">Here's a blog that covers some of the pitfalls</a>.</p>
 <p>In summary, you need to wire your routes together entirely from the top, and either:</p>
 <ol>
 <li>Configure all your routes from your main app.js file.</li>
@@ -171,7 +171,7 @@
 
 
 <p>Note that the syntax remains the same all the way down.  You just worry about passing things to the next link in the chain, and not about what the whole chain looks like.  As I needed to do so when developing this approach, I included the passing of a top-level config object as an example of how the chaining ideally works.</p>
-<p>Just in case you'd like to try it out on your own, I've published <a href="the%20source%20for%20this%20tutorial%20on%20GitHub">https://github.com/the-t-in-rtf/express-module-tutorial</a>.</p>
+<p>Just in case you'd like to try it out on your own, I've published <a href="https://github.com/the-t-in-rtf/express-module-tutorial">the source for this tutorial on GitHub</a>.</p>
 <h1>A few more notes...</h1>
 <p>Here are a few things I found helpful in using this technique to modularize my existing express app.</p>
 <p>The new router object supports the same HTTP method shortcuts as the app object in express, so you can adapt old code by replacing your old app variable with a router in many cases.  The only exception is the DELETE method, which is aliased to app.del, but is available as router.delete.  The latter makes more sense anyway, as it actually matches the HTTP method.</p>
@@ -236,16 +236,6 @@
                             </a>
                         </li>
                         <li class="list-group-item tag-4">
-                            <a href="http://the-t-in-rtf.github.io/tag/lucene.html">
-                                Lucene
-                            </a>
-                        </li>
-                        <li class="list-group-item tag-4">
-                            <a href="http://the-t-in-rtf.github.io/tag/.html">
-                                
-                            </a>
-                        </li>
-                        <li class="list-group-item tag-4">
                             <a href="http://the-t-in-rtf.github.io/tag/couch.html">
                                 Couch
                             </a>
@@ -253,6 +243,16 @@
                         <li class="list-group-item tag-4">
                             <a href="http://the-t-in-rtf.github.io/tag/html.html">
                                 HTML
+                            </a>
+                        </li>
+                        <li class="list-group-item tag-4">
+                            <a href="http://the-t-in-rtf.github.io/tag/lucene.html">
+                                Lucene
+                            </a>
+                        </li>
+                        <li class="list-group-item tag-4">
+                            <a href="http://the-t-in-rtf.github.io/tag/.html">
+                                
                             </a>
                         </li>
         </ul>
