@@ -86,14 +86,14 @@
                 </div>
                 <h1>A bit of background...</h1>
 <p>In some ways, <a href="http://expressjs.com/">express</a> is very modular, just like node itself.  You can easily bring in any of a large collection of standard modules to help in building your applications, and many of them are well known to anyone working with node.js.  Your dependencies can manage their own dependencies, it's all very civilized.</p>
-<p>This all starts to fall apart when you want to build a set of nested modules. <a href="http://justjs.com/posts/creating-reusable-express-modules-with-their-own-routes-views-and-static-assets">Here's a blog that covers some of the pitfalls</a>.</p>
+<p>This all starts to fall apart when you want to build a set of nested modules that expect to handle requests for part of the overall path (routes, in express terminology). <a href="http://justjs.com/posts/creating-reusable-express-modules-with-their-own-routes-views-and-static-assets">Here's a blog that covers some of the pitfalls</a>.</p>
 <p>In summary, you need to wire your routes (which control which code handles which path) together entirely from the top, and either:</p>
 <ol>
 <li>Configure all your routes from your main app.js file.</li>
 <li>Pass the top-level app object to a module and let the module add its own paths (and hopefully be smart enough to avoid path conflicts while doing so).</li>
 </ol>
 <h1>So, if it's not possible, I assume you wouldn't even be writing about it...</h1>
-<p>The thing is, those limitations were very much true of the 3.x version of express, but now that express 4 is available, there is a much better option.  Express 4 adds the concept of a <a href="http://expressjs.com/4x/api.html#router">router</a>, and makes it easy to create nested modules that add their own routes relative to their parent.</p>
+<p>The thing is, those limitations were very much true of the 3.x version of express, but now that express 4 is available, there is a much better option.  Express 4 adds the concept of an explicit <a href="http://expressjs.com/4x/api.html#router">router object</a>, and makes it easy to create nested modules that add their own routes relative to their parent.</p>
 <p>Here's just one way you can use it:</p>
 <ol>
 <li>Let's say that you are a lazy programmer (you'd be in <a href="http://threevirtues.com/">good company</a>).  You have an API that needs (among other things) to have user management functions.</li>
@@ -241,13 +241,13 @@
                             </a>
                         </li>
                         <li class="list-group-item tag-4">
-                            <a href="http://the-t-in-rtf.github.io/tag/html.html">
-                                HTML
+                            <a href="http://the-t-in-rtf.github.io/tag/couch.html">
+                                Couch
                             </a>
                         </li>
                         <li class="list-group-item tag-4">
-                            <a href="http://the-t-in-rtf.github.io/tag/couch.html">
-                                Couch
+                            <a href="http://the-t-in-rtf.github.io/tag/html.html">
+                                HTML
                             </a>
                         </li>
                         <li class="list-group-item tag-4">
