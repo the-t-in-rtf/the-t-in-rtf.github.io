@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:og="http://ogp.me/ns#"
+      xmlns:fb="https://www.facebook.com/2008/fbml">
+<head>
+    <title>Adding a revision history (with comments) to CouchDB...</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Open Graph tags -->
+
+            <meta property="og:type" content="article"/>
+            <meta property="og:title" content="Adding a revision history (with comments) to CouchDB..."/>
+            <meta property="og:url" content="http://the-t-in-rtf.github.io/couch-history.html"/>
+            <meta property="og:description" content="Using a combination of attachments and a light sprinkling of sensible conventions, we can add a scalable version history and comments to Couchdb records."/>
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="http://the-t-in-rtf.github.io/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="http://the-t-in-rtf.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+    <link href="http://the-t-in-rtf.github.io/theme/css/pygments.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://the-t-in-rtf.github.io/theme/css/style.css" type="text/css"/>
+    <!-- JavaScript plugins (requires jQuery) -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+
+
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://the-t-in-rtf.github.io" class="navbar-brand">The "T" in RtF</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="http://the-t-in-rtf.github.io/category/code.html">Code</a>
+                        </li>
+                        <li >
+                            <a href="http://the-t-in-rtf.github.io/category/non-code.html">Non-code</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://the-t-in-rtf.github.io/archives.html"><i class="icon-th-list"></i>Archives</a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</nav>
+<!-- /.navbar -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="http://the-t-in-rtf.github.io/couch-history.html"
+                       rel="bookmark"
+                       title="Permalink to Adding a revision history (with comments) to CouchDB...">
+                        Adding a revision history (with comments) to CouchDB...
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="icon-calendar"></i>Thu 12 June 2014
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://the-t-in-rtf.github.io/tag/couchdb.html">Couchdb</a>
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <h1>Introduction</h1>
+<p>I shared this with our mailing list a while back, but wanted to put out a more complete and formal document for further review.</p>
+<p>For the Common Terms Registry (and presumably for the Unified Listing), we will need a fuller change history than Couchdb (our back-end data store) provides.</p>
+<h1>Our requirements</h1>
+<p>We need:</p>
+<ol>
+<li>To preserve the change history even if the database is compacted and cleaned up.</li>
+<li>To preserve a record of the author of each change.</li>
+<li>To allow versions to be submitted as proposed changes and later approved by moderators.</li>
+<li>To allow a comment on what was changed in each version and why.</li>
+<li>To provide the ability to leave a new comment (or respond to an existing comment) without making an additional change.</li>
+</ol>
+<h1>Versions as attachments</h1>
+<p>To satisfy these requirements, I propose extending the "version as attachment" method outlined in <a href="http://jchris.ic.ht/drl/_design/sofa/_list/post/post-page?startkey=[%22Versioning-docs-in-CouchDB%22">"jchris" blog</a>.</p>
+<p>In that approach, whenever there is a change, the old content of the document is added as an attachment.  The attachment is just a JSON file, which makes reading and writing simple.</p>
+<p>This approach has a few key strengths:</p>
+<ol>
+<li>It absolutely and clearly associates versions with a single document.</li>
+<li>It reuses a core feature of CouchDB (attachments) rather than introducing an entirely new data structure.</li>
+<li>It only introduces complexity when it's needed.  Depending on what you're trying to do, you can:<ul>
+<li>Retrieve a single record without any attachments (the default)</li>
+<li>Retrieve a record with a list of attachments, and then retrieve each attachment as desired.</li>
+<li>Retrieve a record and all attachments in a single call.</li>
+</ul>
+</li>
+</ol>
+<p>There is a limitation to this approach, in that when using lists and views, you only have access to the list of attachments, meaning that you cannot retrieve the full version history of all documents in a single request.  This is not a huge problem in that:</p>
+<ol>
+<li>CouchDB itself only allows you to retrieve the version history for a single document (we'd be in the same boat with CouchDB, in other words).</li>
+<li>We are most interested in presenting the current published version of each document in list views, and in presenting the full version history when viewing or editing a single document.</li>
+</ol>
+<h1>How I propose to implement versions</h1>
+<p>So here are the specifics I propose to glue this all together and meet our requirements.</p>
+<p>We need a way to keep track of version numbers.  We can't use CouchDB's version structures (<code>_rev</code> and <code>revpos</code>) to keep track of versions.  The <code>_rev</code> value is overwritten as soon as we add an attachment.  We could retrieve the current record and change history, and save the previous version to the history, but we could never store the current record's <code>_rev</code> value, as we wouldn't know it up front.  We could choose to store just past versions in the history, but that would mean that we can't really keep track of unpublished drafts using the same mechanism.</p>
+<p>The solution is to assign and reuse our own version numbers for documents.  Because we know what the current version is when making updates, we can store the current version in the change history.  This is slightly redundant for records in which the published version is also the latest version, but is key in adding support for unpublished changes.  If the current document has a version number of 6 and there is a version 7 attached, then version 7 is by definition an unpublished draft.</p>
+<p>For convenience, we store the document version twice in the history.  Once in the document itself, and once in the name of the attachment, as in <code>versions/NUMBER</code>.</p>
+<p>Having the version in the list of attachments allows us to see where we are in history without loading the version history.  It also allows us to figure out what the next version number in the series should be without loading the version history.  It also lends itself to easy natural ordering of edits in both directions.</p>
+<h2>Edits only at the end</h2>
+<p>As a reminder, the document itself represents the latest published version.  There may be later unpublished versions, but the proposed changes are chained.</p>
+<p>If the last published version is version 6, and someone proposes a change, that becomes version 7.  If someone else wishes to make an update, they are in essence starting with version 7 when creating version 8.</p>
+<p>This makes it fairly clean to publish a proposed change.  If we like version 8, that content replaces the current document.  Given that both version 6 (the old version) and version 8 (the new version) are already in the change history, that history does not need to be updated.</p>
+<p>If, on the other hand, version 8 is rejected, and we want to approve version 7, we use the same mechanism as we would for any "revert" operation.  We copy the content of version 7 to version 9, update the version history to include that content, and add a comment (see below) indicating that the content was cloned from version 7.</p>
+<h1>So what about comments?</h1>
+<p>As mentioned in our requirements, we also need to support a back and forth dialog between contributors and moderators.  I would propose a similar approach as we used with versions.</p>
+<p>Comments should be stored as attachments, and named with respect to the version they are associated with (for example: <code>versions/1/comments/1</code>).</p>
+<p>Because the list of attachments returned with the original CouchDB document is a flat structure that includes path information, we can extract the full list of comments as well as their position in the hierarchy.  In that way we can trivially do things like:</p>
+<ol>
+<li>Associate comments with an individual revision, for example when paging through the change history.</li>
+<li>Also keep the full comment history as a separate object.</li>
+<li>Clearly indicate that comments that were relevant to an older version.</li>
+<li>Filter comments displayed to those entered against the last version or versions.</li>
+</ol>
+<p>We may not choose to build a UI that relies on all of those features, but the simple naming convention gives us all of those options and more.</p>
+<h1>Putting it all together</h1>
+<p>So, if you're still reading, what will this all look like?</p>
+<p>Here is a single sample record with two versions and two comment threads, as it would be presented in CouchDB, with the list of attachments:</p>
+<div class="highlight"><pre><span class="p">{</span>
+   <span class="s">&quot;_id&quot;</span><span class="o">:</span> <span class="s">&quot;0069b020043147f58eeda6d72c9845f4&quot;</span><span class="p">,</span>
+   <span class="s">&quot;_rev&quot;</span><span class="o">:</span> <span class="s">&quot;60-8e50635398074f9eff7f7875a01fad6f&quot;</span><span class="p">,</span>
+   <span class="s">&quot;type&quot;</span><span class="o">:</span> <span class="s">&quot;GENERAL&quot;</span><span class="p">,</span>
+   <span class="s">&quot;uniqueId&quot;</span><span class="o">:</span> <span class="s">&quot;soundActive&quot;</span><span class="p">,</span>
+   <span class="s">&quot;defaultValue&quot;</span><span class="o">:</span> <span class="s">&quot;TRUE&quot;</span><span class="p">,</span>
+   <span class="s">&quot;definition&quot;</span><span class="o">:</span> <span class="s">&quot;Undefined...&quot;</span><span class="p">,</span>
+   <span class="s">&quot;status&quot;</span><span class="o">:</span> <span class="s">&quot;active&quot;</span><span class="p">,</span>
+   <span class="s">&quot;source&quot;</span><span class="o">:</span> <span class="s">&quot;gpii&quot;</span><span class="p">,</span>
+   <span class="s">&quot;version&quot;</span><span class="o">:</span> <span class="s">&quot;2&quot;</span><span class="p">,</span>
+   <span class="s">&quot;updated&quot;</span><span class="o">:</span> <span class="s">&quot;2014-05-22T10:01:33.655Z&quot;</span><span class="p">,</span>
+   <span class="s">&quot;_attachments&quot;</span><span class="o">:</span> <span class="p">{</span>
+       <span class="s">&quot;versions/2/comments/1&quot;</span><span class="o">:</span> <span class="p">{</span>
+           <span class="s">&quot;content_type&quot;</span><span class="o">:</span> <span class="s">&quot;application/json&quot;</span><span class="p">,</span>
+           <span class="s">&quot;revpos&quot;</span><span class="o">:</span> <span class="mi">58</span><span class="p">,</span>
+           <span class="s">&quot;digest&quot;</span><span class="o">:</span> <span class="s">&quot;md5-zHlXptYHwLkBg9yCDhmTCg==&quot;</span><span class="p">,</span>
+           <span class="s">&quot;length&quot;</span><span class="o">:</span> <span class="mi">242</span><span class="p">,</span>
+           <span class="s">&quot;stub&quot;</span><span class="o">:</span> <span class="nb">true</span>
+       <span class="p">},</span>
+       <span class="s">&quot;versions/2&quot;</span><span class="o">:</span> <span class="p">{</span>
+           <span class="s">&quot;content_type&quot;</span><span class="o">:</span> <span class="s">&quot;application/json&quot;</span><span class="p">,</span>
+           <span class="s">&quot;revpos&quot;</span><span class="o">:</span> <span class="mi">60</span><span class="p">,</span>
+           <span class="s">&quot;digest&quot;</span><span class="o">:</span> <span class="s">&quot;md5-zHlXptYHwLkBg9yCDhmTCg==&quot;</span><span class="p">,</span>
+           <span class="s">&quot;length&quot;</span><span class="o">:</span> <span class="mi">242</span><span class="p">,</span>
+           <span class="s">&quot;stub&quot;</span><span class="o">:</span> <span class="nb">true</span>
+       <span class="p">},</span>
+       <span class="s">&quot;versions/1/comments/1&quot;</span><span class="o">:</span> <span class="p">{</span>
+           <span class="s">&quot;content_type&quot;</span><span class="o">:</span> <span class="s">&quot;application/json&quot;</span><span class="p">,</span>
+           <span class="s">&quot;revpos&quot;</span><span class="o">:</span> <span class="mi">58</span><span class="p">,</span>
+           <span class="s">&quot;digest&quot;</span><span class="o">:</span> <span class="s">&quot;md5-zHlXptYHwLkBg9yCDhmTCg==&quot;</span><span class="p">,</span>
+           <span class="s">&quot;length&quot;</span><span class="o">:</span> <span class="mi">242</span><span class="p">,</span>
+           <span class="s">&quot;stub&quot;</span><span class="o">:</span> <span class="nb">true</span>
+       <span class="p">},</span>
+       <span class="s">&quot;versions/1&quot;</span><span class="o">:</span> <span class="p">{</span>
+           <span class="s">&quot;content_type&quot;</span><span class="o">:</span> <span class="s">&quot;application/json&quot;</span><span class="p">,</span>
+           <span class="s">&quot;revpos&quot;</span><span class="o">:</span> <span class="mi">59</span><span class="p">,</span>
+           <span class="s">&quot;digest&quot;</span><span class="o">:</span> <span class="s">&quot;md5-zHlXptYHwLkBg9yCDhmTCg==&quot;</span><span class="p">,</span>
+           <span class="s">&quot;length&quot;</span><span class="o">:</span> <span class="mi">242</span><span class="p">,</span>
+           <span class="s">&quot;stub&quot;</span><span class="o">:</span> <span class="nb">true</span>
+       <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>If the <code>?attachments=true</code> parameter is passed, the results will also include MIME-encoded attachment content, so we can get everything we care about in a single request.  We'd decode the attachments using a library like <a href="https://github.com/FooBarWidget/multipart-parser">multipart-parser</a> or <a href="https://github.com/felixge/node-formidable">node-formidable</a>, from that point it's just JSON data.</p>
+<p>Using the above information and the attachment content, here is the same record as I would propose to display it via our API (which would include query parameters to show/hide both versions and comments):</p>
+<div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GENERAL&quot;</span><span class="o">,</span>
+    <span class="s2">&quot;uniqueId&quot;</span><span class="o">:</span> <span class="s2">&quot;soundActive&quot;</span><span class="o">,</span>
+    <span class="s2">&quot;defaultValue&quot;</span><span class="o">:</span> <span class="s2">&quot;TRUE&quot;</span><span class="o">,</span>
+    <span class="s2">&quot;definition&quot;</span><span class="o">:</span> <span class="s2">&quot;Undefined...&quot;</span><span class="o">,</span>
+    <span class="s2">&quot;status&quot;</span><span class="o">:</span> <span class="s2">&quot;active&quot;</span><span class="o">,</span>
+    <span class="s2">&quot;source&quot;</span><span class="o">:</span> <span class="s2">&quot;gpii&quot;</span><span class="o">,</span>
+    <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;2&quot;</span><span class="o">,</span>
+    <span class="s2">&quot;author&quot;</span><span class="o">:</span> <span class="s2">&quot;aatkins&quot;</span><span class="o">,</span>
+    <span class="s2">&quot;updated&quot;</span><span class="o">:</span> <span class="s2">&quot;2014-05-22T10:01:33.655Z&quot;</span><span class="o">,</span>
+    <span class="s2">&quot;versions&quot;</span><span class="o">:</span> <span class="cp">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;GENERAL&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;uniqueId&quot;</span><span class="p">:</span> <span class="s2">&quot;soundActive&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;defaultValue&quot;</span><span class="p">:</span> <span class="s2">&quot;TRUE&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;definition&quot;</span><span class="p">:</span> <span class="s2">&quot;Undefined...&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;unreviewed&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;gpii&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;aatkins&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2014-05-22T10:01:33.655Z&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;comments&quot;</span><span class="p">:</span> <span class="err">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;comment&quot;</span><span class="p">:</span> <span class="s2">&quot;Submitted new unreviewed record.&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;aatkins&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2014-05-22T10:01:33.655Z&quot;</span>
+                <span class="p">}</span>
+            <span class="cp">]</span>
+        <span class="p">}</span><span class="o">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GENERAL&quot;</span><span class="o">,</span>
+            <span class="s2">&quot;uniqueId&quot;</span><span class="o">:</span> <span class="s2">&quot;soundActive&quot;</span><span class="o">,</span>
+            <span class="s2">&quot;defaultValue&quot;</span><span class="o">:</span> <span class="s2">&quot;TRUE&quot;</span><span class="o">,</span>
+            <span class="s2">&quot;definition&quot;</span><span class="o">:</span> <span class="s2">&quot;Undefined...&quot;</span><span class="o">,</span>
+            <span class="s2">&quot;status&quot;</span><span class="o">:</span> <span class="s2">&quot;active&quot;</span><span class="o">,</span>
+            <span class="s2">&quot;source&quot;</span><span class="o">:</span> <span class="s2">&quot;gpii&quot;</span><span class="o">,</span>
+            <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;2&quot;</span><span class="o">,</span>
+            <span class="s2">&quot;author&quot;</span><span class="o">:</span> <span class="s2">&quot;aatkins&quot;</span><span class="o">,</span>
+            <span class="s2">&quot;updated&quot;</span><span class="o">:</span> <span class="s2">&quot;2014-05-23T10:01:33.655Z&quot;</span><span class="o">,</span>
+            <span class="s2">&quot;comments&quot;</span><span class="o">:</span> <span class="cp">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;comment&quot;</span><span class="p">:</span> <span class="s2">&quot;Published record after review.&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;aatkins&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2014-05-23T10:01:33.655Z&quot;</span>
+                <span class="p">}</span>
+            <span class="cp">]</span>
+        <span class="p">}</span>
+    <span class="o">],</span>
+    <span class="s2">&quot;comments&quot;</span><span class="o">:</span> <span class="cp">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;comment&quot;</span><span class="p">:</span> <span class="s2">&quot;Submitted new unreviewed record.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;aatkins&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2014-05-22T10:01:33.655Z&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;comment&quot;</span><span class="p">:</span> <span class="s2">&quot;Published record after review.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;aatkins&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2014-05-23T10:01:33.655Z&quot;</span>
+        <span class="p">}</span>
+    <span class="cp">]</span>
+<span class="err">}</span>
+</pre></div>
+
+
+<p>For those of you familiar with the CTR record structure, the "version" and "author" fields are managed entirely by the system, and are not required to look up or add records.</p>
+<h1>Conclusion</h1>
+<p>I hope that gives you a good sense of how I'm proposing to handle versions (and comments on versions).  Please review and comment.</p>
+            </div>
+            <!-- /.entry-content -->
+    <hr />
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'thetinrtf'; // required: replace example with your forum shortname
+            var disqus_identifier = 'couch-history';
+            var disqus_url = 'http://the-t-in-rtf.github.io/couch-history.html';
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function () {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript';
+                dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 well well-sm" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="icon-home icon-large"></i>Social</h4></li>
+                    <li class="list-group-item"><a href="https://twitter.com/duhrer"><i
+                            class="icon-twitter-sign icon-large"></i>twitter
+                    </a></li>
+                    <li class="list-group-item"><a href="http://www.linkedin.com/profile/view?id=31505257"><i
+                            class="icon-linkedin-sign icon-large"></i>linkedin
+                    </a></li>
+                    <li class="list-group-item"><a href="http://github.com/the-t-in-rtf/"><i
+                            class="icon-github-sign icon-large"></i>github
+                    </a></li>
+
+
+
+                <li class="list-group-item"><a href="http://the-t-in-rtf.github.io/tags.html"><h4><i class="icon-tags icon-large"></i>Tags</h4></a></li>
+                        <li class="list-group-item tag-1">
+                            <a href="http://the-t-in-rtf.github.io/tag/express.html">
+                                Express
+                            </a>
+                        </li>
+                        <li class="list-group-item tag-4">
+                            <a href="http://the-t-in-rtf.github.io/tag/html.html">
+                                HTML
+                            </a>
+                        </li>
+                        <li class="list-group-item tag-4">
+                            <a href="http://the-t-in-rtf.github.io/tag/couch.html">
+                                Couch
+                            </a>
+                        </li>
+                        <li class="list-group-item tag-4">
+                            <a href="http://the-t-in-rtf.github.io/tag/lucene.html">
+                                Lucene
+                            </a>
+                        </li>
+                        <li class="list-group-item tag-4">
+                            <a href="http://the-t-in-rtf.github.io/tag/couchdb.html">
+                                Couchdb
+                            </a>
+                        </li>
+                        <li class="list-group-item tag-4">
+                            <a href="http://the-t-in-rtf.github.io/tag/.html">
+                                
+                            </a>
+                        </li>
+        </ul>
+    </section>
+</aside>        </div>
+    </div>
+</div>
+<footer>
+    <div class="container">
+        <hr>
+        <p class="pull-right"><i class="icon-arrow-up"></i> <a href="#">Back to top</a></p>
+
+
+        <p>&copy; 2014 Tony Atkins <tony@raisingthefloor.org> &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a></p>
+    </div>
+</footer>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="http://the-t-in-rtf.github.io/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="http://the-t-in-rtf.github.io/theme/js/respond.min.js"></script>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'thetinrtf'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+
+
+</body>
+</html>
