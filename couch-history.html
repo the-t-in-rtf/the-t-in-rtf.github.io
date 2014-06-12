@@ -119,8 +119,7 @@
 <p>So here are the specifics I propose to glue this all together and meet our requirements.</p>
 <p>We need a way to keep track of version numbers.  We can't use CouchDB's version structures (<code>_rev</code> and <code>revpos</code>) to keep track of versions.  The <code>_rev</code> value is overwritten as soon as we add an attachment.  We could retrieve the current record and change history, and save the previous version to the history, but we could never store the current record's <code>_rev</code> value, as we wouldn't know it up front.  We could choose to store just past versions in the history, but that would mean that we can't really keep track of unpublished drafts using the same mechanism.</p>
 <p>The solution is to assign and reuse our own version numbers for documents.  Because we know what the current version is when making updates, we can store the current version in the change history.  This is slightly redundant for records in which the published version is also the latest version, but is key in adding support for unpublished changes.  If the current document has a version number of 6 and there is a version 7 attached, then version 7 is by definition an unpublished draft.</p>
-<p>For convenience, we store the document version twice in the history.  Once in the document itself, and once in the name of the attachment, as in <code>versions/NUMBER</code>.</p>
-<p>Having the version in the list of attachments allows us to see where we are in history without loading the version history.  It also allows us to figure out what the next version number in the series should be without loading the version history.  It also lends itself to easy natural ordering of edits in both directions.</p>
+<p>For convenience, we store the document version twice in the history.  Once in the document itself, and once in the name of the attachment, as in <code>versions/NUMBER</code>.  Having the version in the list of attachments allows us to see where we are in history without loading the version history.  It also allows us to figure out what the next version number in the series should be without loading the version history.  It also lends itself to easy natural ordering of edits.</p>
 <h2>Edits only at the end</h2>
 <p>As a reminder, the document itself represents the latest published version.  There may be later unpublished versions, but the proposed changes are chained.</p>
 <p>If the last published version is version 6, and someone proposes a change, that becomes version 7.  If someone else wishes to make an update, they are in essence starting with version 7 when creating version 8.</p>
@@ -313,8 +312,8 @@
                             </a>
                         </li>
                         <li class="list-group-item tag-4">
-                            <a href="http://the-t-in-rtf.github.io/tag/html.html">
-                                HTML
+                            <a href="http://the-t-in-rtf.github.io/tag/couchdb.html">
+                                Couchdb
                             </a>
                         </li>
                         <li class="list-group-item tag-4">
@@ -328,13 +327,13 @@
                             </a>
                         </li>
                         <li class="list-group-item tag-4">
-                            <a href="http://the-t-in-rtf.github.io/tag/couchdb.html">
-                                Couchdb
+                            <a href="http://the-t-in-rtf.github.io/tag/.html">
+                                
                             </a>
                         </li>
                         <li class="list-group-item tag-4">
-                            <a href="http://the-t-in-rtf.github.io/tag/.html">
-                                
+                            <a href="http://the-t-in-rtf.github.io/tag/html.html">
+                                HTML
                             </a>
                         </li>
         </ul>
