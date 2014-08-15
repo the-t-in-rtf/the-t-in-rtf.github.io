@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:og="http://ogp.me/ns#"
+      xmlns:fb="https://www.facebook.com/2008/fbml">
+<head>
+    <title>Adding a revision history (with comments) to CouchDB...</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Open Graph tags -->
+
+            <meta property="og:type" content="article"/>
+            <meta property="og:title" content="Adding a revision history (with comments) to CouchDB..."/>
+            <meta property="og:url" content="http://the-t-in-rtf.github.io/couch-lucene.html"/>
+            <meta property="og:description" content="Lucene and Couch are great together once you break them in a bit..."/>
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="http://the-t-in-rtf.github.io/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="http://the-t-in-rtf.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+    <link href="http://the-t-in-rtf.github.io/theme/css/pygments.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://the-t-in-rtf.github.io/theme/css/style.css" type="text/css"/>
+    <!-- JavaScript plugins (requires jQuery) -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+
+
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://the-t-in-rtf.github.io" class="navbar-brand">The "T" in RtF</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="http://the-t-in-rtf.github.io/category/code.html">Code</a>
+                        </li>
+                        <li >
+                            <a href="http://the-t-in-rtf.github.io/category/non-code.html">Non-code</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://the-t-in-rtf.github.io/archives.html"><i class="icon-th-list"></i>Archives</a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</nav>
+<!-- /.navbar -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="http://the-t-in-rtf.github.io/couch-lucene.html"
+                       rel="bookmark"
+                       title="Permalink to Adding a revision history (with comments) to CouchDB...">
+                        Adding a revision history (with comments) to CouchDB...
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="icon-calendar"></i>Fri 15 August 2014
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://the-t-in-rtf.github.io/tag/couchdb.html">Couchdb</a>
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <h1>Introduction</h1>
+<p>One of the key requirements for the Preference Terms Dictionary (nee Common Terms Registry) is that we allow users to search using their own language and help them find common terms.</p>
+<p>As outlined in <a href="http://the-t-in-rtf.github.io/relationships-complicated.html">my previous blog on our combined record structure</a>, we use Lucene (specifically <a href="https://github.com/rnewson/couchdb-lucene">couchdb-lucene</a>) to add full-text searching of our records.</p>
+<p>Recently, in demonstrating the search in a meeting, I noticed some problems in executing seemingly simple searches, and did a bit of investigating.  I wanted to share what I learned.</p>
+<p>It turns out that with the great power of Lucene comes great responsibility.   Namely, to take best advantage of Lucene's power, you need to understand and configure its analyzers.</p>
+<h1>Our requirements</h1>
+<p>As you can see in <a href="https://github.com/the-t-in-rtf/common-terms-registry/blob/master/express/api/ctr.md">our API docs</a>, the Preference Terms Dictionary provides a powerful search, that includes the ability to:</p>
+<ol>
+<li>Search the full text of all records and find terms and aliases that match anywhere in their definition, term label, uniqueId, et cetera.</li>
+<li>Filter and order search results using structured field data (for example, only displaying records with the right status, or sorting by uniqueId).</li>
+</ol>
+<h1>The promise of (and problems with) CouchDB-Lucene</h1>
+<p>CouchdB-lucene integration seems like it should help greatly with this.  It provides high performance full-text searching from within a couch view (proxied through a separate server running as a java process).</p>
+<p>Initially, I put a high priority on "stemming" words that might appear in the definition.  "Display" is a good example.  You might have definitions like:</p>
+<ol>
+<li>"stop displaying on-screen feedback"</li>
+<li>"change the number of columns displayed"</li>
+<li>"speak all text that appears on the primary display"</li>
+</ol>
+<p>In each case, you would want "display" to match all three.  For this, we use one of the "stemming" analyzers included with Lucene, namely the "porter" analyzer.  This worked well enough, as it would match all three variations.  However, it caused two problems:</p>
+<p>First, uniqueIds like "8DotComputerBrailleTable" and "org.gnome.packagekit.ignored-dbus-requests" were broken down into their component parts and stripped of "blocked" terms like "8".  This made it difficult to precisely match a specific uniqueId.</p>
+<p>Second, the query itself was parsed using the analyzer, which would truncate a search for "computer" to "comput".  This is fine when comparing apples to apples, i.e. if the definition contains "displayed", and that becomes "displai" in the index, then it doesn't matter if the query is also searching for "displai" instead of "display".  They'll still match.</p>
+<p>The problem comes when you're trying to search for something like a uniqueId that contains a className.  The className will be broken up into individual words at every period, and then "stop words" will be stripped.  Both "8DotComputerBraille" and "6DotComputerBraille" will be converted to "dot computer braille", which makes it impossible to search for one but not the other.</p>
+<p>So how did this get fixed?</p>
+<h1>Different types of data, different approaches</h1>
+<p>To recap, we had to balance two concerns:  We needed to prevent lucene from munging our queries and uniqueIds.  We also wanted stemming for definitions and other free text.</p>
+<p>There is no single Lucene analyzer that will do this well.  Instead, you need to use the "perfield" wrapper and specify which analyzer to use for each field.   Here's what our analyzer setting in couchdb-lucene finally ended up looking like:</p>
+<div class="highlight"><pre><span class="nl">perfield:</span>
+    <span class="p">{</span>
+        <span class="nl">default:</span> <span class="s">&quot;porter&quot;</span><span class="p">,</span>
+        <span class="nl">uniqueId:</span> <span class="s">&quot;keyword&quot;</span><span class="p">,</span>
+        <span class="nl">aliasOf:</span> <span class="s">&quot;keyword&quot;</span><span class="p">,</span>
+        <span class="nl">translationOf:</span> <span class="s">&quot;keyword&quot;</span>
+    <span class="p">}</span>
+</pre></div>
+
+
+<p>The default analyzer is "porter" so that we're matching "stems".  Plural and singular work interchangeably.  Past and present tense work as well.  This is perfect for the default search field, in which we put every piece of searchable information.</p>
+<p>For the fields we want to be treated literally, we use the "keyword" analyzer.  The beauty of this is that the analyzer is applied per field, <em>even for the query itself</em>.</p>
+<p>Here's a sample search URL from my local instance that illustrates how nicely this works:</p>
+<p>http://localhost:5984/_fti/local/tr/_design/lucene/by_content?q=display+termLabel:display+uniqueId:display</p>
+<p>That's the word "display" three times in the same query, once without a field prefix, once with the "termLabel" field prefix, and once with the "uniqueId" prefix.  Couchdb-lucene helpfully shows us what the final parsed query looks like, and the results are instructive:</p>
+<div class="highlight"><pre><span class="s">&quot;q&quot;</span><span class="o">:</span> <span class="s">&quot;default:displai termLabel:displai uniqueId:display&quot;</span><span class="p">,</span>
+</pre></div>
+
+
+<p>Both the unqualified term and the term that is prefixed with the "termLabel" field are transformed so that all stemmed variations are correctly matched.  For the "uniqueId" field, which needs to be a literal, the value is left alone.</p>
+<p>So we end up with exactly what we want, which is to have an inclusive search that stems out and matches variation on your starting language, but which can be cleanly filtered using exact field values.</p>
+            </div>
+            <!-- /.entry-content -->
+    <hr />
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'thetinrtf'; // required: replace example with your forum shortname
+            var disqus_identifier = 'couch-lucene';
+            var disqus_url = 'http://the-t-in-rtf.github.io/couch-lucene.html';
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function () {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript';
+                dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 well well-sm" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="icon-home icon-large"></i>Social</h4></li>
+                    <li class="list-group-item"><a href="https://twitter.com/duhrer"><i
+                            class="icon-twitter-sign icon-large"></i>twitter
+                    </a></li>
+                    <li class="list-group-item"><a href="http://www.linkedin.com/profile/view?id=31505257"><i
+                            class="icon-linkedin-sign icon-large"></i>linkedin
+                    </a></li>
+                    <li class="list-group-item"><a href="http://github.com/the-t-in-rtf/"><i
+                            class="icon-github-sign icon-large"></i>github
+                    </a></li>
+
+
+
+                <li class="list-group-item"><a href="http://the-t-in-rtf.github.io/tags.html"><h4><i class="icon-tags icon-large"></i>Tags</h4></a></li>
+                        <li class="list-group-item tag-1">
+                            <a href="http://the-t-in-rtf.github.io/tag/express.html">
+                                Express
+                            </a>
+                        </li>
+                        <li class="list-group-item tag-1">
+                            <a href="http://the-t-in-rtf.github.io/tag/couchdb.html">
+                                Couchdb
+                            </a>
+                        </li>
+                        <li class="list-group-item tag-4">
+                            <a href="http://the-t-in-rtf.github.io/tag/couch.html">
+                                Couch
+                            </a>
+                        </li>
+                        <li class="list-group-item tag-4">
+                            <a href="http://the-t-in-rtf.github.io/tag/.html">
+                                
+                            </a>
+                        </li>
+                        <li class="list-group-item tag-4">
+                            <a href="http://the-t-in-rtf.github.io/tag/lucene.html">
+                                Lucene
+                            </a>
+                        </li>
+                        <li class="list-group-item tag-4">
+                            <a href="http://the-t-in-rtf.github.io/tag/html.html">
+                                HTML
+                            </a>
+                        </li>
+        </ul>
+    </section>
+</aside>        </div>
+    </div>
+</div>
+<footer>
+    <div class="container">
+        <hr>
+        <p class="pull-right"><i class="icon-arrow-up"></i> <a href="#">Back to top</a></p>
+
+
+        <p>&copy; 2014 Tony Atkins <tony@raisingthefloor.org> &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a></p>
+    </div>
+</footer>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="http://the-t-in-rtf.github.io/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="http://the-t-in-rtf.github.io/theme/js/respond.min.js"></script>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'thetinrtf'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+
+
+</body>
+</html>
