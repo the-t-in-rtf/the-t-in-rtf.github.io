@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for components/tabs/js/Tabs.js</title>
+    <title>Code coverage report for framework/preferences/js/FullPreviewPrefsEditor.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -16,13 +16,13 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="../../../index.html">all files</a> / <a href="index.html">components/tabs/js/</a> Tabs.js
+      <a href="../../../index.html">all files</a> / <a href="index.html">framework/preferences/js/</a> FullPreviewPrefsEditor.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">85.71% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>6/7</span>
+        <span class='fraction'>3/3</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">50% </span>
@@ -30,14 +30,14 @@
         <span class='fraction'>1/2</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">75% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>3/4</span>
+        <span class='fraction'>1/1</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">85.71% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>6/7</span>
+        <span class='fraction'>3/3</span>
       </div>
     </div>
   </div>
@@ -98,8 +98,32 @@
 53
 54
 55
-56</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -144,10 +168,36 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">2×</span>
-<span class="cline-any cline-yes">12×</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -156,7 +206,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*
 Copyright 2011-2016 OCAD University
 Copyright 2011 Lucendo Development Ltd.
-Copyright 2013 Raising the Floor - US
 Copyright 2015 Raising the Floor - International
 &nbsp;
 Licensed under the Educational Community License (ECL), Version 2.0 or the New
@@ -172,40 +221,66 @@ var fluid_3_0_0 = fluid_3_0_0 || <span class="branch-1 cbranch-no" title="branch
 (function ($, fluid) {
     "use strict";
 &nbsp;
-    /**********************
-     * Tabs *
-     *********************/
+    /***********************************
+     * Full Preview Preferences Editor *
+     ***********************************/
 &nbsp;
-    fluid.defaults("fluid.tabs", {
-        gradeNames: ["fluid.viewComponent"],
-        tabOptions: {},
-        events: {
-            // These events are forwarded out of the jQueryUI Tabs' equivalents
-            // with signature (that, event, ui)
-            tabsselect: "preventable",
-            tabsload: null,
-            tabsshow: null
-        },
-        listeners: {
-            "onCreate.initTabs": {
-                "this": "{that}.container",
-                "method": "tabs",
-                "args": "{that}.options.tabOptions"
-            },
-            "onCreate.bindEvents": {
-                priority: "after:initTabs",
-                funcName: "fluid.tabs.bindEvents"
+    fluid.defaults("fluid.prefs.fullPreview", {
+        gradeNames: ["fluid.prefs.prefsEditorLoader"],
+        outerUiEnhancerOptions: "{originalEnhancerOptions}.options.originalUserOptions",
+        outerUiEnhancerGrades: "{originalEnhancerOptions}.uiEnhancer.options.userGrades",
+        components: {
+            prefsEditor: {
+                container: "{that}.container",
+                options: {
+                    components: {
+                        preview: {
+                            type: "fluid.prefs.preview",
+                            createOnEvent: "onReady",
+                            container: "{prefsEditor}.dom.previewFrame",
+                            options: {
+                                listeners: {
+                                    "onReady.boilOnPreviewReady": "{fullPreview}.events.onPreviewReady"
+                                }
+                            }
+                        }
+                    },
+                    listeners: {
+                        "onReady.boilOnPrefsEditorReady": "{fullPreview}.events.onPrefsEditorReady"
+                    },
+                    distributeOptions: {
+                        source: "{that}.options.preview",
+                        removeSource: true,
+                        target: "{that &gt; preview}.options"
+                    }
+                }
             }
-        }
+        },
+        events: {
+            onPrefsEditorReady: null,
+            onPreviewReady: null,
+            onReady: {
+                events: {
+                    onPrefsEditorReady: "onPrefsEditorReady",
+                    onPreviewReady: "onPreviewReady"
+                },
+                args: "{that}"
+            }
+        },
+        distributeOptions: [{
+            source: "{that}.options.outerUiEnhancerOptions",
+            target: "{that enhancer}.options"
+        }, {
+            source: "{that}.options.preview",
+            target: "{that preview}.options"
+        }, {
+            source: "{that}.options.previewEnhancer",
+            target: "{that enhancer}.options"
+        }, {
+            source: "{that}.options.outerUiEnhancerGrades",
+            target: "{that enhancer}.options.gradeNames"
+        }]
     });
-&nbsp;
-    fluid.tabs.bindEvents = function (that) { // TODO: The test cases for this component do not exercise any of these events
-        fluid.each(that.options.events, function (value, eventName) {
-            that.container.on(eventName, <span class="fstat-no" title="function not covered" >function (event, ui) {</span>
-<span class="cstat-no" title="statement not covered" >                return that.events[eventName].fire(that, event, ui);</span>
-            });
-        });
-    };
 &nbsp;
 })(jQuery, fluid_3_0_0);
 &nbsp;</pre></td></tr>
