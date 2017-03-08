@@ -1,0 +1,2090 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for framework/core/js/ModelTransformation.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">framework/core/js/</a> ModelTransformation.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">96.43% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>297/308</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">89.89% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>160/178</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">98.15% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>53/54</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">96.43% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>297/308</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+648
+649
+650
+651
+652
+653
+654
+655
+656
+657
+658
+659
+660
+661
+662
+663
+664
+665
+666
+667
+668
+669
+670
+671
+672
+673
+674
+675
+676</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">368×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">14294×</span>
+<span class="cline-any cline-yes">14294×</span>
+<span class="cline-any cline-yes">14294×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">573×</span>
+<span class="cline-any cline-yes">369×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">513×</span>
+<span class="cline-any cline-yes">513×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">99×</span>
+<span class="cline-any cline-yes">222×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">5234×</span>
+<span class="cline-any cline-yes">5234×</span>
+<span class="cline-any cline-yes">3521×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5234×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3159×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5234×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2982×</span>
+<span class="cline-any cline-yes">2982×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2982×</span>
+<span class="cline-any cline-yes">2982×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2982×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">444×</span>
+<span class="cline-any cline-yes">444×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">1335×</span>
+<span class="cline-any cline-yes">1335×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1335×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">273×</span>
+<span class="cline-any cline-yes">273×</span>
+<span class="cline-any cline-yes">273×</span>
+<span class="cline-any cline-yes">273×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">7693×</span>
+<span class="cline-any cline-yes">7693×</span>
+<span class="cline-any cline-yes">7693×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6423×</span>
+<span class="cline-any cline-yes">6423×</span>
+<span class="cline-any cline-yes">6423×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6411×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">3697×</span>
+<span class="cline-any cline-yes">3697×</span>
+<span class="cline-any cline-yes">3697×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3697×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">369×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3697×</span>
+<span class="cline-any cline-yes">3697×</span>
+<span class="cline-any cline-yes">286×</span>
+<span class="cline-any cline-yes">286×</span>
+<span class="cline-any cline-yes">593×</span>
+<span class="cline-any cline-yes">548×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">548×</span>
+<span class="cline-any cline-yes">548×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">286×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3697×</span>
+<span class="cline-any cline-yes">2823×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2811×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2811×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2811×</span>
+<span class="cline-any cline-yes">451×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3234×</span>
+<span class="cline-any cline-yes">3234×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2603×</span>
+<span class="cline-any cline-yes">2603×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">414×</span>
+<span class="cline-any cline-yes">414×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3234×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">1902×</span>
+<span class="cline-any cline-yes">1902×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">1902×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">1482×</span>
+<span class="cline-any cline-yes">1482×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">435×</span>
+<span class="cline-any cline-yes">435×</span>
+<span class="cline-any cline-yes">1176×</span>
+<span class="cline-any cline-yes">156×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1020×</span>
+<span class="cline-any cline-yes">69×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">951×</span>
+<span class="cline-any cline-yes">951×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">951×</span>
+<span class="cline-any cline-yes">210×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">741×</span>
+<span class="cline-any cline-yes">741×</span>
+<span class="cline-any cline-yes">741×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">69×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">165×</span>
+<span class="cline-any cline-yes">357×</span>
+<span class="cline-any cline-yes">357×</span>
+<span class="cline-any cline-yes">357×</span>
+<span class="cline-any cline-yes">357×</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-yes">39×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-yes">24×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">357×</span>
+<span class="cline-any cline-yes">150×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">357×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">11007×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">3664×</span>
+<span class="cline-any cline-yes">3664×</span>
+<span class="cline-any cline-yes">3664×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3661×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3664×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3649×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">3664×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3649×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">417×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">417×</span>
+<span class="cline-any cline-yes">273×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">417×</span>
+<span class="cline-any cline-yes">417×</span>
+<span class="cline-any cline-yes">402×</span>
+<span class="cline-any cline-yes">402×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">405×</span>
+<span class="cline-any cline-yes">405×</span>
+<span class="cline-any cline-yes">405×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">405×</span>
+<span class="cline-any cline-yes">291×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">405×</span>
+<span class="cline-any cline-yes">99×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">405×</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">4534×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4534×</span>
+<span class="cline-any cline-yes">108×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4534×</span>
+<span class="cline-any cline-yes">4534×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">9346×</span>
+<span class="cline-any cline-yes">368×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8978×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9346×</span>
+<span class="cline-any cline-yes">9346×</span>
+<span class="cline-any cline-yes">4438×</span>
+<span class="cline-any cline-yes">4438×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">567×</span>
+<span class="cline-any cline-yes">567×</span>
+<span class="cline-any cline-yes">567×</span>
+<span class="cline-any cline-yes">615×</span>
+<span class="cline-any cline-yes">615×</span>
+<span class="cline-any cline-yes">615×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3871×</span>
+<span class="cline-any cline-yes">3871×</span>
+<span class="cline-any cline-yes">3871×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9334×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9334×</span>
+<span class="cline-any cline-yes">9709×</span>
+<span class="cline-any cline-yes">5283×</span>
+<span class="cline-any cline-yes">5283×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5271×</span>
+<span class="cline-any cline-yes">2151×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2151×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5271×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9322×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">3839×</span>
+<span class="cline-any cline-yes">3839×</span>
+<span class="cline-any cline-yes">9346×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3839×</span>
+<span class="cline-any cline-yes">3839×</span>
+<span class="cline-any cline-yes">3839×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">411×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">411×</span>
+<span class="cline-any cline-yes">411×</span>
+<span class="cline-any cline-yes">411×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">342×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">342×</span>
+<span class="cline-any cline-yes">342×</span>
+<span class="cline-any cline-yes">342×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">45×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">45×</span>
+<span class="cline-any cline-yes">78×</span>
+<span class="cline-any cline-yes">78×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">120×</span>
+<span class="cline-any cline-yes">120×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">75×</span>
+<span class="cline-any cline-yes">75×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">3086×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3077×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">105×</span>
+<span class="cline-any cline-yes">105×</span>
+<span class="cline-any cline-yes">105×</span>
+<span class="cline-any cline-yes">105×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">257×</span>
+<span class="cline-any cline-yes">257×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">3074×</span>
+<span class="cline-any cline-yes">3074×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">3086×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3086×</span>
+<span class="cline-any cline-yes">3086×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3086×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3086×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3086×</span>
+<span class="cline-any cline-yes">3086×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2988×</span>
+<span class="cline-any cline-yes">2988×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3086×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3086×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3074×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3074×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3074×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3074×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3074×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3074×</span>
+<span class="cline-any cline-yes">2774×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*
+Copyright 2010 University of Toronto
+Copyright 2010-2014 OCAD University
+Copyright 2012-2014 Raising the Floor - US
+Copyright 2014-2016 Raising the Floor - International
+&nbsp;
+Licensed under the Educational Community License (ECL), Version 2.0 or the New
+BSD license. You may not use this file except in compliance with one these
+Licenses.
+&nbsp;
+You may obtain a copy of the ECL 2.0 License and BSD License at
+https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
+*/
+&nbsp;
+var fluid_3_0_0 = fluid_3_0_0 || <span class="branch-1 cbranch-no" title="branch not covered" >{};</span>
+var fluid = fluid || <span class="branch-1 cbranch-no" title="branch not covered" >fluid_3_0_0;</span>
+&nbsp;
+(function ($, fluid) {
+    "use strict";
+&nbsp;
+    fluid.registerNamespace("fluid.model.transform");
+&nbsp;
+    /** Grade definitions for standard transformation function hierarchy **/
+&nbsp;
+    fluid.defaults("fluid.transformFunction", {
+        gradeNames: "fluid.function"
+    });
+&nbsp;
+    // uses standard layout and workflow involving inputPath - an undefined input value
+    // will short-circuit the evaluation
+    fluid.defaults("fluid.standardInputTransformFunction", {
+        gradeNames: "fluid.transformFunction"
+    });
+&nbsp;
+    fluid.defaults("fluid.standardOutputTransformFunction", {
+        gradeNames: "fluid.transformFunction"
+    });
+&nbsp;
+    // defines a set of options "inputVariables" referring to its inputs, which are converted
+    // to functions that the transform may explicitly use to demand the input value
+    fluid.defaults("fluid.multiInputTransformFunction", {
+        gradeNames: "fluid.transformFunction"
+    });
+&nbsp;
+    // uses the standard layout and workflow involving inputPath and outputPath
+    fluid.defaults("fluid.standardTransformFunction", {
+        gradeNames: ["fluid.standardInputTransformFunction", "fluid.standardOutputTransformFunction"]
+    });
+&nbsp;
+    fluid.defaults("fluid.lens", {
+        gradeNames: "fluid.transformFunction",
+        invertConfiguration: null
+        // this function method returns "inverted configuration" rather than actually performing inversion
+        // TODO: harmonise with strategy used in VideoPlayer_framework.js
+    });
+&nbsp;
+    /***********************************
+     * Base utilities for transformers *
+     ***********************************/
+&nbsp;
+    // unsupported, NON-API function
+    fluid.model.transform.pathToRule = function (inputPath) {
+        return {
+            transform: {
+                type: "fluid.transforms.value",
+                inputPath: inputPath
+            }
+        };
+    };
+&nbsp;
+    // unsupported, NON-API function
+    fluid.model.transform.literalValueToRule = function (input) {
+        return {
+            transform: {
+                type: "fluid.transforms.literalValue",
+                input: input
+            }
+        };
+    };
+&nbsp;
+    /** Accepts two fully escaped paths, either of which may be empty or null **/
+    fluid.model.composePaths = function (prefix, suffix) {
+        prefix = prefix === 0 ? <span class="branch-0 cbranch-no" title="branch not covered" >"0" </span>: prefix || "";
+        suffix = suffix === 0 ? "0" : suffix || "";
+        return !prefix ? suffix : (!suffix ? prefix : prefix + "." + suffix);
+    };
+&nbsp;
+    fluid.model.transform.accumulateInputPath = function (inputPath, transformer, paths) {
+        if (inputPath !== undefined) {
+            paths.push(fluid.model.composePaths(transformer.inputPrefix, inputPath));
+        }
+    };
+&nbsp;
+    fluid.model.transform.accumulateStandardInputPath = function (input, transformSpec, transformer, paths) {
+        fluid.model.transform.getValue(undefined, transformSpec[input], transformer);
+        fluid.model.transform.accumulateInputPath(transformSpec[input + "Path"], transformer, paths);
+    };
+&nbsp;
+    fluid.model.transform.accumulateMultiInputPaths = function (inputVariables, transformSpec, transformer, paths) {
+        fluid.each(inputVariables, function (v, k) {
+            fluid.model.transform.accumulateStandardInputPath(k, transformSpec, transformer, paths);
+        });
+    };
+&nbsp;
+    fluid.model.transform.getValue = function (inputPath, value, transformer) {
+        var togo;
+        if (inputPath !== undefined) { // NB: We may one day want to reverse the crazy jQuery-like convention that "no path means root path"
+            togo = fluid.get(transformer.source, fluid.model.composePaths(transformer.inputPrefix, inputPath), transformer.resolverGetConfig);
+        }
+        if (togo === undefined) {
+            // FLUID-5867 - actually helpful behaviour here rather than the insane original default of expecting a short-form value document
+            togo = fluid.isPrimitive(value) ? value :
+                ("literalValue" in value ? <span class="branch-0 cbranch-no" title="branch not covered" >value.literalValue </span>:
+                (value.transform === undefined ? value : transformer.expand(value)));
+        }
+        return togo;
+    };
+&nbsp;
+    // distinguished value which indicates that a transformation rule supplied a
+    // non-default output path, and so the user should be prevented from making use of it
+    // in a compound transform definition
+    fluid.model.transform.NONDEFAULT_OUTPUT_PATH_RETURN = {};
+&nbsp;
+    fluid.model.transform.setValue = function (userOutputPath, value, transformer) {
+        // avoid crosslinking to input object - this might be controlled by a "nocopy" option in future
+        var toset = fluid.copy(value);
+        var outputPath = fluid.model.composePaths(transformer.outputPrefix, userOutputPath);
+        // TODO: custom resolver config here to create non-hash output model structure
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (toset !== undefined) {
+            transformer.applier.change(outputPath, toset);
+        }
+        return userOutputPath ? fluid.model.transform.NONDEFAULT_OUTPUT_PATH_RETURN : toset;
+    };
+&nbsp;
+    /* Resolves the &lt;key&gt; given as parameter by looking up the path &lt;key&gt;Path in the object
+     * to be transformed. If not present, it resolves the &lt;key&gt; by using the literal value if primitive,
+     * or expanding otherwise. &lt;def&gt; defines the default value if unableto resolve the key. If no
+     * default value is given undefined is returned
+     */
+    fluid.model.transform.resolveParam = function (transformSpec, transformer, key, def) {
+        var val = fluid.model.transform.getValue(transformSpec[key + "Path"], transformSpec[key], transformer);
+        return (val !== undefined) ? val : def;
+    };
+&nbsp;
+    // Compute a "match score" between two pieces of model material, with 0 indicating a complete mismatch, and
+    // higher values indicating increasingly good matches
+    fluid.model.transform.matchValue = function (expected, actual, partialMatches) {
+        var stats = {changes: 0, unchanged: 0, changeMap: {}};
+        fluid.model.diff(expected, actual, stats);
+        // i) a pair with 0 matches counts for 0 in all cases
+        // ii) without "partial match mode" (the default), we simply count matches, with any mismatch giving 0
+        // iii) with "partial match mode", a "perfect score" in the top 24 bits is
+        // penalised for each mismatch, with a positive score of matches store in the bottom 24 bits
+        return stats.unchanged === 0 ? 0
+            : (partialMatches ? 0xffffff000000 - 0x1000000 * stats.changes + stats.unchanged :
+            (stats.changes ? 0 : 0xffffff000000 + stats.unchanged));
+    };
+&nbsp;
+    fluid.model.transform.invertPaths = function (transformSpec, transformer) {
+        // TODO: this will not behave correctly in the face of compound "input" which contains
+        // further transforms
+        var oldOutput = fluid.model.composePaths(transformer.outputPrefix, transformSpec.outputPath);
+        transformSpec.outputPath = fluid.model.composePaths(transformer.inputPrefix, transformSpec.inputPath);
+        transformSpec.inputPath = oldOutput;
+        return transformSpec;
+    };
+&nbsp;
+&nbsp;
+    // TODO: prefixApplier is a transform which is currently unused and untested
+    fluid.model.transform.prefixApplier = <span class="fstat-no" title="function not covered" >function (transformSpec, transformer) {</span>
+<span class="cstat-no" title="statement not covered" >        if (transformSpec.inputPrefix) {</span>
+<span class="cstat-no" title="statement not covered" >            transformer.inputPrefixOp.push(transformSpec.inputPrefix);</span>
+        }
+<span class="cstat-no" title="statement not covered" >        if (transformSpec.outputPrefix) {</span>
+<span class="cstat-no" title="statement not covered" >            transformer.outputPrefixOp.push(transformSpec.outputPrefix);</span>
+        }
+<span class="cstat-no" title="statement not covered" >        transformer.expand(transformSpec.input);</span>
+<span class="cstat-no" title="statement not covered" >        if (transformSpec.inputPrefix) {</span>
+<span class="cstat-no" title="statement not covered" >            transformer.inputPrefixOp.pop();</span>
+        }
+<span class="cstat-no" title="statement not covered" >        if (transformSpec.outputPrefix) {</span>
+<span class="cstat-no" title="statement not covered" >            transformer.outputPrefixOp.pop();</span>
+        }
+    };
+&nbsp;
+    fluid.defaults("fluid.model.transform.prefixApplier", {
+        gradeNames: ["fluid.transformFunction"]
+    });
+&nbsp;
+    // unsupported, NON-API function
+    fluid.model.makePathStack = function (transform, prefixName) {
+        var stack = transform[prefixName + "Stack"] = [];
+        transform[prefixName] = "";
+        return {
+            push: function (prefix) {
+                var newPath = fluid.model.composePaths(transform[prefixName], prefix);
+                stack.push(transform[prefixName]);
+                transform[prefixName] = newPath;
+            },
+            pop: function () {
+                transform[prefixName] = stack.pop();
+            }
+        };
+    };
+&nbsp;
+    // unsupported, NON-API function
+    fluid.model.transform.doTransform = function (transformSpec, transformer, transformOpts) {
+        var expdef = transformOpts.defaults;
+        var transformFn = fluid.getGlobalValue(transformOpts.typeName);
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof(transformFn) !== "function") {
+<span class="cstat-no" title="statement not covered" >            fluid.fail("Transformation record specifies transformation function with name " +</span>
+                transformSpec.type + " which is not a function - ", transformFn);
+        }
+        if (!fluid.hasGrade(expdef, "fluid.transformFunction")) {
+            // If no suitable grade is set up, assume that it is intended to be used as a standardTransformFunction
+            expdef = fluid.defaults("fluid.standardTransformFunction");
+        }
+        var transformArgs = [transformSpec, transformer];
+        if (fluid.hasGrade(expdef, "fluid.multiInputTransformFunction")) {
+            var inputs = {};
+            fluid.each(expdef.inputVariables, function (v, k) {
+                inputs[k] = function () {
+                    var input = fluid.model.transform.getValue(transformSpec[k + "Path"], transformSpec[k], transformer);
+                    // TODO: This is a mess, null might perfectly well be a possible default
+                    // if no match, assign default if one exists (v != null)
+                    input = (input === undefined &amp;&amp; v !== null) ? v : input;
+                    return input;
+                };
+            });
+            transformArgs.unshift(inputs);
+        }
+        if (fluid.hasGrade(expdef, "fluid.standardInputTransformFunction")) {
+            if (!("input" in transformSpec) &amp;&amp; !("inputPath" in transformSpec)) {
+                fluid.fail("Error in transform specification. Either \"input\" or \"inputPath\" must be specified for a standardInputTransformFunction: received ", transformSpec);
+            }
+            var expanded = fluid.model.transform.getValue(transformSpec.inputPath, transformSpec.input, transformer);
+&nbsp;
+            transformArgs.unshift(expanded);
+            // if the function has no input, the result is considered undefined, and this is returned
+            if (expanded === undefined) {
+                return undefined;
+            }
+        }
+        var transformed = transformFn.apply(null, transformArgs);
+        if (fluid.hasGrade(expdef, "fluid.standardOutputTransformFunction")) {
+            // "doOutput" flag is currently set nowhere, but could be used in future
+            var outputPath = transformSpec.outputPath !== undefined ? transformSpec.outputPath : (transformOpts.doOutput ? <span class="branch-0 cbranch-no" title="branch not covered" >"" </span>: undefined);
+            if (outputPath !== undefined &amp;&amp; transformed !== undefined) {
+                //If outputPath is given in the expander we want to:
+                // (1) output to the document
+                // (2) return undefined, to ensure that expanders higher up in the hierarchy doesn't attempt to output it again
+                fluid.model.transform.setValue(transformSpec.outputPath, transformed, transformer);
+                transformed = undefined;
+            }
+        }
+        return transformed;
+    };
+&nbsp;
+    // OLD PATHUTIL utilities: Rescued from old DataBinding implementation to support obsolete "schema" scheme for transforms - all of this needs to be rethought
+    var globalAccept = [];
+&nbsp;
+    fluid.registerNamespace("fluid.pathUtil");
+&nbsp;
+    /** Parses a path segment, following escaping rules, starting from character index i in the supplied path */
+    fluid.pathUtil.getPathSegment = function (path, i) {
+        fluid.pathUtil.getPathSegmentImpl(globalAccept, path, i);
+        return globalAccept[0];
+    };
+    /** Returns just the head segment of an EL path */
+    fluid.pathUtil.getHeadPath = function (path) {
+        return fluid.pathUtil.getPathSegment(path, 0);
+    };
+&nbsp;
+    /** Returns all of an EL path minus its first segment - if the path consists of just one segment, returns "" */
+    fluid.pathUtil.getFromHeadPath = function (path) {
+        var firstdot = fluid.pathUtil.getPathSegmentImpl(null, path, 0);
+        return firstdot === path.length ? "" : path.substring(firstdot + 1);
+    };
+    /** Determines whether a particular EL path matches a given path specification.
+     * The specification consists of a path with optional wildcard segments represented by "*".
+     * @param spec (string) The specification to be matched
+     * @param path (string) The path to be tested
+     * @param exact (boolean) Whether the path must exactly match the length of the specification in
+     * terms of path segments in order to count as match. If exact is falsy, short specifications will
+     * match all longer paths as if they were padded out with "*" segments
+     * @return (array of string) The path segments which matched the specification, or &lt;code&gt;null&lt;/code&gt; if there was no match
+     */
+&nbsp;
+    fluid.pathUtil.matchPath = function (spec, path, exact) {
+        var togo = [];
+        while (true) {
+            if (((path === "") ^ (spec === "")) &amp;&amp; exact) {
+                return null;
+            }
+            // FLUID-4625 - symmetry on spec and path is actually undesirable, but this
+            // quickly avoids at least missed notifications - improved (but slower)
+            // implementation should explode composite changes
+            if (!spec || !path) {
+                break;
+            }
+            var spechead = fluid.pathUtil.getHeadPath(spec);
+            var pathhead = fluid.pathUtil.getHeadPath(path);
+            // if we fail to match on a specific component, fail.
+            if (spechead !== "*" &amp;&amp; spechead !== pathhead) {
+                return null;
+            }
+            togo.push(pathhead);
+            spec = fluid.pathUtil.getFromHeadPath(spec);
+            path = fluid.pathUtil.getFromHeadPath(path);
+        }
+        return togo;
+    };
+&nbsp;
+    // unsupported, NON-API function
+    fluid.model.transform.expandWildcards = function (transformer, source) {
+        fluid.each(source, function (value, key) {
+            var q = transformer.queuedTransforms;
+            transformer.pathOp.push(fluid.pathUtil.escapeSegment(key.toString()));
+            for (var i = 0; i &lt; q.length; ++i) {
+                if (fluid.pathUtil.matchPath(q[i].matchPath, transformer.path, true)) {
+                    var esCopy = fluid.copy(q[i].transformSpec);
+                    if (esCopy.inputPath === undefined || fluid.model.transform.hasWildcard(esCopy.inputPath)) {
+                        esCopy.inputPath = "";
+                    }
+                    // TODO: allow some kind of interpolation for output path
+                    // TODO: Also, we now require outputPath to be specified in these cases for output to be produced as well.. Is that something we want to continue with?
+                    transformer.inputPrefixOp.push(transformer.path);
+                    transformer.outputPrefixOp.push(transformer.path);
+                    var transformOpts = fluid.model.transform.lookupType(esCopy.type);
+                    var result = fluid.model.transform.doTransform(esCopy, transformer, transformOpts);
+                    if (result !== undefined) {
+                        fluid.model.transform.setValue(null, result, transformer);
+                    }
+                    transformer.outputPrefixOp.pop();
+                    transformer.inputPrefixOp.pop();
+                }
+            }
+            if (!fluid.isPrimitive(value)) {
+                fluid.model.transform.expandWildcards(transformer, value);
+            }
+            transformer.pathOp.pop();
+        });
+    };
+&nbsp;
+    // unsupported, NON-API function
+    fluid.model.transform.hasWildcard = function (path) {
+        return typeof(path) === "string" &amp;&amp; path.indexOf("*") !== -1;
+    };
+&nbsp;
+    // unsupported, NON-API function
+    fluid.model.transform.maybePushWildcard = function (transformSpec, transformer) {
+        var hw = fluid.model.transform.hasWildcard;
+        var matchPath;
+        if (hw(transformSpec.inputPath)) {
+            matchPath = fluid.model.composePaths(transformer.inputPrefix, transformSpec.inputPath);
+        }
+        else if (hw(transformer.outputPrefix) || hw(transformSpec.outputPath)) {
+            matchPath = fluid.model.composePaths(transformer.outputPrefix, transformSpec.outputPath);
+        }
+&nbsp;
+        if (matchPath) {
+            transformer.queuedTransforms.push({transformSpec: transformSpec, outputPrefix: transformer.outputPrefix, inputPrefix: transformer.inputPrefix, matchPath: matchPath});
+            return true;
+        }
+        return false;
+    };
+&nbsp;
+    fluid.model.sortByKeyLength = function (inObject) {
+        var keys = fluid.keys(inObject);
+        return keys.sort(fluid.compareStringLength(true));
+    };
+&nbsp;
+    // Three handler functions operating the (currently) three different processing modes
+    // unsupported, NON-API function
+    fluid.model.transform.handleTransformStrategy = function (transformSpec, transformer, transformOpts) {
+        if (fluid.model.transform.maybePushWildcard(transformSpec, transformer)) {
+            return;
+        }
+        else {
+            return fluid.model.transform.doTransform(transformSpec, transformer, transformOpts);
+        }
+    };
+    // unsupported, NON-API function
+    fluid.model.transform.handleInvertStrategy = function (transformSpec, transformer, transformOpts) {
+        transformSpec = fluid.copy(transformSpec);
+        // if we have a standardTransformFunction we can switch input and output arguments:
+        if (fluid.hasGrade(transformOpts.defaults, "fluid.standardTransformFunction")) {
+            transformSpec = fluid.model.transform.invertPaths(transformSpec, transformer);
+        }
+        var invertor = transformOpts.defaults &amp;&amp; transformOpts.defaults.invertConfiguration;
+        if (invertor) {
+            var inverted = fluid.invokeGlobalFunction(invertor, [transformSpec, transformer]);
+            transformer.inverted.push(inverted);
+        }
+    };
+&nbsp;
+    // unsupported, NON-API function
+    fluid.model.transform.handleCollectStrategy = function (transformSpec, transformer, transformOpts) {
+        var defaults = transformOpts.defaults;
+        var standardInput = fluid.hasGrade(defaults, "fluid.standardInputTransformFunction");
+        var multiInput = fluid.hasGrade(defaults, "fluid.multiInputTransformFunction");
+&nbsp;
+        if (standardInput) {
+            fluid.model.transform.accumulateStandardInputPath("input", transformSpec, transformer, transformer.inputPaths);
+        }
+        if (multiInput) {
+            fluid.model.transform.accumulateMultiInputPaths(defaults.inputVariables, transformSpec, transformer, transformer.inputPaths);
+        }
+        if (!multiInput &amp;&amp; !standardInput) {
+            var collector = defaults.collectInputPaths;
+            if (collector) {
+                var collected = fluid.makeArray(fluid.invokeGlobalFunction(collector, [transformSpec, transformer]));
+                transformer.inputPaths = transformer.inputPaths.concat(collected);
+            }
+        }
+    };
+&nbsp;
+    fluid.model.transform.lookupType = function (typeName, transformSpec) {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (!typeName) {
+<span class="cstat-no" title="statement not covered" >            fluid.fail("Transformation record is missing a type name: ", transformSpec);</span>
+        }
+        if (typeName.indexOf(".") === -1) {
+            typeName = "fluid.transforms." + typeName;
+        }
+        var defaults = fluid.defaults(typeName);
+        return { defaults: defaults, typeName: typeName};
+    };
+&nbsp;
+    // unsupported, NON-API function
+    fluid.model.transform.processRule = function (rule, transformer) {
+        if (typeof(rule) === "string") {
+            rule = fluid.model.transform.pathToRule(rule);
+        }
+        // special dispensation to allow "literalValue" to escape any value
+        else if (rule.literalValue !== undefined) {
+            rule = fluid.model.transform.literalValueToRule(rule.literalValue);
+        }
+        var togo;
+        if (rule.transform) {
+            var transformSpec, transformOpts;
+            if (fluid.isArrayable(rule.transform)) {
+                // if the transform holds an array, each transformer within that is responsible for its own output
+                var transforms = rule.transform;
+                togo = undefined;
+                for (var i = 0; i &lt; transforms.length; ++i) {
+                    transformSpec = transforms[i];
+                    transformOpts = fluid.model.transform.lookupType(transformSpec.type);
+                    transformer.transformHandler(transformSpec, transformer, transformOpts);
+                }
+            } else {
+                // else we just have a normal single transform which will return 'undefined' as a flag to defeat cascading output
+                transformSpec = rule.transform;
+                transformOpts = fluid.model.transform.lookupType(transformSpec.type);
+                togo = transformer.transformHandler(transformSpec, transformer, transformOpts);
+            }
+        }
+        // if rule is an array, save path for later use in schema strategy on final applier (so output will be interpreted as array)
+        if (fluid.isArrayable(rule)) {
+            transformer.collectedFlatSchemaOpts = transformer.collectedFlatSchemaOpts || {};
+            transformer.collectedFlatSchemaOpts[transformer.outputPrefix] = "array";
+        }
+        fluid.each(rule, function (value, key) {
+            if (key !== "transform") {
+                transformer.outputPrefixOp.push(key);
+                var togo = transformer.expand(value, transformer);
+                // Value expanders and arrays as rules implicitly output, unless they have nothing (undefined) to output
+                if (togo !== undefined) {
+                    fluid.model.transform.setValue(null, togo, transformer);
+                    // ensure that expanders further up does not try to output this value as well.
+                    togo = undefined;
+                }
+                transformer.outputPrefixOp.pop();
+            }
+        });
+        return togo;
+    };
+&nbsp;
+    // unsupported, NON-API function
+    // 3rd arg is disused by the framework and always defaults to fluid.model.transform.processRule
+    fluid.model.transform.makeStrategy = function (transformer, handleFn, transformFn) {
+        transformFn = transformFn || fluid.model.transform.processRule;
+        transformer.expand = function (rules) {
+            return transformFn(rules, transformer);
+        };
+        transformer.outputPrefixOp = fluid.model.makePathStack(transformer, "outputPrefix");
+        transformer.inputPrefixOp = fluid.model.makePathStack(transformer, "inputPrefix");
+        transformer.transformHandler = handleFn;
+    };
+&nbsp;
+    fluid.model.transform.invertConfiguration = function (rules) {
+        var transformer = {
+            inverted: []
+        };
+        fluid.model.transform.makeStrategy(transformer, fluid.model.transform.handleInvertStrategy);
+        transformer.expand(rules);
+        return {
+            transform: transformer.inverted
+        };
+    };
+&nbsp;
+    fluid.model.transform.collectInputPaths = function (rules) {
+        var transformer = {
+            inputPaths: []
+        };
+        fluid.model.transform.makeStrategy(transformer, fluid.model.transform.handleCollectStrategy);
+        transformer.expand(rules);
+        return transformer.inputPaths;
+    };
+&nbsp;
+    // unsupported, NON-API function
+    fluid.model.transform.flatSchemaStrategy = function (flatSchema, getConfig) {
+        var keys = fluid.model.sortByKeyLength(flatSchema);
+        return function (root, segment, index, segs) {
+            var path = getConfig.parser.compose.apply(null, segs.slice(0, index));
+          // TODO: clearly this implementation could be much more efficient
+            for (var i = 0; i &lt; keys.length; ++i) {
+                var key = keys[i];
+                if (fluid.pathUtil.matchPath(key, path, true) !== null) {
+                    return flatSchema[key];
+                }
+            }
+        };
+    };
+&nbsp;
+    // unsupported, NON-API function
+    fluid.model.transform.defaultSchemaValue = function (schemaValue) {
+        var type = fluid.isPrimitive(schemaValue) ? schemaValue : <span class="branch-1 cbranch-no" title="branch not covered" >schemaValue.type;</span>
+        return type === "array" ? [] : {};
+    };
+&nbsp;
+    // unsupported, NON-API function
+    fluid.model.transform.isomorphicSchemaStrategy = function (source, getConfig) {
+        return function (root, segment, index, segs) {
+            var existing = fluid.get(source, segs.slice(0, index), getConfig);
+            return fluid.isArrayable(existing) ? "array" : "object";
+        };
+    };
+&nbsp;
+    // unsupported, NON-API function
+    fluid.model.transform.decodeStrategy = function (source, options, getConfig) {
+        if (options.isomorphic) {
+            return fluid.model.transform.isomorphicSchemaStrategy(source, getConfig);
+        }
+        else if (options.flatSchema) {
+            return fluid.model.transform.flatSchemaStrategy(options.flatSchema, getConfig);
+        }
+    };
+&nbsp;
+    // unsupported, NON-API function
+    fluid.model.transform.schemaToCreatorStrategy = function (strategy) {
+        return function (root, segment, index, segs) {
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (root[segment] === undefined) {
+                var schemaValue = strategy(root, segment, index, segs);
+                root[segment] = fluid.model.transform.defaultSchemaValue(schemaValue);
+                return root[segment];
+            }
+        };
+    };
+&nbsp;
+    /** Transforms a model by a sequence of rules. Parameters as for fluid.model.transform,
+     * only with an array accepted for "rules"
+     */
+    fluid.model.transform.sequence = function (source, rules, options) {
+        for (var i = 0; i &lt; rules.length; ++i) {
+            source = fluid.model.transform(source, rules[i], options);
+        }
+        return source;
+    };
+&nbsp;
+    fluid.model.compareByPathLength = function (changea, changeb) {
+        var pdiff = changea.path.length - changeb.path.length;
+        return pdiff === 0 ? changea.sequence - changeb.sequence : pdiff;
+    };
+&nbsp;
+   /** Fires an accumulated set of change requests in increasing order of target pathlength
+     */
+    fluid.model.fireSortedChanges = function (changes, applier) {
+        changes.sort(fluid.model.compareByPathLength);
+        fluid.fireChanges(applier, changes);
+    };
+&nbsp;
+    /**
+     * Transforms a model based on a specified expansion rules objects.
+     * Rules objects take the form of:
+     *   {
+     *       "target.path": "value.el.path" || {
+     *          transform: {
+     *              type: "transform.function.path",
+     *               ...
+     *           }
+     *       }
+     *   }
+     *
+     * @param {Object} source the model to transform
+     * @param {Object} rules a rules object containing instructions on how to transform the model
+     * @param {Object} options a set of rules governing the transformations. At present this may contain
+     * the values &lt;code&gt;isomorphic: true&lt;/code&gt; indicating that the output model is to be governed by the
+     * same schema found in the input model, or &lt;code&gt;flatSchema&lt;/code&gt; holding a flat schema object which
+     * consists of a hash of EL path specifications with wildcards, to the values "array"/"object" defining
+     * the schema to be used to construct missing trunk values.
+     */
+    fluid.model.transformWithRules = function (source, rules, options) {
+        options = options || {};
+&nbsp;
+        var getConfig = fluid.model.escapedGetConfig;
+        var setConfig = fluid.model.escapedSetConfig;
+&nbsp;
+        var schemaStrategy = fluid.model.transform.decodeStrategy(source, options, getConfig);
+&nbsp;
+        var transformer = {
+            source: source,
+            target: {
+                // TODO: This should default to undefined to allow return of primitives, etc.
+                model: schemaStrategy ? fluid.model.transform.defaultSchemaValue(schemaStrategy(null, "", 0, [""])) : {}
+            },
+            resolverGetConfig: getConfig,
+            resolverSetConfig: setConfig,
+            collectedFlatSchemaOpts: undefined, // to hold options for flat schema collected during transforms
+            queuedChanges: [],
+            queuedTransforms: [] // TODO: This is used only by wildcard applier - explain its operation
+        };
+        fluid.model.transform.makeStrategy(transformer, fluid.model.transform.handleTransformStrategy);
+        transformer.applier = {
+            fireChangeRequest: function (changeRequest) {
+                changeRequest.sequence = transformer.queuedChanges.length;
+                transformer.queuedChanges.push(changeRequest);
+            }
+        };
+        fluid.bindRequestChange(transformer.applier);
+&nbsp;
+        transformer.expand(rules);
+&nbsp;
+        var rootSetConfig = fluid.copy(setConfig);
+        // Modify schemaStrategy if we collected flat schema options for the setConfig of finalApplier
+        if (transformer.collectedFlatSchemaOpts !== undefined) {
+            $.extend(transformer.collectedFlatSchemaOpts, options.flatSchema);
+            schemaStrategy = fluid.model.transform.flatSchemaStrategy(transformer.collectedFlatSchemaOpts, getConfig);
+        }
+        rootSetConfig.strategies = [fluid.model.defaultFetchStrategy, schemaStrategy ? fluid.model.transform.schemaToCreatorStrategy(schemaStrategy)
+                : fluid.model.defaultCreatorStrategy];
+        transformer.finalApplier = options.finalApplier || fluid.makeHolderChangeApplier(transformer.target, {resolverSetConfig: rootSetConfig});
+&nbsp;
+        if (transformer.queuedTransforms.length &gt; 0) {
+            transformer.typeStack = [];
+            transformer.pathOp = fluid.model.makePathStack(transformer, "path");
+            fluid.model.transform.expandWildcards(transformer, source);
+        }
+        fluid.model.fireSortedChanges(transformer.queuedChanges, transformer.finalApplier);
+        return transformer.target.model;
+    };
+&nbsp;
+    $.extend(fluid.model.transformWithRules, fluid.model.transform);
+    fluid.model.transform = fluid.model.transformWithRules;
+&nbsp;
+    /** Utility function to produce a standard options transformation record for a single set of rules **/
+    fluid.transformOne = function (rules) {
+        return {
+            transformOptions: {
+                transformer: "fluid.model.transformWithRules",
+                config: rules
+            }
+        };
+    };
+&nbsp;
+    /** Utility function to produce a standard options transformation record for multiple rules to be applied in sequence **/
+    fluid.transformMany = function (rules) {
+        return {
+            transformOptions: {
+                transformer: "fluid.model.transform.sequence",
+                config: rules
+            }
+        };
+    };
+&nbsp;
+})(jQuery, fluid_3_0_0);
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Mar 08 2017 14:39:42 GMT+0100 (CET)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

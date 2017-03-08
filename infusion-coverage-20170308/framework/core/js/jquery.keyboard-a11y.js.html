@@ -1,0 +1,1934 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for framework/core/js/jquery.keyboard-a11y.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">framework/core/js/</a> jquery.keyboard-a11y.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">80.39% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>205/255</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">63.01% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>92/146</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">81.03% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>47/58</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">80.39% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>205/255</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">74×</span>
+<span class="cline-any cline-yes">3739×</span>
+<span class="cline-any cline-yes">3739×</span>
+<span class="cline-any cline-yes">3739×</span>
+<span class="cline-any cline-yes">3940×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3739×</span>
+<span class="cline-any cline-yes">3739×</span>
+<span class="cline-any cline-yes">3533×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3739×</span>
+<span class="cline-any cline-yes">3739×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3739×</span>
+<span class="cline-any cline-yes">3739×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">74×</span>
+<span class="cline-any cline-yes">74×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">8554×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">199×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">199×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">3575×</span>
+<span class="cline-any cline-yes">8340×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">3583×</span>
+<span class="cline-any cline-yes">3583×</span>
+<span class="cline-any cline-yes">3575×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">209×</span>
+<span class="cline-any cline-yes">209×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">209×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">209×</span>
+<span class="cline-any cline-yes">209×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">209×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">1983×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-yes">198×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">1983×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">2992×</span>
+<span class="cline-any cline-yes">32×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">2992×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1983×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1983×</span>
+<span class="cline-any cline-yes">1983×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1983×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1983×</span>
+<span class="cline-any cline-yes">1983×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">548×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1781×</span>
+<span class="cline-any cline-yes">1781×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1781×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">548×</span>
+<span class="cline-any cline-yes">1006×</span>
+<span class="cline-any cline-yes">1006×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1006×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">349×</span>
+<span class="cline-any cline-yes">349×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">349×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">349×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">55×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">55×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-yes">246×</span>
+<span class="cline-any cline-yes">246×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">246×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">246×</span>
+<span class="cline-any cline-yes">246×</span>
+<span class="cline-any cline-yes">63×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">246×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">246×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-yes">124×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">124×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">548×</span>
+<span class="cline-any cline-yes">548×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">548×</span>
+<span class="cline-any cline-yes">548×</span>
+<span class="cline-any cline-yes">548×</span>
+<span class="cline-any cline-yes">548×</span>
+<span class="cline-any cline-yes">548×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">548×</span>
+<span class="cline-any cline-yes">202×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">346×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-yes">145×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">145×</span>
+<span class="cline-any cline-yes">145×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-yes">1989×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-yes">55×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-yes">201×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">741×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">305×</span>
+<span class="cline-any cline-yes">305×</span>
+<span class="cline-any cline-yes">610×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">305×</span>
+<span class="cline-any cline-yes">131×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">305×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">305×</span>
+<span class="cline-any cline-yes">741×</span>
+<span class="cline-any cline-yes">741×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">305×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">305×</span>
+<span class="cline-any cline-yes">305×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*
+Copyright 2008-2010 University of Cambridge
+Copyright 2008-2010 University of Toronto
+Copyright 2010-2011 Lucendo Development Ltd.
+Copyright 2010-2016 OCAD University
+&nbsp;
+Licensed under the Educational Community License (ECL), Version 2.0 or the New
+BSD license. You may not use this file except in compliance with one these
+Licenses.
+&nbsp;
+You may obtain a copy of the ECL 2.0 License and BSD License at
+https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
+*/
+&nbsp;
+var fluid_3_0_0 = fluid_3_0_0 || {};
+var fluid = fluid || fluid_3_0_0;
+&nbsp;
+(function ($, fluid) {
+    "use strict";
+&nbsp;
+    // $().fluid("selectable", args)
+    // $().fluid("selectable".that()
+    // $().fluid("pager.pagerBar", args)
+    // $().fluid("reorderer", options)
+&nbsp;
+    /** Create a "bridge" from code written in the Fluid standard "that-ist" style,
+     *  to the standard JQuery UI plugin architecture specified at http://docs.jquery.com/UI/Guidelines .
+     *  Every Fluid component corresponding to the top-level standard signature (JQueryable, options)
+     *  will automatically convert idiomatically to the JQuery UI standard via this adapter.
+     *  Any return value which is a primitive or array type will become the return value
+     *  of the "bridged" function - however, where this function returns a general hash
+     *  (object) this is interpreted as forming part of the Fluid "return that" pattern,
+     *  and the function will instead be bridged to "return this" as per JQuery standard,
+     *  permitting chaining to occur. However, as a courtesy, the particular "this" returned
+     *  will be augmented with a function that() which will allow the original return
+     *  value to be retrieved if desired.
+     *  @param {String} name The name under which the "plugin space" is to be injected into
+     *  JQuery
+     *  @param {Object} peer The root of the namespace corresponding to the peer object.
+     */
+&nbsp;
+    fluid.thatistBridge = function (name, peer) {
+&nbsp;
+        var togo = function (funcname) {
+            var segs = funcname.split(".");
+            var move = peer;
+            for (var i = 0; i &lt; segs.length; ++i) {
+                move = move[segs[i]];
+            }
+            var args = [this];
+            if (arguments.length === 2) {
+                args = args.concat($.makeArray(arguments[1]));
+            }
+            var ret = move.apply(null, args);
+            this.that = <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >                return ret;</span>
+            };
+            var type = typeof(ret);
+            return !ret || type === "string" || type === "number" || type === "boolean" ||
+                (ret &amp;&amp; ret.length !== undefined) ? ret : <span class="branch-1 cbranch-no" title="branch not covered" >this;</span>
+        };
+        $.fn[name] = togo;
+        return togo;
+    };
+&nbsp;
+    fluid.thatistBridge("fluid", fluid);
+    fluid.thatistBridge("fluid_3_0_0", fluid_3_0_0);
+&nbsp;
+/*************************************************************************
+ * Tabindex normalization - compensate for browser differences in naming
+ * and function of "tabindex" attribute and tabbing order.
+ */
+&nbsp;
+    // -- Private functions --
+&nbsp;
+&nbsp;
+    var normalizeTabindexName = function () {
+        return $.browser.msie ? <span class="branch-0 cbranch-no" title="branch not covered" >"tabIndex" </span>: "tabindex";
+    };
+&nbsp;
+    var canHaveDefaultTabindex = function (elements) {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (elements.length &lt;= 0) {
+<span class="cstat-no" title="statement not covered" >            return false;</span>
+        }
+&nbsp;
+        return $(elements[0]).is("a, input, button, select, area, textarea, object");
+    };
+&nbsp;
+    var getValue = function (elements) {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (elements.length &lt;= 0) {
+<span class="cstat-no" title="statement not covered" >            return undefined;</span>
+        }
+&nbsp;
+        if (!fluid.tabindex.hasAttr(elements)) {
+            return canHaveDefaultTabindex(elements) ? Number(0) : <span class="branch-1 cbranch-no" title="branch not covered" >undefined;</span>
+        }
+&nbsp;
+        // Get the attribute and return it as a number value.
+        var value = elements.attr(normalizeTabindexName());
+        return Number(value);
+    };
+&nbsp;
+    var setValue = function (elements, toIndex) {
+        return elements.each(function (i, item) {
+            $(item).attr(normalizeTabindexName(), toIndex);
+        });
+    };
+&nbsp;
+    // -- Public API --
+&nbsp;
+    /**
+     * Gets the value of the tabindex attribute for the first item, or sets the tabindex value of all elements
+     * if toIndex is specified.
+     *
+     * @param {String|Number} toIndex
+     */
+    fluid.tabindex = function (target, toIndex) {
+        target = $(target);
+        if (toIndex !== null &amp;&amp; toIndex !== undefined) {
+            return setValue(target, toIndex);
+        } else {
+            return getValue(target);
+        }
+    };
+&nbsp;
+    /**
+     * Removes the tabindex attribute altogether from each element.
+     */
+    fluid.tabindex.remove = <span class="fstat-no" title="function not covered" >function (target) {</span>
+<span class="cstat-no" title="statement not covered" >        target = $(target);</span>
+<span class="cstat-no" title="statement not covered" >        return target.each(<span class="fstat-no" title="function not covered" >function (i, item) {</span></span>
+<span class="cstat-no" title="statement not covered" >            $(item).removeAttr(normalizeTabindexName());</span>
+        });
+    };
+&nbsp;
+    /**
+     * Determines if an element actually has a tabindex attribute present.
+     */
+    fluid.tabindex.hasAttr = function (target) {
+        target = $(target);
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (target.length &lt;= 0) {
+<span class="cstat-no" title="statement not covered" >            return false;</span>
+        }
+        var togo = target.map(
+            function () {
+                var attributeNode = this.getAttributeNode(normalizeTabindexName());
+                return attributeNode ? attributeNode.specified : false;
+            }
+        );
+        return togo.length === 1 ? togo[0] : <span class="branch-1 cbranch-no" title="branch not covered" >togo;</span>
+    };
+&nbsp;
+    /**
+     * Determines if an element either has a tabindex attribute or is naturally tab-focussable.
+     */
+    fluid.tabindex.has = function (target) {
+        target = $(target);
+        return fluid.tabindex.hasAttr(target) || canHaveDefaultTabindex(target);
+    };
+&nbsp;
+    // Keyboard navigation
+    // Public, static constants needed by the rest of the library.
+    fluid.a11y = $.a11y || {};
+&nbsp;
+    fluid.a11y.orientation = {
+        HORIZONTAL: 0,
+        VERTICAL: 1,
+        BOTH: 2
+    };
+&nbsp;
+    var UP_DOWN_KEYMAP = {
+        next: $.ui.keyCode.DOWN,
+        previous: $.ui.keyCode.UP
+    };
+&nbsp;
+    var LEFT_RIGHT_KEYMAP = {
+        next: $.ui.keyCode.RIGHT,
+        previous: $.ui.keyCode.LEFT
+    };
+&nbsp;
+    // Private functions.
+    var unwrap = function (element) {
+        return element.jquery ? <span class="branch-0 cbranch-no" title="branch not covered" >element[0] </span>: element; // Unwrap the element if it's a jQuery.
+    };
+&nbsp;
+&nbsp;
+    var makeElementsTabFocussable = function (elements) {
+        // If each element doesn't have a tabindex, or has one set to a negative value, set it to 0.
+        elements.each(function (idx, item) {
+            item = $(item);
+            if (!item.fluid("tabindex.has") || item.fluid("tabindex") &lt; 0) {
+                item.fluid("tabindex", 0);
+            }
+        });
+    };
+&nbsp;
+    // Public API.
+    /**
+     * Makes all matched elements available in the tab order by setting their tabindices to "0".
+     */
+    fluid.tabbable = function (target) {
+        target = $(target);
+        makeElementsTabFocussable(target);
+    };
+&nbsp;
+    /***********************************************************************
+     * Selectable functionality - geometrising a set of nodes such that they
+     * can be navigated (by setting focus) using a set of directional keys
+     */
+&nbsp;
+    var CONTEXT_KEY = "selectionContext";
+    var NO_SELECTION = -32768;
+&nbsp;
+    var cleanUpWhenLeavingContainer = <span class="fstat-no" title="function not covered" >function (selectionContext) {</span>
+<span class="cstat-no" title="statement not covered" >        if (selectionContext.activeItemIndex !== NO_SELECTION) {</span>
+<span class="cstat-no" title="statement not covered" >            if (selectionContext.options.onLeaveContainer) {</span>
+<span class="cstat-no" title="statement not covered" >                selectionContext.options.onLeaveContainer(</span>
+                    selectionContext.selectables[selectionContext.activeItemIndex]
+                );
+            } else <span class="cstat-no" title="statement not covered" >if (selectionContext.options.onUnselect) {</span>
+<span class="cstat-no" title="statement not covered" >                selectionContext.options.onUnselect(</span>
+                    selectionContext.selectables[selectionContext.activeItemIndex]
+                );
+            }
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (!selectionContext.options.rememberSelectionState) {</span>
+<span class="cstat-no" title="statement not covered" >            selectionContext.activeItemIndex = NO_SELECTION;</span>
+        }
+    };
+&nbsp;
+    /**
+     * Does the work of selecting an element and delegating to the client handler.
+     */
+    var drawSelection = function (elementToSelect, handler) {
+        if (handler) {
+            handler(elementToSelect);
+        }
+    };
+&nbsp;
+    /**
+     * Does does the work of unselecting an element and delegating to the client handler.
+     */
+    var eraseSelection = function (selectedElement, handler) {
+        if (handler &amp;&amp; selectedElement) {
+            handler(selectedElement);
+        }
+    };
+&nbsp;
+    var unselectElement = function (selectedElement, selectionContext) {
+        eraseSelection(selectedElement, selectionContext.options.onUnselect);
+    };
+&nbsp;
+    var selectElement = function (elementToSelect, selectionContext) {
+        // It's possible that we're being called programmatically, in which case we should clear any previous selection.
+        unselectElement(selectionContext.selectedElement(), selectionContext);
+&nbsp;
+        elementToSelect = unwrap(elementToSelect);
+        var newIndex = selectionContext.selectables.index(elementToSelect);
+&nbsp;
+        // Next check if the element is a known selectable. If not, do nothing.
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (newIndex === -1) {
+<span class="cstat-no" title="statement not covered" >            return;</span>
+        }
+&nbsp;
+        // Select the new element.
+        selectionContext.activeItemIndex = newIndex;
+        drawSelection(elementToSelect, selectionContext.options.onSelect);
+    };
+&nbsp;
+    var selectableFocusHandler = function (selectionContext) {
+        return function (evt) {
+            // FLUID-3590: newer browsers (FF 3.6, Webkit 4) have a form of "bug" in that they will go bananas
+            // on attempting to move focus off an element which has tabindex dynamically set to -1.
+            $(evt.target).fluid("tabindex", 0);
+            selectElement(evt.target, selectionContext);
+&nbsp;
+            // Force focus not to bubble on some browsers.
+            return evt.stopPropagation();
+        };
+    };
+&nbsp;
+    var selectableBlurHandler = function (selectionContext) {
+        return function (evt) {
+            $(evt.target).fluid("tabindex", selectionContext.options.selectablesTabindex);
+            unselectElement(evt.target, selectionContext);
+&nbsp;
+            // Force blur not to bubble on some browsers.
+            return evt.stopPropagation();
+        };
+    };
+&nbsp;
+    var reifyIndex = function (sc_that) {
+        var elements = sc_that.selectables;
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (sc_that.activeItemIndex &gt;= elements.length) {
+<span class="cstat-no" title="statement not covered" >            sc_that.activeItemIndex = (sc_that.options.noWrap ? elements.length - 1 : 0);</span>
+        }
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (sc_that.activeItemIndex &lt; 0 &amp;&amp; sc_that.activeItemIndex !== NO_SELECTION) {
+<span class="cstat-no" title="statement not covered" >            sc_that.activeItemIndex = (sc_that.options.noWrap ? 0 : elements.length - 1);</span>
+        }
+        if (sc_that.activeItemIndex &gt;= 0) {
+            fluid.focus(elements[sc_that.activeItemIndex]);
+        }
+    };
+&nbsp;
+    var prepareShift = function (selectionContext) {
+        // FLUID-3590: FF 3.6 and Safari 4.x won't fire blur() when programmatically moving focus.
+        var selElm = selectionContext.selectedElement();
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (selElm) {
+            fluid.blur(selElm);
+        }
+&nbsp;
+        unselectElement(selectionContext.selectedElement(), selectionContext);
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (selectionContext.activeItemIndex === NO_SELECTION) {
+<span class="cstat-no" title="statement not covered" >            selectionContext.activeItemIndex = -1;</span>
+        }
+    };
+&nbsp;
+    var focusNextElement = function (selectionContext) {
+        prepareShift(selectionContext);
+        ++selectionContext.activeItemIndex;
+        reifyIndex(selectionContext);
+    };
+&nbsp;
+    var focusPreviousElement = <span class="fstat-no" title="function not covered" >function (selectionContext) {</span>
+<span class="cstat-no" title="statement not covered" >        prepareShift(selectionContext);</span>
+<span class="cstat-no" title="statement not covered" >        --selectionContext.activeItemIndex;</span>
+<span class="cstat-no" title="statement not covered" >        reifyIndex(selectionContext);</span>
+    };
+&nbsp;
+    var arrowKeyHandler = function (selectionContext, keyMap) {
+        return <span class="fstat-no" title="function not covered" >function (evt) {</span>
+<span class="cstat-no" title="statement not covered" >            if (evt.which === keyMap.next) {</span>
+<span class="cstat-no" title="statement not covered" >                focusNextElement(selectionContext);</span>
+<span class="cstat-no" title="statement not covered" >                evt.preventDefault();</span>
+            } else <span class="cstat-no" title="statement not covered" >if (evt.which === keyMap.previous) {</span>
+<span class="cstat-no" title="statement not covered" >                focusPreviousElement(selectionContext);</span>
+<span class="cstat-no" title="statement not covered" >                evt.preventDefault();</span>
+            }
+        };
+    };
+&nbsp;
+    var getKeyMapForDirection = function (direction) {
+        // Determine the appropriate mapping for next and previous based on the specified direction.
+        var keyMap;
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (direction === fluid.a11y.orientation.HORIZONTAL) {
+<span class="cstat-no" title="statement not covered" >            keyMap = LEFT_RIGHT_KEYMAP;</span>
+        }
+        else if (direction === fluid.a11y.orientation.VERTICAL) {
+            // Assume vertical in any other case.
+            keyMap = UP_DOWN_KEYMAP;
+        }
+&nbsp;
+        return keyMap;
+    };
+&nbsp;
+    var tabKeyHandler = function (selectionContext) {
+        return <span class="fstat-no" title="function not covered" >function (evt) {</span>
+<span class="cstat-no" title="statement not covered" >            if (evt.which !== $.ui.keyCode.TAB) {</span>
+<span class="cstat-no" title="statement not covered" >                return;</span>
+            }
+<span class="cstat-no" title="statement not covered" >            cleanUpWhenLeavingContainer(selectionContext);</span>
+&nbsp;
+            // Catch Shift-Tab and note that focus is on its way out of the container.
+<span class="cstat-no" title="statement not covered" >            if (evt.shiftKey) {</span>
+<span class="cstat-no" title="statement not covered" >                selectionContext.focusIsLeavingContainer = true;</span>
+            }
+        };
+    };
+&nbsp;
+    var containerFocusHandler = function (selectionContext) {
+        return function (evt) {
+            var shouldOrig = selectionContext.options.autoSelectFirstItem;
+            var shouldSelect = typeof(shouldOrig) === "function" ? <span class="branch-0 cbranch-no" title="branch not covered" >shouldOrig() </span>: shouldOrig;
+&nbsp;
+            // Override the autoselection if we're on the way out of the container.
+            <span class="missing-if-branch" title="if path not taken" >I</span>if (selectionContext.focusIsLeavingContainer) {
+<span class="cstat-no" title="statement not covered" >                shouldSelect = false;</span>
+            }
+&nbsp;
+            // This target check works around the fact that sometimes focus bubbles, even though it shouldn't.
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (shouldSelect &amp;&amp; evt.target === selectionContext.container.get(0)) {
+                if (selectionContext.activeItemIndex === NO_SELECTION) {
+                    selectionContext.activeItemIndex = 0;
+                }
+                fluid.focus(selectionContext.selectables[selectionContext.activeItemIndex]);
+            }
+&nbsp;
+            // Force focus not to bubble on some browsers.
+            return evt.stopPropagation();
+        };
+    };
+&nbsp;
+    var containerBlurHandler = function (selectionContext) {
+        return function (evt) {
+            selectionContext.focusIsLeavingContainer = false;
+&nbsp;
+            // Force blur not to bubble on some browsers.
+            return evt.stopPropagation();
+        };
+    };
+&nbsp;
+    var makeElementsSelectable = function (container, defaults, userOptions) {
+&nbsp;
+        var options = $.extend(true, {}, defaults, userOptions);
+&nbsp;
+        var keyMap = getKeyMapForDirection(options.direction);
+&nbsp;
+        var selectableElements = options.selectableElements ? options.selectableElements :
+            container.find(options.selectableSelector);
+&nbsp;
+        // Context stores the currently active item(undefined to start) and list of selectables.
+        var that = {
+            container: container,
+            activeItemIndex: NO_SELECTION,
+            selectables: selectableElements,
+            focusIsLeavingContainer: false,
+            options: options
+        };
+&nbsp;
+        that.selectablesUpdated = function (focusedItem) {
+          // Remove selectables from the tab order and add focus/blur handlers
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof(that.options.selectablesTabindex) === "number") {
+                that.selectables.fluid("tabindex", that.options.selectablesTabindex);
+            }
+            that.selectables.off("focus." + CONTEXT_KEY);
+            that.selectables.off("blur." + CONTEXT_KEY);
+            that.selectables.on("focus." + CONTEXT_KEY, selectableFocusHandler(that));
+            that.selectables.on("blur."  + CONTEXT_KEY, selectableBlurHandler(that));
+            <span class="missing-if-branch" title="if path not taken" >I</span>if (keyMap &amp;&amp; that.options.noBubbleListeners) {
+<span class="cstat-no" title="statement not covered" >                that.selectables.off("keydown." + CONTEXT_KEY);</span>
+<span class="cstat-no" title="statement not covered" >                that.selectables.on("keydown." + CONTEXT_KEY, arrowKeyHandler(that, keyMap));</span>
+            }
+            if (focusedItem) {
+                selectElement(focusedItem, that);
+            }
+            else {
+                reifyIndex(that);
+            }
+        };
+&nbsp;
+        that.refresh = function () {
+            <span class="missing-if-branch" title="if path not taken" >I</span>if (!that.options.selectableSelector) {
+<span class="cstat-no" title="statement not covered" >                fluid.fail("Cannot refresh selectable context which was not initialised by a selector");</span>
+            }
+            that.selectables = container.find(options.selectableSelector);
+            that.selectablesUpdated();
+        };
+&nbsp;
+        that.selectedElement = function () {
+            return that.activeItemIndex &lt; 0 ? null : that.selectables[that.activeItemIndex];
+        };
+&nbsp;
+        // Add various handlers to the container.
+        if (keyMap &amp;&amp; !that.options.noBubbleListeners) {
+            container.keydown(arrowKeyHandler(that, keyMap));
+        }
+        container.keydown(tabKeyHandler(that));
+        container.focus(containerFocusHandler(that));
+        container.blur(containerBlurHandler(that));
+&nbsp;
+        that.selectablesUpdated();
+&nbsp;
+        return that;
+    };
+&nbsp;
+    /**
+     * Makes all matched elements selectable with the arrow keys.
+     * Supply your own handlers object with onSelect: and onUnselect: properties for custom behaviour.
+     * Options provide configurability, including direction: and autoSelectFirstItem:
+     * Currently supported directions are jQuery.a11y.directions.HORIZONTAL and VERTICAL.
+     */
+    fluid.selectable = function (target, options) {
+        target = $(target);
+        var that = makeElementsSelectable(target, fluid.selectable.defaults, options);
+        fluid.setScopedData(target, CONTEXT_KEY, that);
+        return that;
+    };
+&nbsp;
+    /**
+     * Selects the specified element.
+     */
+    fluid.selectable.select = <span class="fstat-no" title="function not covered" >function (target, toSelect) {</span>
+<span class="cstat-no" title="statement not covered" >        fluid.focus(toSelect);</span>
+    };
+&nbsp;
+    /**
+     * Selects the next matched element.
+     */
+    fluid.selectable.selectNext = function (target) {
+        target = $(target);
+        focusNextElement(fluid.getScopedData(target, CONTEXT_KEY));
+    };
+&nbsp;
+    /**
+     * Selects the previous matched element.
+     */
+    fluid.selectable.selectPrevious = <span class="fstat-no" title="function not covered" >function (target) {</span>
+<span class="cstat-no" title="statement not covered" >        target = $(target);</span>
+<span class="cstat-no" title="statement not covered" >        focusPreviousElement(fluid.getScopedData(target, CONTEXT_KEY));</span>
+    };
+&nbsp;
+    /**
+     * Returns the currently selected item wrapped as a jQuery object.
+     */
+    fluid.selectable.currentSelection = <span class="fstat-no" title="function not covered" >function (target) {</span>
+<span class="cstat-no" title="statement not covered" >        target = $(target);</span>
+<span class="cstat-no" title="statement not covered" >        var that = fluid.getScopedData(target, CONTEXT_KEY);</span>
+<span class="cstat-no" title="statement not covered" >        return $(that.selectedElement());</span>
+    };
+&nbsp;
+    fluid.selectable.defaults = {
+        direction: fluid.a11y.orientation.VERTICAL,
+        selectablesTabindex: -1,
+        autoSelectFirstItem: true,
+        rememberSelectionState: true,
+        selectableSelector: ".selectable",
+        selectableElements: null,
+        onSelect: null,
+        onUnselect: null,
+        onLeaveContainer: null,
+        noWrap: false
+    };
+&nbsp;
+    /********************************************************************
+     *  Activation functionality - declaratively associating actions with
+     * a set of keyboard bindings.
+     */
+&nbsp;
+    var checkForModifier = function (binding, evt) {
+        // If no modifier was specified, just return true.
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (!binding.modifier) {
+            return true;
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        var modifierKey = binding.modifier;</span>
+<span class="cstat-no" title="statement not covered" >        var isCtrlKeyPresent = modifierKey &amp;&amp; evt.ctrlKey;</span>
+<span class="cstat-no" title="statement not covered" >        var isAltKeyPresent = modifierKey &amp;&amp; evt.altKey;</span>
+<span class="cstat-no" title="statement not covered" >        var isShiftKeyPresent = modifierKey &amp;&amp; evt.shiftKey;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return isCtrlKeyPresent || isAltKeyPresent || isShiftKeyPresent;</span>
+    };
+&nbsp;
+    /** Constructs a raw "keydown"-facing handler, given a binding entry. This
+     *  checks whether the key event genuinely triggers the event and forwards it
+     *  to any "activateHandler" registered in the binding.
+     */
+    var makeActivationHandler = function (binding) {
+        return function (evt) {
+            var target = evt.target;
+            <span class="missing-if-branch" title="if path not taken" >I</span>if (!fluid.enabled(target)) {
+<span class="cstat-no" title="statement not covered" >                return;</span>
+            }
+// The following 'if' clause works in the real world, but there's a bug in the jQuery simulation
+// that causes keyboard simulation to fail in Safari, causing our tests to fail:
+//     http://ui.jquery.com/bugs/ticket/3229
+// The replacement 'if' clause works around this bug.
+// When this issue is resolved, we should revert to the original clause.
+//            if (evt.which === binding.key &amp;&amp; binding.activateHandler &amp;&amp; checkForModifier(binding, evt)) {
+            var code = evt.which ? evt.which : evt.keyCode;
+            if (code === binding.key &amp;&amp; binding.activateHandler &amp;&amp; checkForModifier(binding, evt)) {
+                var event = $.Event("fluid-activate");
+                $(target).trigger(event, [binding.activateHandler]);
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (event.isDefaultPrevented()) {
+                    evt.preventDefault();
+                }
+            }
+        };
+    };
+&nbsp;
+    var makeElementsActivatable = function (elements, onActivateHandler, defaultKeys, options) {
+        // Create bindings for each default key.
+        var bindings = [];
+        $(defaultKeys).each(function (index, key) {
+            bindings.push({
+                modifier: null,
+                key: key,
+                activateHandler: onActivateHandler
+            });
+        });
+&nbsp;
+        // Merge with any additional key bindings.
+        if (options &amp;&amp; options.additionalBindings) {
+            bindings = bindings.concat(options.additionalBindings);
+        }
+&nbsp;
+        fluid.initEnablement(elements);
+&nbsp;
+        // Add listeners for each key binding.
+        for (var i = 0; i &lt; bindings.length; ++i) {
+            var binding = bindings[i];
+            elements.keydown(makeActivationHandler(binding));
+        }
+        elements.on("fluid-activate", function (evt, handler) {
+            handler = handler || <span class="branch-1 cbranch-no" title="branch not covered" >onActivateHandler;</span>
+            return handler ? handler(evt) : <span class="branch-1 cbranch-no" title="branch not covered" >null;</span>
+        });
+    };
+&nbsp;
+    /**
+     * Makes all matched elements activatable with the Space and Enter keys.
+     * Provide your own handler function for custom behaviour.
+     * Options allow you to provide a list of additionalActivationKeys.
+     */
+    fluid.activatable = function (target, fn, options) {
+        target = $(target);
+        makeElementsActivatable(target, fn, fluid.activatable.defaults.keys, options);
+    };
+&nbsp;
+    /**
+     * Activates the specified element.
+     */
+    fluid.activate = <span class="fstat-no" title="function not covered" >function (target) {</span>
+<span class="cstat-no" title="statement not covered" >        $(target).trigger("fluid-activate");</span>
+    };
+&nbsp;
+    // Public Defaults.
+    fluid.activatable.defaults = {
+        keys: [$.ui.keyCode.ENTER, $.ui.keyCode.SPACE]
+    };
+&nbsp;
+&nbsp;
+})(jQuery, fluid_3_0_0);
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Mar 08 2017 14:39:42 GMT+0100 (CET)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>
