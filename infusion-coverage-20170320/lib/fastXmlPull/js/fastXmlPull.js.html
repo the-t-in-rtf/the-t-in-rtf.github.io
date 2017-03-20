@@ -1,0 +1,1496 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for lib/fastXmlPull/js/fastXmlPull.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">lib/fastXmlPull/js/</a> fastXmlPull.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">60.2% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>177/294</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">37.41% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>55/147</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">46.15% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>12/26</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">63.74% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>174/273</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">24190×</span>
+<span class="cline-any cline-yes">24190×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24190×</span>
+<span class="cline-any cline-yes">24190×</span>
+<span class="cline-any cline-yes">7038×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24190×</span>
+<span class="cline-any cline-yes">7038×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7038×</span>
+<span class="cline-any cline-yes">7038×</span>
+<span class="cline-any cline-yes">7038×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24190×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">256×</span>
+<span class="cline-any cline-yes">256×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">256×</span>
+<span class="cline-any cline-yes">256×</span>
+<span class="cline-any cline-yes">256×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">9958×</span>
+<span class="cline-any cline-yes">9958×</span>
+<span class="cline-any cline-yes">9958×</span>
+<span class="cline-any cline-yes">9958×</span>
+<span class="cline-any cline-yes">9958×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">10214×</span>
+<span class="cline-any cline-yes">10214×</span>
+<span class="cline-any cline-yes">10214×</span>
+<span class="cline-any cline-yes">10214×</span>
+<span class="cline-any cline-yes">10214×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10214×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-yes">6386×</span>
+<span class="cline-any cline-yes">6386×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7038×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-yes">368×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">368×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-yes">5568×</span>
+<span class="cline-any cline-yes">5568×</span>
+<span class="cline-any cline-yes">7706×</span>
+<span class="cline-any cline-yes">7706×</span>
+<span class="cline-any cline-yes">7706×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7706×</span>
+<span class="cline-any cline-yes">7706×</span>
+<span class="cline-any cline-yes">7706×</span>
+<span class="cline-any cline-yes">7706×</span>
+<span class="cline-any cline-yes">7706×</span>
+<span class="cline-any cline-yes">7706×</span>
+<span class="cline-any cline-yes">7706×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7706×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7706×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7706×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7706×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-yes">644×</span>
+<span class="cline-any cline-yes">644×</span>
+<span class="cline-any cline-yes">644×</span>
+<span class="cline-any cline-yes">644×</span>
+<span class="cline-any cline-yes">644×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">644×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12780×</span>
+<span class="cline-any cline-yes">12780×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">24190×</span>
+<span class="cline-any cline-yes">24190×</span>
+<span class="cline-any cline-yes">24190×</span>
+<span class="cline-any cline-yes">23638×</span>
+<span class="cline-any cline-yes">23638×</span>
+<span class="cline-any cline-yes">13680×</span>
+<span class="cline-any cline-yes">13680×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13680×</span>
+<span class="cline-any cline-yes">256×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">256×</span>
+<span class="cline-any cline-yes">256×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13424×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9958×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-yes">9742×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-yes">27918×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-yes">24190×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">552×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// =========================================================================
+//
+// tinyxmlsax.js - an XML SAX parser in JavaScript compressed for downloading
+//
+// version 3.1
+//
+// =========================================================================
+//
+// Copyright (C) 2000 - 2002, 2003 Michael Houghton (mike@idle.org), Raymond Irving and David Joham (djoham@yahoo.com)
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+&nbsp;
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+&nbsp;
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+// Visit the XML for &lt;SCRIPT&gt; home page at http://xmljs.sourceforge.net
+//
+&nbsp;
+/*
+The zlib/libpng License
+&nbsp;
+Copyright (c) 2000 - 2002, 2003 Michael Houghton (mike@idle.org), Raymond Irving and David Joham (djoham@yahoo.com)
+&nbsp;
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the authors be held liable for any damages
+arising from the use of this software.
+&nbsp;
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute it
+freely, subject to the following restrictions:
+&nbsp;
+    1. The origin of this software must not be misrepresented; you must not
+    claim that you wrote the original software. If you use this software
+    in a product, an acknowledgment in the product documentation would be
+    appreciated but is not required.
+&nbsp;
+    2. Altered source versions must be plainly marked as such, and must not be
+    misrepresented as being the original software.
+&nbsp;
+    3. This notice may not be removed or altered from any source
+    distribution.
+ */
+&nbsp;
+var fluid_3_0_0 = fluid_3_0_0 || <span class="branch-1 cbranch-no" title="branch not covered" >{};</span>
+&nbsp;
+(function ($, fluid) {
+    "use strict";
+&nbsp;
+    fluid.XMLP = function(strXML) {
+        return fluid.XMLP.XMLPImpl(strXML);
+    };
+&nbsp;
+&nbsp;
+    // List of closed HTML tags, taken from JQuery 1.2.3
+    fluid.XMLP.closedTags = {
+        abbr: true,
+        br: true,
+        col: true,
+        img: true,
+        input: true,
+        link: true,
+        meta: true,
+        param: true,
+        hr: true,
+        area: true,
+        embed:true
+    };
+&nbsp;
+    fluid.XMLP._NONE = 0;
+    fluid.XMLP._ELM_B = 1;
+    fluid.XMLP._ELM_E = 2;
+    fluid.XMLP._ELM_EMP = 3;
+    fluid.XMLP._ATT = 4;
+    fluid.XMLP._TEXT = 5;
+    fluid.XMLP._ENTITY = 6;
+    fluid.XMLP._PI = 7;
+    fluid.XMLP._CDATA = 8;
+    fluid.XMLP._COMMENT = 9;
+    fluid.XMLP._DTD = 10;
+    fluid.XMLP._ERROR = 11;
+&nbsp;
+    fluid.XMLP._CONT_XML = 0;
+    fluid.XMLP._CONT_ALT = 1;
+    fluid.XMLP._ATT_NAME = 0;
+    fluid.XMLP._ATT_VAL = 1;
+&nbsp;
+    fluid.XMLP._STATE_PROLOG = 1;
+    fluid.XMLP._STATE_DOCUMENT = 2;
+    fluid.XMLP._STATE_MISC = 3;
+&nbsp;
+    fluid.XMLP._errs = [];
+    fluid.XMLP._errs[fluid.XMLP.ERR_CLOSE_PI = 0 ] = "PI: missing closing sequence";
+    fluid.XMLP._errs[fluid.XMLP.ERR_CLOSE_DTD = 1 ] = "DTD: missing closing sequence";
+    fluid.XMLP._errs[fluid.XMLP.ERR_CLOSE_COMMENT = 2 ] = "Comment: missing closing sequence";
+    fluid.XMLP._errs[fluid.XMLP.ERR_CLOSE_CDATA = 3 ] = "CDATA: missing closing sequence";
+    fluid.XMLP._errs[fluid.XMLP.ERR_CLOSE_ELM = 4 ] = "Element: missing closing sequence";
+    fluid.XMLP._errs[fluid.XMLP.ERR_CLOSE_ENTITY = 5 ] = "Entity: missing closing sequence";
+    fluid.XMLP._errs[fluid.XMLP.ERR_PI_TARGET = 6 ] = "PI: target is required";
+    fluid.XMLP._errs[fluid.XMLP.ERR_ELM_EMPTY = 7 ] = "Element: cannot be both empty and closing";
+    fluid.XMLP._errs[fluid.XMLP.ERR_ELM_NAME = 8 ] = "Element: name must immediately follow \"&lt;\"";
+    fluid.XMLP._errs[fluid.XMLP.ERR_ELM_LT_NAME = 9 ] = "Element: \"&lt;\" not allowed in element names";
+    fluid.XMLP._errs[fluid.XMLP.ERR_ATT_VALUES = 10] = "Attribute: values are required and must be in quotes";
+    fluid.XMLP._errs[fluid.XMLP.ERR_ATT_LT_NAME = 11] = "Element: \"&lt;\" not allowed in attribute names";
+    fluid.XMLP._errs[fluid.XMLP.ERR_ATT_LT_VALUE = 12] = "Attribute: \"&lt;\" not allowed in attribute values";
+    fluid.XMLP._errs[fluid.XMLP.ERR_ATT_DUP = 13] = "Attribute: duplicate attributes not allowed";
+    fluid.XMLP._errs[fluid.XMLP.ERR_ENTITY_UNKNOWN = 14] = "Entity: unknown entity";
+    fluid.XMLP._errs[fluid.XMLP.ERR_INFINITELOOP = 15] = "Infinite loop";
+    fluid.XMLP._errs[fluid.XMLP.ERR_DOC_STRUCTURE = 16] = "Document: only comments, processing instructions, or whitespace allowed outside of document element";
+    fluid.XMLP._errs[fluid.XMLP.ERR_ELM_NESTING = 17] = "Element: must be nested correctly";
+&nbsp;
+&nbsp;
+    fluid.XMLP._checkStructure = function(that, iEvent) {
+        var stack = that.m_stack;
+        if (fluid.XMLP._STATE_PROLOG == that.m_iState) {
+            // disabled original check for text node in prologue
+            that.m_iState = fluid.XMLP._STATE_DOCUMENT;
+        }
+&nbsp;
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (fluid.XMLP._STATE_DOCUMENT === that.m_iState) {
+            if ((fluid.XMLP._ELM_B == iEvent) || (fluid.XMLP._ELM_EMP == iEvent)) {
+                that.m_stack[stack.length] = that.getName();
+            }
+            if ((fluid.XMLP._ELM_E == iEvent) || (fluid.XMLP._ELM_EMP == iEvent)) {
+                <span class="missing-if-branch" title="if path not taken" >I</span>if (stack.length === 0) {
+                    //return fluid.XMLP._setErr(XMLP.ERR_DOC_STRUCTURE);
+<span class="cstat-no" title="statement not covered" >                    return fluid.XMLP._NONE;</span>
+                }
+                var strTop = stack[stack.length - 1];
+                that.m_stack.length--;
+                <span class="missing-if-branch" title="if path not taken" >I</span>if (strTop === null || strTop !== that.getName()) {
+<span class="cstat-no" title="statement not covered" >                    return fluid.XMLP._setErr(that, fluid.XMLP.ERR_ELM_NESTING);</span>
+                }
+            }
+&nbsp;
+            // disabled original check for text node in epilogue - "MISC" state is disused
+        }
+        return iEvent;
+    };
+&nbsp;
+&nbsp;
+    fluid.XMLP._parseCDATA = <span class="fstat-no" title="function not covered" >function(that, iB) {</span>
+<span class="cstat-no" title="statement not covered" >        var iE = that.m_xml.indexOf("]]&gt;", iB);</span>
+<span class="cstat-no" title="statement not covered" >        if (iE == -1) { <span class="cstat-no" title="statement not covered" >return fluid.XMLP._setErr(that, fluid.XMLP.ERR_CLOSE_CDATA);}</span></span>
+<span class="cstat-no" title="statement not covered" >        fluid.XMLP._setContent(that, fluid.XMLP._CONT_XML, iB, iE);</span>
+<span class="cstat-no" title="statement not covered" >        that.m_iP = iE + 3;</span>
+<span class="cstat-no" title="statement not covered" >        return fluid.XMLP._CDATA;</span>
+    };
+&nbsp;
+&nbsp;
+    fluid.XMLP._parseComment = function(that, iB) {
+        var iE = that.m_xml.indexOf("-" + "-&gt;", iB);
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (iE == -1) {
+<span class="cstat-no" title="statement not covered" >            return fluid.XMLP._setErr(that, fluid.XMLP.ERR_CLOSE_COMMENT);</span>
+            }
+        fluid.XMLP._setContent(that, fluid.XMLP._CONT_XML, iB - 4, iE + 3);
+        that.m_iP = iE + 3;
+        return fluid.XMLP._COMMENT;
+    };
+&nbsp;
+    fluid.XMLP._parseDTD = <span class="fstat-no" title="function not covered" >function(that, iB) {</span>
+<span class="cstat-no" title="statement not covered" >        var iE, strClose, iInt, iLast;</span>
+<span class="cstat-no" title="statement not covered" >        iE = that.m_xml.indexOf("&gt;", iB);</span>
+<span class="cstat-no" title="statement not covered" >        if (iE == -1) {</span>
+<span class="cstat-no" title="statement not covered" >            return fluid.XMLP._setErr(that, fluid.XMLP.ERR_CLOSE_DTD);</span>
+        }
+<span class="cstat-no" title="statement not covered" >        iInt = that.m_xml.indexOf("[", iB);</span>
+<span class="cstat-no" title="statement not covered" >        strClose = ((iInt != -1) &amp;&amp; (iInt &lt; iE)) ? "]&gt;" : "&gt;";</span>
+<span class="cstat-no" title="statement not covered" >        while (true) {</span>
+<span class="cstat-no" title="statement not covered" >            if (iE == iLast) {</span>
+<span class="cstat-no" title="statement not covered" >                return fluid.XMLP._setErr(that, fluid.XMLP.ERR_INFINITELOOP);</span>
+            }
+<span class="cstat-no" title="statement not covered" >            iLast = iE;</span>
+<span class="cstat-no" title="statement not covered" >            iE = that.m_xml.indexOf(strClose, iB);</span>
+<span class="cstat-no" title="statement not covered" >            if(iE == -1) {</span>
+<span class="cstat-no" title="statement not covered" >                return fluid.XMLP._setErr(that, fluid.XMLP.ERR_CLOSE_DTD);</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (that.m_xml.substring(iE - 1, iE + 2) != "]]&gt;") { <span class="cstat-no" title="statement not covered" >break;}</span></span>
+        }
+<span class="cstat-no" title="statement not covered" >        that.m_iP = iE + strClose.length;</span>
+<span class="cstat-no" title="statement not covered" >        return fluid.XMLP._DTD;</span>
+    };
+&nbsp;
+    fluid.XMLP._parsePI = <span class="fstat-no" title="function not covered" >function(that, iB) {</span>
+<span class="cstat-no" title="statement not covered" >        var iE, iTB, iTE, iCB, iCE;</span>
+<span class="cstat-no" title="statement not covered" >        iE = that.m_xml.indexOf("?&gt;", iB);</span>
+<span class="cstat-no" title="statement not covered" >        if (iE == -1) { <span class="cstat-no" title="statement not covered" >return fluid.XMLP._setErr(that, fluid.XMLP.ERR_CLOSE_PI);}</span></span>
+<span class="cstat-no" title="statement not covered" >        iTB = fluid.SAXStrings.indexOfNonWhitespace(that.m_xml, iB, iE);</span>
+<span class="cstat-no" title="statement not covered" >        if (iTB == -1) { <span class="cstat-no" title="statement not covered" >return fluid.XMLP._setErr(that, fluid.XMLP.ERR_PI_TARGET);}</span></span>
+<span class="cstat-no" title="statement not covered" >        iTE = fluid.SAXStrings.indexOfWhitespace(that.m_xml, iTB, iE);</span>
+<span class="cstat-no" title="statement not covered" >        if (iTE == -1) { <span class="cstat-no" title="statement not covered" >iTE = iE;}</span></span>
+<span class="cstat-no" title="statement not covered" >        iCB = fluid.SAXStrings.indexOfNonWhitespace(that.m_xml, iTE, iE);</span>
+<span class="cstat-no" title="statement not covered" >        if (iCB == -1) { <span class="cstat-no" title="statement not covered" >iCB = iE;}</span></span>
+<span class="cstat-no" title="statement not covered" >        iCE = fluid.SAXStrings.lastIndexOfNonWhitespace(that.m_xml, iCB, iE);</span>
+<span class="cstat-no" title="statement not covered" >        if (iCE == -1) { <span class="cstat-no" title="statement not covered" >iCE = iE - 1;}</span></span>
+<span class="cstat-no" title="statement not covered" >        that.m_name = that.m_xml.substring(iTB, iTE);</span>
+<span class="cstat-no" title="statement not covered" >        fluid.XMLP._setContent(that, fluid.XMLP._CONT_XML, iCB, iCE + 1);</span>
+<span class="cstat-no" title="statement not covered" >        that.m_iP = iE + 2;</span>
+<span class="cstat-no" title="statement not covered" >        return fluid.XMLP._PI;</span>
+    };
+&nbsp;
+    fluid.XMLP._parseText = function(that, iB) {
+        var iE = that.m_xml.indexOf("&lt;", iB);
+        if (iE == -1) { iE = that.m_xml.length;}
+        fluid.XMLP._setContent(that, fluid.XMLP._CONT_XML, iB, iE);
+        that.m_iP = iE;
+        return fluid.XMLP._TEXT;
+    };
+&nbsp;
+    fluid.XMLP._setContent = function(that, iSrc) {
+        var args = arguments;
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (fluid.XMLP._CONT_XML == iSrc) {
+            that.m_cAlt = null;
+            that.m_cB = args[2];
+            that.m_cE = args[3];
+        }
+        else {
+<span class="cstat-no" title="statement not covered" >            that.m_cAlt = args[2];</span>
+<span class="cstat-no" title="statement not covered" >            that.m_cB = 0;</span>
+<span class="cstat-no" title="statement not covered" >            that.m_cE = args[2].length;</span>
+        }
+&nbsp;
+        that.m_cSrc = iSrc;
+    };
+&nbsp;
+    fluid.XMLP._setErr = <span class="fstat-no" title="function not covered" >function(that, iErr) {</span>
+<span class="cstat-no" title="statement not covered" >        var strErr = fluid.XMLP._errs[iErr];</span>
+<span class="cstat-no" title="statement not covered" >        that.m_cAlt = strErr;</span>
+<span class="cstat-no" title="statement not covered" >        that.m_cB = 0;</span>
+<span class="cstat-no" title="statement not covered" >        that.m_cE = strErr.length;</span>
+<span class="cstat-no" title="statement not covered" >        that.m_cSrc = fluid.XMLP._CONT_ALT;</span>
+<span class="cstat-no" title="statement not covered" >        return fluid.XMLP._ERROR;</span>
+    };
+&nbsp;
+&nbsp;
+    fluid.XMLP._parseElement = function(that, iB) {
+        var iE, iDE, iRet;
+        var iType, strN, iLast;
+        iDE = iE = that.m_xml.indexOf("&gt;", iB);
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (iE == -1) {
+<span class="cstat-no" title="statement not covered" >            return fluid.XMLP._setErr(that, fluid.XMLP.ERR_CLOSE_ELM);</span>
+        }
+        if (that.m_xml.charAt(iB) == "/") {
+            iType = fluid.XMLP._ELM_E;
+            iB++;
+        }
+        else {
+            iType = fluid.XMLP._ELM_B;
+        }
+        if (that.m_xml.charAt(iE - 1) == "/") {
+            <span class="missing-if-branch" title="if path not taken" >I</span>if (iType == fluid.XMLP._ELM_E) {
+<span class="cstat-no" title="statement not covered" >                return fluid.XMLP._setErr(that, fluid.XMLP.ERR_ELM_EMPTY);</span>
+                }
+            iType = fluid.XMLP._ELM_EMP; iDE--;
+        }
+&nbsp;
+        that.nameRegex.lastIndex = iB;
+        var nameMatch = that.nameRegex.exec(that.m_xml);
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (!nameMatch) {
+<span class="cstat-no" title="statement not covered" >            return fluid.XMLP._setErr(that, fluid.XMLP.ERR_ELM_NAME);</span>
+        }
+        strN = nameMatch[1].toLowerCase();
+        // This branch is specially necessary for broken markup in IE. If we see an li
+        // tag apparently directly nested in another, first emit a synthetic close tag
+        // for the earlier one without advancing the pointer, and set a flag to ensure
+        // doing this just once.
+        <span class="missing-if-branch" title="if path not taken" >I</span>if ("li" === strN &amp;&amp; iType !== fluid.XMLP._ELM_E &amp;&amp; that.m_stack.length &gt; 0 &amp;&amp;
+            that.m_stack[that.m_stack.length - 1] === "li" &amp;&amp; <span class="branch-4 cbranch-no" title="branch not covered" >!that.m_emitSynthetic)</span> {
+<span class="cstat-no" title="statement not covered" >            that.m_name = "li";</span>
+<span class="cstat-no" title="statement not covered" >            that.m_emitSynthetic = true;</span>
+<span class="cstat-no" title="statement not covered" >            return fluid.XMLP._ELM_E;</span>
+        }
+        // We have acquired the tag name, now set about parsing any attribute list
+        that.m_attributes = {};
+        that.m_cAlt = "";
+&nbsp;
+        if (that.nameRegex.lastIndex &lt; iDE) {
+            that.m_iP = that.nameRegex.lastIndex;
+            while (that.m_iP &lt; iDE) {
+                that.attrStartRegex.lastIndex = that.m_iP;
+                var attrMatch = that.attrStartRegex.exec(that.m_xml);
+                <span class="missing-if-branch" title="if path not taken" >I</span>if (!attrMatch) {
+<span class="cstat-no" title="statement not covered" >                    return fluid.XMLP._setErr(that, fluid.XMLP.ERR_ATT_VALUES);</span>
+                }
+                var attrname = attrMatch[1].toLowerCase();
+                var attrval;
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (that.m_xml.charCodeAt(that.attrStartRegex.lastIndex) === 61) { // =
+                    var valRegex = that.m_xml.charCodeAt(that.attrStartRegex.lastIndex + 1) === 34? that.attrValRegex : <span class="branch-1 cbranch-no" title="branch not covered" >that.attrValIERegex;</span> // "
+                    valRegex.lastIndex = that.attrStartRegex.lastIndex + 1;
+                    attrMatch = valRegex.exec(that.m_xml);
+                    <span class="missing-if-branch" title="if path not taken" >I</span>if (!attrMatch) {
+<span class="cstat-no" title="statement not covered" >                        return fluid.XMLP._setErr(that, fluid.XMLP.ERR_ATT_VALUES);</span>
+                    }
+                    attrval = attrMatch[1];
+                }
+                else { // accommodate insanity on unvalued IE attributes
+<span class="cstat-no" title="statement not covered" >                    attrval = attrname;</span>
+<span class="cstat-no" title="statement not covered" >                    valRegex = that.attrStartRegex;</span>
+                }
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (!that.m_attributes[attrname] || <span class="branch-1 cbranch-no" title="branch not covered" >that.m_attributes[attrname] === attrval)</span> {
+                    // last branch required because of fresh duplicate attribute bug introduced in IE10 and above - FLUID-5204
+                    that.m_attributes[attrname] = attrval;
+                }
+                else {
+<span class="cstat-no" title="statement not covered" >                    return fluid.XMLP._setErr(that, fluid.XMLP.ERR_ATT_DUP);</span>
+                }
+                that.m_iP = valRegex.lastIndex;
+&nbsp;
+            }
+        }
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (strN.indexOf("&lt;") != -1) {
+<span class="cstat-no" title="statement not covered" >            return fluid.XMLP._setErr(that, fluid.XMLP.ERR_ELM_LT_NAME);</span>
+        }
+&nbsp;
+        that.m_name = strN;
+        that.m_iP = iE + 1;
+        // Check for corrupted "closed tags" from innerHTML
+        if (fluid.XMLP.closedTags[strN]) {
+            that.closeRegex.lastIndex = iE + 1;
+            var closeMatch = that.closeRegex.exec;
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (closeMatch) {
+                var matchclose = that.m_xml.indexOf(strN, closeMatch.lastIndex);
+                <span class="missing-if-branch" title="if path not taken" >I</span>if (matchclose === closeMatch.lastIndex) {
+<span class="cstat-no" title="statement not covered" >                    return iType; </span>// bail out, a valid close tag is separated only by whitespace
+                }
+                else {
+                    return fluid.XMLP._ELM_EMP;
+                }
+            }
+        }
+        that.m_emitSynthetic = false;
+        return iType;
+    };
+&nbsp;
+    fluid.XMLP._parse = function(that) {
+        var iP = that.m_iP;
+        var xml = that.m_xml;
+        if (iP === xml.length) { return fluid.XMLP._NONE;}
+        var c = xml.charAt(iP);
+        if (c === '&lt;') {
+            var c2 = xml.charAt(iP + 1);
+            <span class="missing-if-branch" title="if path not taken" >I</span>if (c2 === '?') {
+<span class="cstat-no" title="statement not covered" >                return fluid.XMLP._parsePI(that, iP + 2);</span>
+            }
+            else if (c2 === '!') {
+                <span class="missing-if-branch" title="if path not taken" >I</span>if (iP === xml.indexOf("&lt;!DOCTYPE", iP)) {
+<span class="cstat-no" title="statement not covered" >                    return fluid.XMLP._parseDTD(that, iP + 9);</span>
+                }
+                else <span class="missing-if-branch" title="else path not taken" >E</span>if (iP === xml.indexOf("&lt;!--", iP)) {
+                    return fluid.XMLP._parseComment(that, iP + 4);
+                }
+                else <span class="cstat-no" title="statement not covered" >if (iP === xml.indexOf("&lt;![CDATA[", iP)) {</span>
+<span class="cstat-no" title="statement not covered" >                    return fluid.XMLP._parseCDATA(that, iP + 9);</span>
+                }
+            }
+            else {
+                return fluid.XMLP._parseElement(that, iP + 1);
+            }
+        }
+        else {
+            return fluid.XMLP._parseText(that, iP);
+        }
+    };
+&nbsp;
+&nbsp;
+    fluid.XMLP.XMLPImpl = function(strXML) {
+        var that = {};
+        that.m_xml = strXML;
+        that.m_iP = 0;
+        that.m_iState = fluid.XMLP._STATE_PROLOG;
+        that.m_stack = [];
+        that.m_attributes = {};
+        that.m_emitSynthetic = false; // state used for emitting synthetic tags used to correct broken markup (IE)
+&nbsp;
+        that.getColumnNumber = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >            return fluid.SAXStrings.getColumnNumber(that.m_xml, that.m_iP);</span>
+        };
+&nbsp;
+        that.getContent = function() {
+            return (that.m_cSrc == fluid.XMLP._CONT_XML) ? that.m_xml : <span class="branch-1 cbranch-no" title="branch not covered" >that.m_cAlt;</span>
+        };
+&nbsp;
+        that.getContentBegin = <span class="fstat-no" title="function not covered" >function() {</span> <span class="cstat-no" title="statement not covered" >return that.m_cB;}</span>;
+        that.getContentEnd = <span class="fstat-no" title="function not covered" >function() {</span> <span class="cstat-no" title="statement not covered" >return that.m_cE;}</span>;
+&nbsp;
+        that.getLineNumber = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >            return fluid.SAXStrings.getLineNumber(that.m_xml, that.m_iP);</span>
+        };
+&nbsp;
+        that.getName = function() {
+            return that.m_name;
+        };
+&nbsp;
+        that.next = function() {
+            return fluid.XMLP._checkStructure(that, fluid.XMLP._parse(that));
+        };
+&nbsp;
+        that.nameRegex = /([^\s\/&gt;]+)/g;
+        that.attrStartRegex = /\s*([\w:_][\w:_\-\.]*)/gm;
+        that.attrValRegex = /\"([^\"]*)\"\s*/gm; // "normal" XHTML attribute values
+        that.attrValIERegex = /([^\&gt;\s]+)\s*/gm; // "stupid" unquoted IE attribute values (sometimes)
+        that.closeRegex = /\s*&lt;\//g;
+&nbsp;
+        return that;
+    };
+&nbsp;
+&nbsp;
+    fluid.SAXStrings = {};
+&nbsp;
+    fluid.SAXStrings.WHITESPACE = " \t\n\r";
+    fluid.SAXStrings.QUOTES = "\"'";
+    fluid.SAXStrings.getColumnNumber = <span class="fstat-no" title="function not covered" >function (strD, iP) {</span>
+<span class="cstat-no" title="statement not covered" >        if (!strD) { <span class="cstat-no" title="statement not covered" >return -1;}</span></span>
+<span class="cstat-no" title="statement not covered" >        iP = iP || strD.length;</span>
+<span class="cstat-no" title="statement not covered" >        var arrD = strD.substring(0, iP).split("\n");</span>
+<span class="cstat-no" title="statement not covered" >        arrD.length--;</span>
+<span class="cstat-no" title="statement not covered" >        var iLinePos = arrD.join("\n").length;</span>
+<span class="cstat-no" title="statement not covered" >        return iP - iLinePos;</span>
+    };
+&nbsp;
+    fluid.SAXStrings.getLineNumber = <span class="fstat-no" title="function not covered" >function (strD, iP) {</span>
+<span class="cstat-no" title="statement not covered" >        if (!strD) { <span class="cstat-no" title="statement not covered" >return -1;}</span></span>
+<span class="cstat-no" title="statement not covered" >        iP = iP || strD.length;</span>
+<span class="cstat-no" title="statement not covered" >        return strD.substring(0, iP).split("\n").length;</span>
+    };
+&nbsp;
+    fluid.SAXStrings.indexOfNonWhitespace = <span class="fstat-no" title="function not covered" >function (strD, iB, iE) {</span>
+<span class="cstat-no" title="statement not covered" >        if (!strD) <span class="cstat-no" title="statement not covered" >return -1;</span></span>
+<span class="cstat-no" title="statement not covered" >        iB = iB || 0;</span>
+<span class="cstat-no" title="statement not covered" >        iE = iE || strD.length;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        for (var i = iB; i &lt; iE; ++ i) {</span>
+<span class="cstat-no" title="statement not covered" >            var c = strD.charAt(i);</span>
+<span class="cstat-no" title="statement not covered" >            if (c !== ' ' &amp;&amp; c !== '\t' &amp;&amp; c !== '\n' &amp;&amp; c !== '\r') <span class="cstat-no" title="statement not covered" >return i;</span></span>
+        }
+<span class="cstat-no" title="statement not covered" >        return -1;</span>
+    };
+&nbsp;
+&nbsp;
+    fluid.SAXStrings.indexOfWhitespace = <span class="fstat-no" title="function not covered" >function (strD, iB, iE) {</span>
+<span class="cstat-no" title="statement not covered" >        if (!strD) { <span class="cstat-no" title="statement not covered" >return -1;}</span></span>
+<span class="cstat-no" title="statement not covered" >        iB = iB || 0;</span>
+<span class="cstat-no" title="statement not covered" >        iE = iE || strD.length;</span>
+<span class="cstat-no" title="statement not covered" >        for (var i = iB; i &lt; iE; i++) {</span>
+<span class="cstat-no" title="statement not covered" >            if (fluid.SAXStrings.WHITESPACE.indexOf(strD.charAt(i)) != -1) { <span class="cstat-no" title="statement not covered" >return i;}</span></span>
+        }
+<span class="cstat-no" title="statement not covered" >        return -1;</span>
+    };
+&nbsp;
+&nbsp;
+    fluid.SAXStrings.lastIndexOfNonWhitespace = <span class="fstat-no" title="function not covered" >function (strD, iB, iE) {</span>
+<span class="cstat-no" title="statement not covered" >        if (!strD) { <span class="cstat-no" title="statement not covered" >return -1;}</span></span>
+<span class="cstat-no" title="statement not covered" >        iB = iB || 0; <span class="cstat-no" title="statement not covered" ></span>iE = iE || strD.length;</span>
+<span class="cstat-no" title="statement not covered" >        for (var i = iE - 1; i &gt;= iB; i--) {</span>
+<span class="cstat-no" title="statement not covered" >        if (fluid.SAXStrings.WHITESPACE.indexOf(strD.charAt(i)) == -1) {</span>
+<span class="cstat-no" title="statement not covered" >            return i;</span>
+            }
+        }
+<span class="cstat-no" title="statement not covered" >        return -1;</span>
+    };
+&nbsp;
+    fluid.SAXStrings.replace = <span class="fstat-no" title="function not covered" >function(strD, iB, iE, strF, strR) {</span>
+<span class="cstat-no" title="statement not covered" >        if (!strD) { <span class="cstat-no" title="statement not covered" >return "";}</span></span>
+<span class="cstat-no" title="statement not covered" >        iB = iB || 0;</span>
+<span class="cstat-no" title="statement not covered" >        iE = iE || strD.length;</span>
+<span class="cstat-no" title="statement not covered" >        return strD.substring(iB, iE).split(strF).join(strR);</span>
+    };
+&nbsp;
+})(jQuery, fluid_3_0_0);
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Mar 20 2017 11:17:22 GMT+0000 (UTC)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>
