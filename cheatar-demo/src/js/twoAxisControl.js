@@ -8,6 +8,7 @@
     var cheatar = fluid.registerNamespace("cheatar");
     fluid.registerNamespace("cheatar.twoAxisControl");
 
+    // TODO: left/right navigation seems borked at the moment.  Can't get to E major any more!
     cheatar.twoAxisControl.incrementAxis = function (that, axisKey, increment) {
         increment = increment || 1;
         var possibleAxisValues  = that.options.possibleValues[axisKey];
@@ -138,11 +139,12 @@
         },
         listeners: {
             "onCreate.wireControls": [
-                {
-                    "this": "{that}.dom.viewport",
-                    method: "keypress",
-                    args:   "{that}.handleKeyPress"
-                },
+            // "onMarkupRendered.wireControls": [
+                // {
+                //     "this": "{that}.dom.viewport",
+                //     method: "keydown",
+                //     args:   "{that}.handleKeyPress"
+                // },
                 {
                     "this": "{that}.dom.viewport",
                     method: "click",
