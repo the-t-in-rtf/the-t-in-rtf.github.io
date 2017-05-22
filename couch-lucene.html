@@ -113,13 +113,13 @@
 <h1>Different types of data, different approaches</h1>
 <p>To recap, we had to balance two concerns:  We needed to prevent lucene from mangling values like uniqueIds in both our indexes and our queries.  We also wanted stemming for definitions and other free text.</p>
 <p>There is no single Lucene analyzer that will do this well.  Instead, you need to use the "perfield" wrapper and specify which analyzer to use for each field.   Here's what our analyzer setting in couchdb-lucene finally ended up looking like:</p>
-<div class="highlight"><pre><span class="nl">perfield:</span>
-    <span class="p">{</span>
-        <span class="nl">default:</span> <span class="s">&quot;porter&quot;</span><span class="p">,</span>
-        <span class="nl">uniqueId:</span> <span class="s">&quot;keyword&quot;</span><span class="p">,</span>
-        <span class="nl">aliasOf:</span> <span class="s">&quot;keyword&quot;</span><span class="p">,</span>
-        <span class="nl">translationOf:</span> <span class="s">&quot;keyword&quot;</span>
-    <span class="p">}</span>
+<div class="highlight"><pre>perfield:
+    {
+        default: &quot;porter&quot;,
+        uniqueId: &quot;keyword&quot;,
+        aliasOf: &quot;keyword&quot;,
+        translationOf: &quot;keyword&quot;
+    }
 </pre></div>
 
 
@@ -128,7 +128,7 @@
 <p>Here's a sample search URL from my local instance that illustrates how nicely this works:</p>
 <p>http://localhost:5984/_fti/local/tr/_design/lucene/by_content?q=display+termLabel:display+uniqueId:display</p>
 <p>That's the word "display" three times in the same query, once without a field prefix, once with the "termLabel" field prefix, and once with the "uniqueId" prefix.  Couchdb-lucene helpfully shows us what the final parsed query looks like, and the results are instructive:</p>
-<div class="highlight"><pre><span class="s">&quot;q&quot;</span><span class="o">:</span> <span class="s">&quot;default:displai termLabel:displai uniqueId:display&quot;</span><span class="p">,</span>
+<div class="highlight"><pre>&quot;q&quot;: &quot;default:displai termLabel:displai uniqueId:display&quot;,
 </pre></div>
 
 
@@ -183,31 +183,6 @@
 
 
                 <li class="list-group-item"><a href="http://the-t-in-rtf.github.io/tags.html"><h4><i class="icon-tags icon-large"></i>Tags</h4></a></li>
-                        <li class="list-group-item tag-1">
-                            <a href="http://the-t-in-rtf.github.io/tag/couchdb.html">
-                                Couchdb
-                            </a>
-                        </li>
-                        <li class="list-group-item tag-2">
-                            <a href="http://the-t-in-rtf.github.io/tag/lucene.html">
-                                Lucene
-                            </a>
-                        </li>
-                        <li class="list-group-item tag-2">
-                            <a href="http://the-t-in-rtf.github.io/tag/express.html">
-                                Express
-                            </a>
-                        </li>
-                        <li class="list-group-item tag-4">
-                            <a href="http://the-t-in-rtf.github.io/tag/html.html">
-                                HTML
-                            </a>
-                        </li>
-                        <li class="list-group-item tag-4">
-                            <a href="http://the-t-in-rtf.github.io/tag/.html">
-                                
-                            </a>
-                        </li>
         </ul>
     </section>
 </aside>        </div>

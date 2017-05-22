@@ -139,118 +139,118 @@
 <h1>Putting it all together</h1>
 <p>So, if you're still reading, what will this all look like?</p>
 <p>Here is a single sample record with two versions and two comment threads, as it would be presented in CouchDB, with the list of attachments:</p>
-<div class="highlight"><pre><span class="p">{</span>
-   <span class="s">&quot;_id&quot;</span><span class="o">:</span> <span class="s">&quot;0069b020043147f58eeda6d72c9845f4&quot;</span><span class="p">,</span>
-   <span class="s">&quot;_rev&quot;</span><span class="o">:</span> <span class="s">&quot;60-8e50635398074f9eff7f7875a01fad6f&quot;</span><span class="p">,</span>
-   <span class="s">&quot;type&quot;</span><span class="o">:</span> <span class="s">&quot;GENERAL&quot;</span><span class="p">,</span>
-   <span class="s">&quot;uniqueId&quot;</span><span class="o">:</span> <span class="s">&quot;soundActive&quot;</span><span class="p">,</span>
-   <span class="s">&quot;defaultValue&quot;</span><span class="o">:</span> <span class="s">&quot;TRUE&quot;</span><span class="p">,</span>
-   <span class="s">&quot;definition&quot;</span><span class="o">:</span> <span class="s">&quot;Undefined...&quot;</span><span class="p">,</span>
-   <span class="s">&quot;status&quot;</span><span class="o">:</span> <span class="s">&quot;active&quot;</span><span class="p">,</span>
-   <span class="s">&quot;source&quot;</span><span class="o">:</span> <span class="s">&quot;gpii&quot;</span><span class="p">,</span>
-   <span class="s">&quot;version&quot;</span><span class="o">:</span> <span class="s">&quot;2&quot;</span><span class="p">,</span>
-   <span class="s">&quot;updated&quot;</span><span class="o">:</span> <span class="s">&quot;2014-05-22T10:01:33.655Z&quot;</span><span class="p">,</span>
-   <span class="s">&quot;_attachments&quot;</span><span class="o">:</span> <span class="p">{</span>
-       <span class="s">&quot;versions/2/comments/1&quot;</span><span class="o">:</span> <span class="p">{</span>
-           <span class="s">&quot;content_type&quot;</span><span class="o">:</span> <span class="s">&quot;application/json&quot;</span><span class="p">,</span>
-           <span class="s">&quot;revpos&quot;</span><span class="o">:</span> <span class="mi">58</span><span class="p">,</span>
-           <span class="s">&quot;digest&quot;</span><span class="o">:</span> <span class="s">&quot;md5-zHlXptYHwLkBg9yCDhmTCg==&quot;</span><span class="p">,</span>
-           <span class="s">&quot;length&quot;</span><span class="o">:</span> <span class="mi">242</span><span class="p">,</span>
-           <span class="s">&quot;stub&quot;</span><span class="o">:</span> <span class="nb">true</span>
-       <span class="p">},</span>
-       <span class="s">&quot;versions/2&quot;</span><span class="o">:</span> <span class="p">{</span>
-           <span class="s">&quot;content_type&quot;</span><span class="o">:</span> <span class="s">&quot;application/json&quot;</span><span class="p">,</span>
-           <span class="s">&quot;revpos&quot;</span><span class="o">:</span> <span class="mi">60</span><span class="p">,</span>
-           <span class="s">&quot;digest&quot;</span><span class="o">:</span> <span class="s">&quot;md5-zHlXptYHwLkBg9yCDhmTCg==&quot;</span><span class="p">,</span>
-           <span class="s">&quot;length&quot;</span><span class="o">:</span> <span class="mi">242</span><span class="p">,</span>
-           <span class="s">&quot;stub&quot;</span><span class="o">:</span> <span class="nb">true</span>
-       <span class="p">},</span>
-       <span class="s">&quot;versions/1/comments/1&quot;</span><span class="o">:</span> <span class="p">{</span>
-           <span class="s">&quot;content_type&quot;</span><span class="o">:</span> <span class="s">&quot;application/json&quot;</span><span class="p">,</span>
-           <span class="s">&quot;revpos&quot;</span><span class="o">:</span> <span class="mi">58</span><span class="p">,</span>
-           <span class="s">&quot;digest&quot;</span><span class="o">:</span> <span class="s">&quot;md5-zHlXptYHwLkBg9yCDhmTCg==&quot;</span><span class="p">,</span>
-           <span class="s">&quot;length&quot;</span><span class="o">:</span> <span class="mi">242</span><span class="p">,</span>
-           <span class="s">&quot;stub&quot;</span><span class="o">:</span> <span class="nb">true</span>
-       <span class="p">},</span>
-       <span class="s">&quot;versions/1&quot;</span><span class="o">:</span> <span class="p">{</span>
-           <span class="s">&quot;content_type&quot;</span><span class="o">:</span> <span class="s">&quot;application/json&quot;</span><span class="p">,</span>
-           <span class="s">&quot;revpos&quot;</span><span class="o">:</span> <span class="mi">59</span><span class="p">,</span>
-           <span class="s">&quot;digest&quot;</span><span class="o">:</span> <span class="s">&quot;md5-zHlXptYHwLkBg9yCDhmTCg==&quot;</span><span class="p">,</span>
-           <span class="s">&quot;length&quot;</span><span class="o">:</span> <span class="mi">242</span><span class="p">,</span>
-           <span class="s">&quot;stub&quot;</span><span class="o">:</span> <span class="nb">true</span>
-       <span class="p">}</span>
-   <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight"><pre>{
+   &quot;_id&quot;: &quot;0069b020043147f58eeda6d72c9845f4&quot;,
+   &quot;_rev&quot;: &quot;60-8e50635398074f9eff7f7875a01fad6f&quot;,
+   &quot;type&quot;: &quot;GENERAL&quot;,
+   &quot;uniqueId&quot;: &quot;soundActive&quot;,
+   &quot;defaultValue&quot;: &quot;TRUE&quot;,
+   &quot;definition&quot;: &quot;Undefined...&quot;,
+   &quot;status&quot;: &quot;active&quot;,
+   &quot;source&quot;: &quot;gpii&quot;,
+   &quot;version&quot;: &quot;2&quot;,
+   &quot;updated&quot;: &quot;2014-05-22T10:01:33.655Z&quot;,
+   &quot;_attachments&quot;: {
+       &quot;versions/2/comments/1&quot;: {
+           &quot;content_type&quot;: &quot;application/json&quot;,
+           &quot;revpos&quot;: 58,
+           &quot;digest&quot;: &quot;md5-zHlXptYHwLkBg9yCDhmTCg==&quot;,
+           &quot;length&quot;: 242,
+           &quot;stub&quot;: true
+       },
+       &quot;versions/2&quot;: {
+           &quot;content_type&quot;: &quot;application/json&quot;,
+           &quot;revpos&quot;: 60,
+           &quot;digest&quot;: &quot;md5-zHlXptYHwLkBg9yCDhmTCg==&quot;,
+           &quot;length&quot;: 242,
+           &quot;stub&quot;: true
+       },
+       &quot;versions/1/comments/1&quot;: {
+           &quot;content_type&quot;: &quot;application/json&quot;,
+           &quot;revpos&quot;: 58,
+           &quot;digest&quot;: &quot;md5-zHlXptYHwLkBg9yCDhmTCg==&quot;,
+           &quot;length&quot;: 242,
+           &quot;stub&quot;: true
+       },
+       &quot;versions/1&quot;: {
+           &quot;content_type&quot;: &quot;application/json&quot;,
+           &quot;revpos&quot;: 59,
+           &quot;digest&quot;: &quot;md5-zHlXptYHwLkBg9yCDhmTCg==&quot;,
+           &quot;length&quot;: 242,
+           &quot;stub&quot;: true
+       }
+   }
+}
 </pre></div>
 
 
 <p>If the <code>?attachments=true</code> parameter is passed, the results will also include MIME-encoded attachment content, so we can get everything we care about in a single request.  We'd decode the attachments using a library like <a href="https://github.com/FooBarWidget/multipart-parser">multipart-parser</a> or <a href="https://github.com/felixge/node-formidable">node-formidable</a>, from that point it's just JSON data.</p>
 <p>Using the above information and the attachment content, here is the same record as I would propose to display it via our API (which would include query parameters to show/hide both versions and comments):</p>
-<div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GENERAL&quot;</span><span class="o">,</span>
-    <span class="s2">&quot;uniqueId&quot;</span><span class="o">:</span> <span class="s2">&quot;soundActive&quot;</span><span class="o">,</span>
-    <span class="s2">&quot;defaultValue&quot;</span><span class="o">:</span> <span class="s2">&quot;TRUE&quot;</span><span class="o">,</span>
-    <span class="s2">&quot;definition&quot;</span><span class="o">:</span> <span class="s2">&quot;Undefined...&quot;</span><span class="o">,</span>
-    <span class="s2">&quot;status&quot;</span><span class="o">:</span> <span class="s2">&quot;active&quot;</span><span class="o">,</span>
-    <span class="s2">&quot;source&quot;</span><span class="o">:</span> <span class="s2">&quot;gpii&quot;</span><span class="o">,</span>
-    <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;2&quot;</span><span class="o">,</span>
-    <span class="s2">&quot;author&quot;</span><span class="o">:</span> <span class="s2">&quot;aatkins&quot;</span><span class="o">,</span>
-    <span class="s2">&quot;updated&quot;</span><span class="o">:</span> <span class="s2">&quot;2014-05-22T10:01:33.655Z&quot;</span><span class="o">,</span>
-    <span class="s2">&quot;versions&quot;</span><span class="o">:</span> <span class="cp">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;GENERAL&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;uniqueId&quot;</span><span class="p">:</span> <span class="s2">&quot;soundActive&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;defaultValue&quot;</span><span class="p">:</span> <span class="s2">&quot;TRUE&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;definition&quot;</span><span class="p">:</span> <span class="s2">&quot;Undefined...&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;unreviewed&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;gpii&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;aatkins&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2014-05-22T10:01:33.655Z&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;comments&quot;</span><span class="p">:</span> <span class="err">[</span>
-                <span class="p">{</span>
-                    <span class="s2">&quot;comment&quot;</span><span class="p">:</span> <span class="s2">&quot;Submitted new unreviewed record.&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;aatkins&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2014-05-22T10:01:33.655Z&quot;</span>
-                <span class="p">}</span>
-            <span class="cp">]</span>
-        <span class="p">}</span><span class="o">,</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GENERAL&quot;</span><span class="o">,</span>
-            <span class="s2">&quot;uniqueId&quot;</span><span class="o">:</span> <span class="s2">&quot;soundActive&quot;</span><span class="o">,</span>
-            <span class="s2">&quot;defaultValue&quot;</span><span class="o">:</span> <span class="s2">&quot;TRUE&quot;</span><span class="o">,</span>
-            <span class="s2">&quot;definition&quot;</span><span class="o">:</span> <span class="s2">&quot;Undefined...&quot;</span><span class="o">,</span>
-            <span class="s2">&quot;status&quot;</span><span class="o">:</span> <span class="s2">&quot;active&quot;</span><span class="o">,</span>
-            <span class="s2">&quot;source&quot;</span><span class="o">:</span> <span class="s2">&quot;gpii&quot;</span><span class="o">,</span>
-            <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;2&quot;</span><span class="o">,</span>
-            <span class="s2">&quot;author&quot;</span><span class="o">:</span> <span class="s2">&quot;aatkins&quot;</span><span class="o">,</span>
-            <span class="s2">&quot;updated&quot;</span><span class="o">:</span> <span class="s2">&quot;2014-05-23T10:01:33.655Z&quot;</span><span class="o">,</span>
-            <span class="s2">&quot;comments&quot;</span><span class="o">:</span> <span class="cp">[</span>
-                <span class="p">{</span>
-                    <span class="s2">&quot;comment&quot;</span><span class="p">:</span> <span class="s2">&quot;Published record after review.&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;aatkins&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2014-05-23T10:01:33.655Z&quot;</span>
-                <span class="p">}</span>
-            <span class="cp">]</span>
-        <span class="p">}</span>
-    <span class="o">],</span>
-    <span class="s2">&quot;comments&quot;</span><span class="o">:</span> <span class="cp">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;comment&quot;</span><span class="p">:</span> <span class="s2">&quot;Submitted new unreviewed record.&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;aatkins&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2014-05-22T10:01:33.655Z&quot;</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;comment&quot;</span><span class="p">:</span> <span class="s2">&quot;Published record after review.&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;aatkins&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2014-05-23T10:01:33.655Z&quot;</span>
-        <span class="p">}</span>
-    <span class="cp">]</span>
-<span class="err">}</span>
+<div class="highlight"><pre>{
+    &quot;type&quot;: &quot;GENERAL&quot;,
+    &quot;uniqueId&quot;: &quot;soundActive&quot;,
+    &quot;defaultValue&quot;: &quot;TRUE&quot;,
+    &quot;definition&quot;: &quot;Undefined...&quot;,
+    &quot;status&quot;: &quot;active&quot;,
+    &quot;source&quot;: &quot;gpii&quot;,
+    &quot;version&quot;: &quot;2&quot;,
+    &quot;author&quot;: &quot;aatkins&quot;,
+    &quot;updated&quot;: &quot;2014-05-22T10:01:33.655Z&quot;,
+    &quot;versions&quot;: [
+        {
+            &quot;type&quot;: &quot;GENERAL&quot;,
+            &quot;uniqueId&quot;: &quot;soundActive&quot;,
+            &quot;defaultValue&quot;: &quot;TRUE&quot;,
+            &quot;definition&quot;: &quot;Undefined...&quot;,
+            &quot;status&quot;: &quot;unreviewed&quot;,
+            &quot;source&quot;: &quot;gpii&quot;,
+            &quot;version&quot;: &quot;1&quot;,
+            &quot;author&quot;: &quot;aatkins&quot;,
+            &quot;updated&quot;: &quot;2014-05-22T10:01:33.655Z&quot;,
+            &quot;comments&quot;: [
+                {
+                    &quot;comment&quot;: &quot;Submitted new unreviewed record.&quot;,
+                    &quot;version&quot;: &quot;1&quot;,
+                    &quot;author&quot;: &quot;aatkins&quot;,
+                    &quot;updated&quot;: &quot;2014-05-22T10:01:33.655Z&quot;
+                }
+            ]
+        },
+        {
+            &quot;type&quot;: &quot;GENERAL&quot;,
+            &quot;uniqueId&quot;: &quot;soundActive&quot;,
+            &quot;defaultValue&quot;: &quot;TRUE&quot;,
+            &quot;definition&quot;: &quot;Undefined...&quot;,
+            &quot;status&quot;: &quot;active&quot;,
+            &quot;source&quot;: &quot;gpii&quot;,
+            &quot;version&quot;: &quot;2&quot;,
+            &quot;author&quot;: &quot;aatkins&quot;,
+            &quot;updated&quot;: &quot;2014-05-23T10:01:33.655Z&quot;,
+            &quot;comments&quot;: [
+                {
+                    &quot;comment&quot;: &quot;Published record after review.&quot;,
+                    &quot;version&quot;: &quot;2&quot;,
+                    &quot;author&quot;: &quot;aatkins&quot;,
+                    &quot;updated&quot;: &quot;2014-05-23T10:01:33.655Z&quot;
+                }
+            ]
+        }
+    ],
+    &quot;comments&quot;: [
+        {
+            &quot;comment&quot;: &quot;Submitted new unreviewed record.&quot;,
+            &quot;version&quot;: &quot;1&quot;,
+            &quot;author&quot;: &quot;aatkins&quot;,
+            &quot;updated&quot;: &quot;2014-05-22T10:01:33.655Z&quot;
+        },
+        {
+            &quot;comment&quot;: &quot;Published record after review.&quot;,
+            &quot;version&quot;: &quot;2&quot;,
+            &quot;author&quot;: &quot;aatkins&quot;,
+            &quot;updated&quot;: &quot;2014-05-23T10:01:33.655Z&quot;
+        }
+    ]
+}
 </pre></div>
 
 
@@ -310,31 +310,6 @@
 
 
                 <li class="list-group-item"><a href="http://the-t-in-rtf.github.io/tags.html"><h4><i class="icon-tags icon-large"></i>Tags</h4></a></li>
-                        <li class="list-group-item tag-1">
-                            <a href="http://the-t-in-rtf.github.io/tag/couchdb.html">
-                                Couchdb
-                            </a>
-                        </li>
-                        <li class="list-group-item tag-2">
-                            <a href="http://the-t-in-rtf.github.io/tag/lucene.html">
-                                Lucene
-                            </a>
-                        </li>
-                        <li class="list-group-item tag-2">
-                            <a href="http://the-t-in-rtf.github.io/tag/express.html">
-                                Express
-                            </a>
-                        </li>
-                        <li class="list-group-item tag-4">
-                            <a href="http://the-t-in-rtf.github.io/tag/html.html">
-                                HTML
-                            </a>
-                        </li>
-                        <li class="list-group-item tag-4">
-                            <a href="http://the-t-in-rtf.github.io/tag/.html">
-                                
-                            </a>
-                        </li>
         </ul>
     </section>
 </aside>        </div>

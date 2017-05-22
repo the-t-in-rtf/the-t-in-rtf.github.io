@@ -112,7 +112,7 @@
 <h2>Enabling reasonable searching using a combined record format</h2>
 <p>If we are looking for settings related to "color", we also want to see settings related to "colour".  More importantly, we want to know which is the standard term, and which is the alias.  We will not have a single field that has only the word "color" or "colour" in it, so we need full text searching of a range of fields (label, description, etc.).</p>
 <p>The most obvious choice for full text searching is <a href="https://github.com/rnewson/couchdb-lucene">CouchDb Lucene</a>, which brings the power of <a href="https://lucene.apache.org/">Lucene</a> to Couch.  Lucene indexes the raw records directly with hints from a particular type of design document.  This means that it will return search results that are a mix of parent and child records, ordered by how well they match the search terms provided by the user, or whatever sort terms the user provides.</p>
-<p><img alt="Diagram of record format presented by Lucene." src="/images/2014-04-24-lucene-diagram.png" /></p>
+<p><img alt="Diagram of record format presented by Lucene." src="/images/2014-04-24-lucene-diagram.png"></p>
 <p>We need to convert this to a list of standard terms that include their child records.  To do this, we use Express to:</p>
 <ol>
 <li>Execute the requested search.</li>
@@ -120,7 +120,7 @@
 <li>Knit together the mixed list of parent and child records into a unique list of parent records.</li>
 </ol>
 <p>The output will look something like this:</p>
-<p><img alt="Diagram of final record format as presented by Express." src="/images/2014-04-24-express-diagram.png" /></p>
+<p><img alt="Diagram of final record format as presented by Express." src="/images/2014-04-24-express-diagram.png"></p>
 <h3>Sorting</h3>
 <p>Because only Express has access to the final format, it has to handle sorting and paging.</p>
 <p>To take advantage of the sorting in Lucene, we apply two simple rules as we evolve the raw search results:</p>
@@ -188,31 +188,6 @@
 
 
                 <li class="list-group-item"><a href="http://the-t-in-rtf.github.io/tags.html"><h4><i class="icon-tags icon-large"></i>Tags</h4></a></li>
-                        <li class="list-group-item tag-1">
-                            <a href="http://the-t-in-rtf.github.io/tag/couchdb.html">
-                                Couchdb
-                            </a>
-                        </li>
-                        <li class="list-group-item tag-2">
-                            <a href="http://the-t-in-rtf.github.io/tag/lucene.html">
-                                Lucene
-                            </a>
-                        </li>
-                        <li class="list-group-item tag-2">
-                            <a href="http://the-t-in-rtf.github.io/tag/express.html">
-                                Express
-                            </a>
-                        </li>
-                        <li class="list-group-item tag-4">
-                            <a href="http://the-t-in-rtf.github.io/tag/html.html">
-                                HTML
-                            </a>
-                        </li>
-                        <li class="list-group-item tag-4">
-                            <a href="http://the-t-in-rtf.github.io/tag/.html">
-                                
-                            </a>
-                        </li>
         </ul>
     </section>
 </aside>        </div>

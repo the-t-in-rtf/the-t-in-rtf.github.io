@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:og="http://ogp.me/ns#"
+      xmlns:fb="https://www.facebook.com/2008/fbml">
+<head>
+    <title>Infusion and JSON Schemas, Part 2: Reuse</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Open Graph tags -->
+
+            <meta property="og:type" content="article"/>
+            <meta property="og:title" content="Infusion and JSON Schemas, Part 2: Reuse"/>
+            <meta property="og:url" content="http://the-t-in-rtf.github.io/drafts/infusion-and-json-schema-reuse.html"/>
+            <meta property="og:description" content="A detailed comparison of the inheritance and reuse issues involved in using JSON Schemas to validate Infusion component options."/>
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="http://the-t-in-rtf.github.io/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="http://the-t-in-rtf.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+    <link href="http://the-t-in-rtf.github.io/theme/css/pygments.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://the-t-in-rtf.github.io/theme/css/style.css" type="text/css"/>
+    <!-- JavaScript plugins (requires jQuery) -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+
+
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://the-t-in-rtf.github.io" class="navbar-brand">The "T" in RtF</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="http://the-t-in-rtf.github.io/category/code.html">Code</a>
+                        </li>
+                        <li >
+                            <a href="http://the-t-in-rtf.github.io/category/non-code.html">Non-code</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://the-t-in-rtf.github.io/archives.html"><i class="icon-th-list"></i>Archives</a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</nav>
+<!-- /.navbar -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="http://the-t-in-rtf.github.io/drafts/infusion-and-json-schema-reuse.html"
+                       rel="bookmark"
+                       title="Permalink to Infusion and JSON Schemas, Part 2: Reuse">
+                        Infusion and JSON Schemas, Part 2: Reuse
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="icon-calendar"></i>Tue 16 May 2017
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://the-t-in-rtf.github.io/tag/json-schema.html">JSON Schema</a>
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <h1>Introduction</h1>
+<p>This page provides an overview of the mechanisms in Infusion and JSON Schema that support reuse and extension, and how each might be used to associate options blocks with validation rules.</p>
+<p>For a general overview of the broader topic and use cases, please review the <a href="introduction">{content}/infusion-and-json-schema/introduction.md</a>.</p>
+<h1>The Inheritance Mechanisms Provided by Infusion</h1>
+<h2>Options Merging</h2>
+<p>The first inheritance mechanism we should discuss is <a href="http://docs.fluidproject.org/infusion/development/OptionsMerging.html">options merging</a> is the mechanism by which options are combined from one or more "parent" grades (and their "parents").</p>
+<div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">fluid</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;infusion&quot;</span><span class="p">);</span>
+
+<span class="nx">fluid</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="s2">&quot;my.awesome.grade&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">gradeNames</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;fluid.component&quot;</span><span class="p">],</span>
+    <span class="nx">size</span><span class="o">:</span> <span class="s2">&quot;medium&quot;</span><span class="p">,</span>
+    <span class="nx">colors</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;green&quot;</span><span class="p">],</span>
+    <span class="nx">rankings</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;cats&quot;</span><span class="o">:</span> <span class="s2">&quot;rule&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dogs&quot;</span><span class="o">:</span> <span class="s2">&quot;drool&quot;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">fluid</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="s2">&quot;my.awesome.extension&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">gradeNames</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;my.awesome.grade&quot;</span><span class="p">],</span>
+    <span class="nx">size</span><span class="o">:</span> <span class="s2">&quot;extra large&quot;</span><span class="p">,</span>
+    <span class="nx">colors</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;blue&quot;</span><span class="p">],</span>
+    <span class="nx">material</span><span class="o">:</span> <span class="s2">&quot;cotton&quot;</span><span class="p">,</span>
+    <span class="nx">rankings</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;dogs&quot;</span><span class="o">:</span> <span class="s2">&quot;also rule&quot;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<p>Note that both shallow (<code>size</code>) and deep (<code>rankings.dogs</code>) values can be replaced, and that all types of values can be easily added (<code>material</code>).  There are some limitations when merging arrays.  In the above example, the merged value of <code>colors</code> becomes <code>["blue", "green"]</code>.  In practice, we have moved to using <a href="http://docs.fluidproject.org/infusion/development/Priorities.html">prioritised</a> and namespaced maps instead of arrays in many places.  This makes it possible to selectively add and replace material, but also to control the ordering (something that maps themselves do not guarantee).  As we will see later, the issues surrounding the use of arrays in options are directly relevant when we talk about portions of the JSON Schema standard (<code>required</code>, <code>allOf</code>, <code>anyOf</code>) that are represented as arrays.</p>
+<p>It is possible to <a href="http://docs.fluidproject.org/infusion/development/OptionsMerging.html#structure-of-the-merge-policy-object">indicate that particular options should not be merged at all</a>, but this would greatly reduce the options for reuse and extension, as grades would have to completely redefine the schema to change it.  Although we may choose to disable options merging for schemas, for the rest of this section we will explore what is possible if we extend and reuse schema material in combination with options merging.</p>
+<h2>IoC References and Options Distribution</h2>
+<p><a href="http://docs.fluidproject.org/infusion/development/IoCReferences.html">IoC references</a> are a means of referring to another option.  Used on their own, they provide an easy way of exposing the same options in multiple places, as in the following example:</p>
+<div class="highlight"><pre><span class="nx">fluid</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="s2">&quot;my.ioc.parent&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">gradeNames</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;fluid.modelComponent&quot;</span><span class="p">],</span>
+    <span class="nx">model</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">parentVar</span><span class="o">:</span> <span class="s2">&quot;is set&quot;</span>
+    <span class="p">},</span>
+    <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">child</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;fluid.modelComponent&quot;</span><span class="p">,</span>
+            <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">model</span><span class="o">:</span> <span class="p">{</span>
+                    <span class="nx">childVar</span><span class="o">:</span> <span class="s2">&quot;{parent}.model.parentVar&quot;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<p>This type of operation is duplicative, i.e. both the parent and child can see the same variable.  When we talk about reusing and reorganizing schemas, we will need some way to relocate options, to change their location.  A key mechanism that supports this is <a href="http://docs.fluidproject.org/infusion/development/IoCSS.html#distributeoptions-format">options distribution</a>.  Through the use of the <code>removeSource</code> option, it is possible to relocate options, as shown in the following example:</p>
+<div class="highlight"><pre><span class="nx">fluid</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="s2">&quot;my.disorganized.grade&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">country</span><span class="o">:</span> <span class="s2">&quot;Freelandia&quot;</span><span class="p">,</span>
+    <span class="nx">address</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;street&quot;</span><span class="o">:</span> <span class="s2">&quot;123 Main Street.&quot;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">fluid</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="s2">&quot;my.reorganized.grade&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">gradeNames</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;my.disorganized.grade&quot;</span><span class="p">],</span>
+    <span class="nx">distributeOptions</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">source</span><span class="o">:</span> <span class="s2">&quot;{that}.options.country&quot;</span><span class="p">,</span>
+        <span class="nx">target</span><span class="o">:</span> <span class="s2">&quot;{that}.options.address.country&quot;</span><span class="p">,</span>
+        <span class="nx">removeSource</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<p>We will demonstrate some practical examples of using this to reorganize existing material in the third set of examples below.</p>
+<h1>The Inheritance Mechanisms Provided by JSON Schema</h1>
+<p>The JSON Schema standard provides two key mechanisms to support reuse.  </p>
+<h2>The <code>$ref</code> keyword</h2>
+<p>A <code>$ref</code> keyword is a URI (full or partial) that points to validation rules elsewhere.  Although these URIs can point to material in another schema, for the purposes of this discussion, I will demonstrate the use of internal references.</p>
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema#&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;definitions&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;email&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#/definitions/email&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>The property <code>email</code> uses its <code>$ref</code> keyword to indicate that it is defined elsewhere.  As with HTML anchors, the <code>#/</code> at the beginning of the URI indicates a link relative to the root of the current context, i.e. this schema.  Although it is by no means required, in my own work, I tend to use the above pattern to support reuse, general definitions that can be referred to both within the schema, and from other documents.</p>
+<p>These references can be used circularly.  Let's assume we're defining a "person" record, and that we might want to (within that record) describe other people related to a given person.  For the purposes of brevity, I will avoid the definitions pattern used above.</p>
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema#&quot;</span><span class="p">,</span>  
+  <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;family&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
+    <span class="nt">&quot;middle&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
+    <span class="nt">&quot;given&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
+    <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="nt">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;email&quot;</span><span class="p">},</span>
+    <span class="nt">&quot;relatives&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;items&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;family&quot;</span><span class="p">,</span> <span class="s2">&quot;given&quot;</span><span class="p">]}</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;family&quot;</span><span class="p">,</span> <span class="s2">&quot;given&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>First, we use <code>$ref</code> to indicate that this <a href="https://spacetelescope.github.io/understanding-json-schema/reference/array.html">array</a> contains one or more other people. <code>#</code> in this context means that all definitions from the root of the schema down apply here.  So, for example, our <code>relatives</code> can also have <code>relatives</code>.</p>
+<p>We also override the <code>required</code> keyword to indicate that for <code>relatives</code>, only the family and given name are required.  In JSON Schemas, directly overriding an array value like <code>required</code>, <code>anyOf</code>, <code>allOf</code> completely replaces its previous value. We will see examples of how this can be avoided for <code>anyOf</code> and <code>allOf</code> in later examples, but as <code>required</code> is a basic control we are likely to use often, I will use that in later examples of working with arrays.</p>
+<h2>The <code>$id</code> keyword</h2>
+<p>The second mechanism that supports reuse is the <code>$id</code> keyword, which provides a means of naming the path to a portion of a schema.  The <code>$id</code> keyword can be used to provide shortcuts to a deep path within a schema, comparable to a named anchor.  </p>
+<p>First, <code>$id</code> can (and should) be used for the root of the schema itself:</p>
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema#&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;mySchema.json&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>In practice, I tend to store schemas in a single directory, and have the <code>$id</code> match the filename, but we have many options for using whatever URI conventions we wish.  We are not constrained by what file the material is store in, where (or whether) it is hosted.  We do however need to make the validator aware of the schema that contains the ID before it is asked to resolve a URI that references it.</p>
+<p>So, beyond simply identifying the schema, the primary purpose of the <code>$id</code> field is to give us a clear way to address schema material from a URI used with a <code>$ref</code> keyword.  Let's look at a simplified version of the first example above.</p>
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema#&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;definitions&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;email&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#email&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Regardless of where the rules that define the <code>email</code> field are located, we can always refer to it using the <code>$ref</code> <code>#email</code>.</p>
+<p>We can also include path information on the right side of the hash tag, which allows us to organize the URI space a bit:</p>
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema#&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;definitions&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;pet-animal&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;#/animals/pet&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;A companion animal.&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;pet-verb&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;#/verbs/pet&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Is it a good idea to handle the companion animal?&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>The <code>$id</code> keyword can also include information on the left side of the hash sign, which form a kind of "virtual" schemas, as shown here:</p>
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema#&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;definitions&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;pet-animal&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;animals.json#pet&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;A companion animal.&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;pet-verb&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;http://bogus.host/schemas/verbs.json#pet&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Is it a good idea to handle the companion animal?&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Once a validator has been made aware of the above, there are in essence two additional known URIs for schemas.  The first ("animals.json") is in the same base namespace as the enclosing schema.  The second ("verbs.json") includes hostname and path information on the left side.  At least for these two fiels, AJV will use the information provided above instead of attempting to retrieve the schema from the portion of the URI on the left side of the hash sign.</p>
+<p>This offers interesting possibilities for working with early draft updates to schemas locally, but also highlights how important it is that we have control over and trust all of the schemas we load.  Any schema can in essence take control of any URI it likes, regardless of where it is actually stored.</p>
+<h1>Examples</h1>
+<p>So, I have tried to give a partial overview of two pretty complex technologies above, identifying the tools that I see as being helpful in achieving practical goals.  Let's look at some of these practical goals with specific examples.  For each example, I will illustrate the following:</p>
+<ol>
+<li>What we can accomplish purely with inline schemas and options merging ("inline").</li>
+<li>What we can accomplish purely with external JSON Schema files ("external").</li>
+<li>What we can accomplish with a combination of the two ("hybrid").</li>
+</ol>
+<h2>Example Set 0: Our Initial Schema, Component, and Starting Assumptions</h2>
+<h3>"Inline"</h3>
+<p>For all "inline" examples, I will assume a base grade called <code>gpii.schema.inline</code>, that looks like the following:</p>
+<div class="highlight"><pre><span class="nx">fluid</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="s2">&quot;gpii.schema.inline&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">gradeNames</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;fluid.component&quot;</span><span class="p">],</span>
+    <span class="nx">schema</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;$schema&quot;</span><span class="o">:</span> <span class="s2">&quot;http://json-schema.org/schema#&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;$id&quot;</span><span class="o">:</span> <span class="s2">&quot;schemaComponent.json#&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;properties&quot;</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;schema&quot;</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s2">&quot;$id&quot;</span><span class="o">:</span> <span class="s2">&quot;#/options/schema&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;$ref&quot;</span><span class="o">:</span> <span class="s2">&quot;http://json-schema.org/schema#&quot;</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;required&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;schema&quot;</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<p>All we are saying here is that we must have a <code>schema</code> option, and that it must be valid according to the (currently draft v6) standard located at <code>http://json-schema.org/schema#</code>, which is a real URL that we can download the standard from.</p>
+<p>I have added <code>$id</code> values in the above, and wanted to point out a few things.  First, the path to the <code>schema</code> keyword is not a recommendation.  Rather, it is an example of the flexibility we have.  Even though we must use <code>definitions</code> and <code>properties</code> when defining schemas, we are not required to use those in our URIs if we feel like <code>options</code> are a better fit.</p>
+<p>This approach has key advantages in that it is immediately familiar to Infusion developers, and that only one chain of inheritance (from parent grades) needs to be managed.</p>
+<h3>"External"</h3>
+<p>Although we have range of options, the hardest form of "external" schemas would simply use a URI to refer to a schema.  The schema associated with the base grade for the "external" strategy would look slightly different:</p>
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema#&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;schemaComponent.json#&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;#/options/schema&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;uri&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;schema&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>The component options might look something like:</p>
+<div class="highlight"><pre><span class="nx">fluid</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="s2">&quot;gpii.schema.external&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">gradeNames</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;fluid.component&quot;</span><span class="p">],</span>
+    <span class="nx">schema</span><span class="o">:</span> <span class="s2">&quot;schemaComponent.json#&quot;</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<p>This approach requires us to either make the validator aware of one or more "core" schemas, or to host them somewhere they can be retrieved.  We must also define a new schema that extends the base schema, i.e. we must manage two chains of inheritance.</p>
+<h3>"Hybrid"</h3>
+<p>In the "hybrid" approach, we use external files as needed, for example:</p>
+<ol>
+<li>When we have a set of "common" definitions that it would be convenient to represent externally.</li>
+<li>When we encounter a situation where simple options merging cannot accomplish the desired goal (or when it accomplishes the goal in a way that is overly cumbersome).</li>
+</ol>
+<p>Although we should discuss where to draw the line, for the purposes of illustration, let's assume that the base grade itself uses an external schema, which looks like the "inline" schema's contents:</p>
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema#&quot;</span><span class="p">,</span>
+
+  <span class="nt">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;schemaComponent.json#&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;#/options/schema&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema#&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;schema&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>The component might look like:</p>
+<div class="highlight"><pre><span class="nx">fluid</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="s2">&quot;gpii.schema.hybrid&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">gradeNames</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;fluid.component&quot;</span><span class="p">],</span>
+    <span class="nx">schema</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;$ref&quot;</span><span class="o">:</span> <span class="s2">&quot;schemaComponent.json#&quot;</span>
+    <span class="p">}</span>    
+<span class="p">});</span>
+</pre></div>
+
+
+<p>This approach still requires us to either make the validator aware of one or more "core" schemas, or to host them somewhere they can be retrieved.  However, simple options merging now cooperates better with JSON Schema inheritance.  As long as we do not redefine the top-level <code>$ref</code> keyword within the schema, we inherit the underlying validation rules.</p>
+<h2>Example Set 1: Adding a New Field</h2>
+<h3>"Inline"</h3>
+<p>A grade following the "inline" strategy might add a single field as follows:</p>
+<div class="highlight"><pre><span class="nx">fluid</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="s2">&quot;gpii.schema.inline.example1&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">gradeNames</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;gpii.schema.inline&quot;</span><span class="p">],</span>
+    <span class="nx">schema</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;properties&quot;</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;field1&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span> <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;required&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;schema&quot;</span><span class="p">,</span> <span class="s2">&quot;field1&quot;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="nx">field1</span><span class="o">:</span> <span class="s2">&quot;default&quot;</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<p>Simple options merging would ensure that the new property is added, and we can similarly merge an associated definition if we wish to work in that way.  Note that because of the way in which arrays are merged, we must include any material from the base <code>required</code> keyword that we wish to preserve.  We must also ensure that our entry for <code>required</code> is at least as long as any base grade, otherwise we will end up with a mixture of our required fields and remaining fields from base grades with a longer set of <code>required</code> fields.</p>
+<h3>"External"</h3>
+<p>Following the "external" strategy, before we can write our new component, we need to 
+make a new schema, or add an entry to an existing schema that is loaded ahead of time, as in:</p>
+<div class="highlight"><pre><span class="p">{</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;externalSchema.json#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;myUniqueSchema.json#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;field1&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span> <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;schema&quot;</span><span class="p">,</span> <span class="s2">&quot;field1&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Like the "inline" example, we must completely redefine the <code>required</code> keyword in the schema.  Unlike the "inline" example, it does not matter whether there are zero or a thousand entries in our base schema.</p>
+<p>The associated component might look like:</p>
+<div class="highlight"><pre><span class="nx">fluid</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="s2">&quot;gpii.schema.external.example1&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">gradeNames</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;fluid.component&quot;</span><span class="p">],</span>
+    <span class="nx">schema</span><span class="o">:</span> <span class="s2">&quot;myUniqueSchema.json#&quot;</span><span class="p">,</span>
+    <span class="nx">field1</span><span class="o">:</span> <span class="s2">&quot;default&quot;</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<h3>"Hybrid"</h3>
+<div class="highlight"><pre><span class="nx">fluid</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="s2">&quot;gpii.schema.hybrid.example1&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">gradeNames</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;gpii.schema.hybrid&quot;</span><span class="p">],</span>
+    <span class="nx">schema</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;properties&quot;</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;field1&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span> <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;required&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;schema&quot;</span><span class="p">,</span> <span class="s2">&quot;field1&quot;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="nx">field1</span><span class="o">:</span> <span class="s2">&quot;default&quot;</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<p>Note that this is nearly identical to the "inline" example.</p>
+<h2>Example Set 2: Making a Required Field Optional</h2>
+<p>Let's build on the previous examples, and assume we want to make derived component that does not require <code>field1</code>.</p>
+<h3>"Inline"</h3>
+<p>As we cannot remove an array entry using options merging, we need to abstract out a "base" grade, then make the "required" field unique to a specific grade, as in the following example:</p>
+<div class="highlight"><pre><span class="nx">fluid</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="s2">&quot;gpii.schema.inline.example1.base&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">gradeNames</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;gpii.schema.inline&quot;</span><span class="p">],</span>
+    <span class="nx">schema</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;properties&quot;</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;field1&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span> <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nx">field1</span><span class="o">:</span> <span class="s2">&quot;default&quot;</span>
+<span class="p">});</span>
+
+<span class="nx">fluid</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="s2">&quot;gpii.schema.inline.example1&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">gradeNames</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;gpii.schema.inline.example1.base&quot;</span><span class="p">],</span>
+    <span class="nx">schema</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;required&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;schema&quot;</span><span class="p">,</span> <span class="s2">&quot;field1&quot;</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+
+<span class="nx">fluid</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="s2">&quot;gpii.schema.inline.example2&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">gradeNames</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;gpii.schema.inline.example1&quot;</span><span class="p">]</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<p>With that, our derived grade can extend the "base" grade and avoid requiring <code>field1</code>.</p>
+<h3>"External"</h3>
+<p>In JSON Schema, an array value with the same name completely replaces what was there previously.  We can use the <code>$ref</code> keyword to extend an existing schema, and then override the value of the <code>required</code> keyword.</p>
+<div class="highlight"><pre><span class="p">{</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;myUniqueSchema.json#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;myUniqueSchema2.json#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;schema&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Note that as in all previous examples, we must explicitly preserve the "schema" requirement.  Once we've created the schema, our component must both extend and replace the schema option for the parent grade, as in:</p>
+<div class="highlight"><pre><span class="nx">fluid</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="s2">&quot;gpii.schema.external.example2&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">gradeNames</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;gpii.schema.external.example1&quot;</span><span class="p">],</span>
+    <span class="nx">schema</span><span class="o">:</span> <span class="s2">&quot;myUniqueSchema2.json#&quot;</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<h3>"Hybrid"</h3>
+<p>As in the "inline" approach, the "hybrid" approach also requires abstracting out a base grade that lacks the "required" option, and then deriving from that.</p>
+<h2>Example Set 3: Reusing Existing Definitions within a Larger Structure</h2>
+<p>Thus far we have looked at individual blocks of options, which can be represented as a single component.  We also commonly works with "sets of options", for example a preference set that contains values for multiple individual settings, or a "capabilities" block, that describes multiple settings a solution supports.</p>
+<p>Talk about the possibility of copying material using IoC references, and moving options around using distributeOptions.</p>
+<p>Talk about the possibilities of reusing definitions within JSON Schema.</p>
+<h3>"Inline"</h3>
+<p>In the inline method, groups of schema-validated options are represented as individual subcomponents, as in 
+the following example.  </p>
+<div class="highlight"><pre><span class="nx">fluid</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="s2">&quot;my.enclosing.grade&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">gradeNames</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;gpii.schema.inline.enclosing&quot;</span><span class="p">],</span>
+    <span class="nx">enclosingOption1</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">enclosed1</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;gpii.schema.inline.enclosed1&quot;</span>
+        <span class="p">},</span>
+        <span class="nx">enclosed2</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;gpii.schema.inline.enclosed2&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+</pre></div>
+
+
+<p>In this approach, from the enclosing component we can use tools like <a href="https://github.com/fluid-project/infusion/blob/master/src/framework/core/js/FluidIoC.js#L378"><code>fluid.queryIoCSelector</code></a>
+to pick out schema validated components from other required components (for example, a shared validator instance).  This
+can also be used to give an enclosing grade control over which particular classes of child grades it chooses to perform
+a given action on.  There are no mechanisms for controlling the number of child grades that are required.</p>
+<h3>"External"</h3>
+<p>The JSON Schema standard provides the ability to define arrays containing material that matches either local definitions
+or a reference to an external schema, as shown in the following example:</p>
+<div class="highlight"><pre><span class="p">{</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;myWrenchSet.json#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;properties&quot;</span><span class="p">:{</span>
+      <span class="nt">&quot;wrenches&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;items&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;myWrench.json#&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;minItems&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nt">&quot;maxItems&quot;</span><span class="p">:</span> <span class="mi">10</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;wrenches&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>We have the ability to indicate what type(s) of material we accept and how many items.</p>
+            </div>
+            <!-- /.entry-content -->
+    <hr />
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'thetinrtf'; // required: replace example with your forum shortname
+            var disqus_identifier = 'infusion-and-json-schema-reuse';
+            var disqus_url = 'http://the-t-in-rtf.github.io/drafts/infusion-and-json-schema-reuse.html';
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function () {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript';
+                dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 well well-sm" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="icon-home icon-large"></i>Social</h4></li>
+                    <li class="list-group-item"><a href="https://twitter.com/duhrer"><i
+                            class="icon-twitter-sign icon-large"></i>twitter
+                    </a></li>
+                    <li class="list-group-item"><a href="http://www.linkedin.com/profile/view?id=31505257"><i
+                            class="icon-linkedin-sign icon-large"></i>linkedin
+                    </a></li>
+                    <li class="list-group-item"><a href="http://github.com/the-t-in-rtf/"><i
+                            class="icon-github-sign icon-large"></i>github
+                    </a></li>
+
+
+
+                <li class="list-group-item"><a href="http://the-t-in-rtf.github.io/tags.html"><h4><i class="icon-tags icon-large"></i>Tags</h4></a></li>
+        </ul>
+    </section>
+</aside>        </div>
+    </div>
+</div>
+<footer>
+    <div class="container">
+        <hr>
+        <p class="pull-right"><i class="icon-arrow-up"></i> <a href="#">Back to top</a></p>
+
+
+        <p>&copy; 2014 Tony Atkins <tony@raisingthefloor.org> &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a></p>
+    </div>
+</footer>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="http://the-t-in-rtf.github.io/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="http://the-t-in-rtf.github.io/theme/js/respond.min.js"></script>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'thetinrtf'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+
+
+</body>
+</html>

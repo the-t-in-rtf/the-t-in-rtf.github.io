@@ -3,7 +3,7 @@
       xmlns:og="http://ogp.me/ns#"
       xmlns:fb="https://www.facebook.com/2008/fbml">
 <head>
-    <title>Hello, everyone...</title>
+    <title>Infusion and JSON Schemas, Part 2: Reuse</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -12,9 +12,9 @@
     <!-- Open Graph tags -->
 
             <meta property="og:type" content="article"/>
-            <meta property="og:title" content="Hello, everyone..."/>
-            <meta property="og:url" content="http://the-t-in-rtf.github.io/hello-everyone.html"/>
-            <meta property="og:description" content="Hello, everyone..."/>
+            <meta property="og:title" content="Infusion and JSON Schemas, Part 2: Reuse"/>
+            <meta property="og:url" content="http://the-t-in-rtf.github.io/infusion-and-json-schema-reuse.html"/>
+            <meta property="og:description" content="A detailed comparison of the inheritance and reuse issues involved in using JSON Schemas to validate Infusion component options."/>
 
     <!-- Bootstrap -->
         <link rel="stylesheet" href="http://the-t-in-rtf.github.io/theme/css/bootstrap.min.css" type="text/css"/>
@@ -40,10 +40,10 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                        <li >
+                        <li class="active">
                             <a href="http://the-t-in-rtf.github.io/category/code.html">Code</a>
                         </li>
-                        <li class="active">
+                        <li >
                             <a href="http://the-t-in-rtf.github.io/category/non-code.html">Non-code</a>
                         </li>
             </ul>
@@ -62,10 +62,10 @@
         <article>
             <header class="page-header">
                 <h1>
-                    <a href="http://the-t-in-rtf.github.io/hello-everyone.html"
+                    <a href="http://the-t-in-rtf.github.io/infusion-and-json-schema-reuse.html"
                        rel="bookmark"
-                       title="Permalink to Hello, everyone...">
-                        Hello, everyone...
+                       title="Permalink to Infusion and JSON Schemas, Part 2: Reuse">
+                        Infusion and JSON Schemas, Part 2: Reuse
                     </a>
                 </h1>
             </header>
@@ -75,14 +75,40 @@
 <footer class="post-info">
     <span class="label label-default">Date</span>
     <span class="published">
-        <i class="icon-calendar"></i>Sun 12 January 2014
+        <i class="icon-calendar"></i>Tue 16 May 2017
     </span>
 
 
 
+<span class="label label-default">Tags</span>
+	<a href="http://the-t-in-rtf.github.io/tag/json-schema.html">JSON Schema</a>
 </footer><!-- /.post-info -->                    </div>
                 </div>
-                <p>Hello, everyone.  I've just started working with <a href="http://raisingthefloor.org/" title="Raising the Floor">Raising the Floor</a>.  I'm currently working on the <a href="http://wiki.gpii.net/index.php/Common_Terms_Registry" title="Common Terms Registry">Common Terms Registry</a>, and will soon be working on the <a href="http://wiki.gpii.net/index.php/Unified_Listing" title="Unified Listing">Unified Listing</a>.  I will be using this blog to share things I learn as part of my journey with the team.</p>
+                <h1>Introduction</h1>
+<p>This page provides an overview of the mechanisms in Infusion and JSON Schema that support reuse and extension, and how each might be used to associate options blocks with validation rules.</p>
+<p>For a general overview of the broader topic and use cases, please review the <a href="introduction">{content}/infusion-and-json-schema/introduction.md</a>.</p>
+<h1>The Inheritance Mechanisms Provided by Infusion</h1>
+<p>http://docs.fluidproject.org/infusion/development/OptionsMerging.html</p>
+<p>http://docs.fluidproject.org/infusion/development/IoCReferences.html</p>
+<p>http://docs.fluidproject.org/infusion/development/IoCSS.html#distributeoptions-format</p>
+<div class="highlight"><pre>[[include ref=code/options-merging1.js]]
+</pre></div>
+
+
+<h1>The Inheritance Mechanisms Provided by JSON Schema</h1>
+<p>Talk about reuse via the $ref construct.</p>
+<h1>Example 1: Adding to an Existing Schema</h1>
+<p>Talk about extending by adding.  Demonstrate adding a single new required field, both in terms of the field itself and the "required" keyword.</p>
+<h1>Example 2: Removing from an Existing Schema</h1>
+<p>Talk about extending by removing.  Demonstrate making a single required field optional.</p>
+<p>In infusion, you'd need to abstract out a "base" grade, then make the "required" field unique to a specific grade.</p>
+<p>In JSON Schema, although there are AJV-specific methods of merging and patching schemas, in general a keyword with the
+same name completely replaces what was there previously.  In the case of something like the "required" keyword</p>
+<p>Demonstrate extending using $ref.</p>
+<h1>Example 3: Reusing Existing Definitions within a Larger Structure</h1>
+<p>Talk about "sets of definitions", for example, a preference set versus an individual setting, or a "capabilities" block.</p>
+<p>Talk about the possibility of copying material using IoC references, and moving options around using distributeOptions.</p>
+<p>Talk about the possibilities of reusing definitions within JSON Schema.</p>
             </div>
             <!-- /.entry-content -->
     <hr />
@@ -92,8 +118,8 @@
         <script type="text/javascript">
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'thetinrtf'; // required: replace example with your forum shortname
-            var disqus_identifier = 'hello-everyone';
-            var disqus_url = 'http://the-t-in-rtf.github.io/hello-everyone.html';
+            var disqus_identifier = 'infusion-and-json-schema-reuse';
+            var disqus_url = 'http://the-t-in-rtf.github.io/infusion-and-json-schema-reuse.html';
 
             /* * * DON'T EDIT BELOW THIS LINE * * */
             (function () {
@@ -143,7 +169,7 @@
         <p class="pull-right"><i class="icon-arrow-up"></i> <a href="#">Back to top</a></p>
 
 
-        <p>&copy; 2014 Tony Atkins <tony@raisingthefloor.org> &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+        <p>&copy; 2017 Tony Atkins <tony@raisingthefloor.org> &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a></p>
     </div>
