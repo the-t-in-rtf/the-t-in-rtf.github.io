@@ -163,7 +163,6 @@ path to the failing rule) and overlay more human readable messages.</p>
 <p>In earlier versions of AJV, by default the failing data was also included under the <code>data</code> keyword.  So, for example,
 validation errors for a password would routinely include the password as a string.  Thankfully this is now disabled by
 default.</p>
-<p>https://github.com/epoberezkin/ajv-errors</p>
 <h2>Approach 1: Overlaying Error Information via Component Options</h2>
 <p>In this approach, we assume that we have a block of options which includes information about potential errors.  We can
 either associate these messages with a path to options, or with the failing rule.  Although we will likely use
