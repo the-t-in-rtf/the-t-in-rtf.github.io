@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for displaySettingsHandler\test\testDisplaySettingsHandler.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">displaySettingsHandler/test/</a> testDisplaySettingsHandler.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>35/35</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>6/6</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>35/35</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*
+ * Windows Display Settings Handler Tests
+ *
+ * Copyright 2016 Raising the Floor - US
+ *
+ * Licensed under the New BSD license. You may not use this file except in
+ * compliance with this License.
+ *
+ * You may obtain a copy of the License at
+ * https://github.com/GPII/universal/blob/master/LICENSE.txt
+ */
+&nbsp;
+"use strict";
+&nbsp;
+var fluid = require("universal");
+&nbsp;
+var jqUnit = fluid.require("node-jqunit");
+var gpii = fluid.registerNamespace("gpii");
+&nbsp;
+require("../../WindowsUtilities/WindowsUtilities.js");
+require("../src/displaySettingsHandler.js");
+&nbsp;
+jqUnit.module("Windows Display Settings Handler Tests");
+&nbsp;
+jqUnit.test("Testing GetScreenResolution", function () {
+    jqUnit.expect(3);
+    var screenRes = gpii.windows.display.getScreenResolution();
+    jqUnit.assertDeepEq("getScreenResolution returns an object", "object", typeof(screenRes));
+    jqUnit.assertDeepEq("value for width is a number", "number", typeof(screenRes.width));
+    jqUnit.assertDeepEq("value for height is a number", "number", typeof(screenRes.height));
+});
+&nbsp;
+jqUnit.test("Testing setScreenResolution ", function () {
+    var oldRes = gpii.windows.display.getScreenResolution();
+&nbsp;
+    // We can change resolution
+    // Not such a good unit test as depends on available modes and current screen resolution
+    jqUnit.expect(2);
+    var targetRes = { width: 800, height: 600 };
+    jqUnit.assertTrue("We can call to setScreenResolution, it returns 'true'", gpii.windows.display.setScreenResolution(targetRes));
+    var newRes = gpii.windows.display.getScreenResolution();
+    jqUnit.assertDeepEq("New resolution is set", targetRes, newRes);
+&nbsp;
+    // Restore old resolution
+    jqUnit.expect(2);
+    jqUnit.assertTrue("Resetting to old resolution", gpii.windows.display.setScreenResolution(oldRes));
+    var restoredRes = gpii.windows.display.getScreenResolution();
+    jqUnit.assertDeepEq("Old resolution appear to be restored", oldRes, restoredRes);
+&nbsp;
+    // test can't change to invalid resolution
+    var badRes = { width: -123, height: -123 };
+    jqUnit.expectFrameworkDiagnostic("setScreenResolution fails when receives an invalid resolution such as {w: -123, h: -123}", function () {
+        gpii.windows.display.setScreenResolution(badRes);
+    }, "invalid screen resolution");
+&nbsp;
+    // test that setScreenResolution fails when it receives a faulty screen resolution
+    var faulty1 = 2;
+    jqUnit.expectFrameworkDiagnostic("setScreenResolution fails when receives a non-object parameter", function () {
+        gpii.windows.display.setScreenResolution(faulty1);
+    }, "invalid screen resolution");
+&nbsp;
+    var faulty2 = { w: 0, h: 1 };
+    jqUnit.expectFrameworkDiagnostic("setScreenResolution fails when receives a wrong object", function () {
+        gpii.windows.display.setScreenResolution(faulty2);
+    }, ["invalid screen resolution"]);
+&nbsp;
+    var faulty3 = { width: 0, height: "" };
+    jqUnit.expectFrameworkDiagnostic("setScreenResolution fails when receives one string as value for height", function () {
+        gpii.windows.display.setScreenResolution(faulty3);
+    }, "invalid screen resolution");
+});
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 17 2017 06:16:21 GMT-0700 (Pacific Daylight Time)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
