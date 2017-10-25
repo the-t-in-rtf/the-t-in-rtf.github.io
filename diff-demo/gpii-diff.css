@@ -1,0 +1,31 @@
+.diff-added {
+    background-color: #ccffcc;
+}
+
+.diff-removed {
+    background-color: #ffcccc;
+    text-decoration: line-through;
+}
+
+ins:before {
+    content: "content added:";
+    position: absolute;
+    clip: rect(0 0 0 0);
+}
+
+ins:after {
+    content: "end added content.";
+    position: absolute;
+    clip: rect(0 0 0 0);
+}
+
+del:before {
+    content: "content removed:";
+    position: absolute;
+    clip: rect(0 0 0 0);
+}
+del:after {
+    content: "end removed content.";
+    position: absolute;
+    clip: rect(0 0 0 0);
+}
