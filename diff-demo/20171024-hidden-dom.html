@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>"Diff" demo...</title>
+    </head>
+    <body>
+        <link rel="stylesheet" href="gpii-diff.css"/>
+
+        <h2>String Diff</h2>
+        <p>
+            <span hidden aria-hidden="false">Content deleted:</span><del aria-label="Content Deleted:">A</del><span hidden aria-hidden="false">End deleted content.</span><span hidden="true" aria-hidden="false">Content added:</span><ins>An updated</ins><span hidden="true" aria-hidden="false">End added content.</span> string with <span hidden="true" aria-hidden="false">Content added:</span><ins>some mi</ins><span hidden="true" aria-hidden="false">End added content.</span>no<span hidden="true" aria-hidden="false">Content added:</span><ins>r</ins><span hidden="true" aria-hidden="false">End added content.</span> edits.
+        </p>
+
+        <h2>Array Diff</h2>
+        <ul>
+            <li class="diff-removed"><span hidden aria-hidden="false">Content deleted:</span><del aria-label="Content Deleted:">bacon</del><span hidden aria-hidden="false">End deleted content.</span>
+            </li>
+            <li class="diff-added"><span hidden="true" aria-hidden="false">Content added:</span><ins>chicken</ins><span hidden="true" aria-hidden="false">End added content.</span>
+            </li>
+            <li class="diff-added"><span hidden="true" aria-hidden="false">Content added:</span><ins>avocado</ins><span hidden="true" aria-hidden="false">End added content.</span>
+            </li>
+            <li class="diff-unchanged">lettuce
+            </li>
+            <li class="diff-unchanged">tomato
+            </li>
+        </ul>
+    </body>
+</html>
+
+
