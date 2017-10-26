@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <title>"Diff" demo...</title>
+    </head>
+    <body>
+        <link rel="stylesheet" href="oh-firefox-sake.css"/>
+
+        <h2>Just "del" and "ins"</h2>
+
+            <p>Here are plain old <del>del</del> and <ins>ins</ins> tags in a paragraph.</p>
+
+            <p>Let's try it in a list:</p>
+
+            <ul>
+                <li><del>content inside del tag</del></li>
+                <li><ins>content inside ins tag</ins></li>
+            </ul>
+
+        <h2>CSS "before" and "after" content.</h2>
+
+            <p>Let's try a <span class="afterLabel beforeLabel">span with classes that add before and after content using CSS</span> in a paragraph.</p>
+
+            <p>How about using CSS labels with <del class="afterLabel beforeLabel">del</del> or <ins class="afterLabel beforeLabel">del</ins> tags?</p>
+
+            <p>Let's try it in a list with just the classes:</p>
+
+            <ul>
+                <li><span class="beforeLabel afterLabel">the list content itself</span></li>
+            </ul>
+
+            <p>Let's try it in a list with del and ins tags and the classes:</p>
+
+            <ul>
+                <li><del class="beforeLabel afterLabel">content inside del tag</del></li>
+                <li><ins class="beforeLabel afterLabel">content inside ins tag</ins></li>
+            </ul>
+
+        <h2>Hidden blocks</h2>
+
+            <p>Let's try leaving an invisible <span aria-hidden="false" hidden>secret</span> message using the hidden and aria-hidden attributes.</p>
+
+            <p>Let's try leaving an invisible <span aria-hidden="false" style="display:none">secret</span> message using the aria-hidden attribute and display:none.</p>
+
+            <p>Let's try <span aria-label="adding label information">using the aria-label attribute</span>.</p>
+            <p>Let's try using CSS to hide text <label class="reader-only">that should only be spoken by a screen reader</label>.</p>
+    </body>
+</html>
+
+

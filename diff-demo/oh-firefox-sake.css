@@ -1,0 +1,16 @@
+.beforeLabel:before {
+    content: "this label should be spoken before the associated element.";
+    position: absolute;
+    clip: rect(0 0 0 0);
+}
+
+.afterLabel:after {
+    content: "this label should be spoken after the associated element.";
+    position: absolute;
+    clip: rect(0 0 0 0);
+}
+
+.reader-only {
+    position: absolute;
+    clip: rect(0 0 0 0);
+}
