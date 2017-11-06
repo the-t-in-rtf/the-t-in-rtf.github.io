@@ -5,6 +5,65 @@
     <body>
         <link rel="stylesheet" href="oh-firefox-sake.css"/>
 
+        <h2>"Speech" media.</h2>
+
+        <p>This paragraph has <span class="screenreader-only">very interesting secret</span> content to read.</p>
+
+        <h2>"Title" attribute</h2>
+
+        <del title="this content has been removed">This is the content that has a title.</del>
+
+        <h2>"About" attribute</h2>
+
+        <del about="this content has been removed">This is the content that has an about attribute.</del>
+
+        <h2>Zero Pixel Image</h2>
+
+        <h3>ARIA labels</h3>
+
+        This is a <img src="1px.png" class="zero" aria-label="very interesting"> sentence<img src="1px.png" class="zero" aria-label=" that is full of mystery">.
+
+        <h3>alt attributes</h3>
+        This is a <img src="1px.png" class="zero" alt="very interesting"> sentence<img src="1px.png" class="zero" alt=" that is full of mystery">.
+
+
+
+        <h2>aria-labelledby</h2>
+        <label id="common-label" style="display:none">This is the common label that should not be displayed.</label>
+
+        <ul>
+            <li>
+                Image: <img aria-labelledby="common-label"/>
+            </li>
+            <li>
+                Button: <button aria-labelledby="common-label">Button Text</button>
+            </li>
+            <li>
+                span: <span aria-labelledby="common-label">Span text.</span>
+            </li>
+            <li>
+                div: <div aria-labelledby="common-label">Div text.</div>
+            </li>
+        </ul>
+
+        <h2>aria-describedby</h2>
+        <label id="common-description" style="display:none">This is the common description that should not be displayed.</label>
+
+        <ul>
+            <li>
+                Image: <img aria-describedby="common-description"/>
+            </li>
+            <li>
+                Button: <button aria-describedby="common-description">Button Text</button>
+            </li>
+            <li>
+                span: <span aria-describedby="common-label">Span text.</span>
+            </li>
+            <li>
+                div: <div aria-describedby="common-label">Div text.</div>
+            </li>
+        </ul>
+
         <h2>Just "del" and "ins"</h2>
 
             <p>Here are plain old <del>del</del> and <ins>ins</ins> tags in a paragraph.</p>
