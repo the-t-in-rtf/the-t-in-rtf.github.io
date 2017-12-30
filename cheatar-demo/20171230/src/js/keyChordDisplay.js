@@ -10,12 +10,12 @@
 
     cheatar.keyChordDisplay.filterKeys = function (that, event, gatedFunction) {
         if (that.options.monitoredKeyCodes.indexOf(event.which) !== -1) {
-            event.preventDefault();
             gatedFunction(event);
         }
     };
 
     cheatar.keyChordDisplay.keyOff = function (that, event) {
+        event.preventDefault();
         if (!that.model.changingKeys) {
             var keyElement = event.currentTarget;
             var key = keyElement.getAttribute("key");
@@ -25,6 +25,7 @@
     };
 
     cheatar.keyChordDisplay.keyOn = function (that, event) {
+        event.preventDefault();
         var keyElement = event.currentTarget;
         var key = keyElement.getAttribute("key");
         if (that.model.changingKeys) {
