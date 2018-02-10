@@ -1,0 +1,36 @@
+.chord { float:left; width:25%; }
+.chord * { color: #cccccc; }
+.chord.inKey * { font-weight: bold; color: black; }
+.chord.active { background-color: green }
+
+.chord.isKeyItself {
+    border: 2px dashed #ccc;
+}
+
+.fl-slider {
+    flex-grow: 1;
+    margin: 0 1rem;
+    width: 75%;
+}
+
+.fl-textfieldSlider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+:focus {
+    background-color: red;
+}
+
+.switch-input:focus {
+    border: 1px solid #fcc;
+}
+
+.switch-paddle:focus {
+    border: 1px solid #ccf;
+}
+
+.switch:focus {
+    border: 1px solid #cfc;
+}
