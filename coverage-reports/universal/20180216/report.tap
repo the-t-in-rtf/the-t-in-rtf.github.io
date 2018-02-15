@@ -1,0 +1,268 @@
+not ok 1 Firefox 57.0 - Composition #1: ../../../gpii/node_modules/matchMakerFramework/test/html/MatchMakerUtilitiesTest.html
+    ---
+        actual: >
+            
+        expected: >
+            display.screenEnhancement.tracking,display.screenEnhancement.magnification,display.screenEnhancement.-provisional-invertColours,display.screenEnhancement.-provisional-magnifierPosition
+        stack: >
+            runLoggingCallbacks@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:1609:4
+            push@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:958:3
+            propEqual@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:579:3
+            assertDeepEq@http://localhost:7357/9566/node_modules/infusion/tests/test-core/jqUnit/js/jqUnit.js:180:17
+            gpii.tests.matchMakerUtilities.computeAndOntologizeCapabilitiesFromSolution@http://localhost:7357/9566/gpii/node_modules/matchMakerFramework/test/js/MatchMakerUtilitiesTests.js:280:9
+            run@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:207:4
+            run/<@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:365:5
+            process@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:1457:4
+            start/<@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:483:5
+            
+        message: >
+            MatchMakerUtilities: Compute Capabilities From Solution: solution incl capabilities and transformations
+        Log: |
+    ...
+not ok 2 Firefox 57.0 - MatchMakerUtilities: Check inverses
+    ---
+        actual: >
+            [object Object]
+        expected: >
+            [object Object]
+        stack: >
+            assertDeepEq@http://localhost:7357/9566/node_modules/infusion/tests/test-core/jqUnit/js/jqUnit.js:180:17
+            gpii.tests.matchMakerFramework.inverse.testCommonTermsInference/<@http://localhost:7357/9566/gpii/node_modules/matchMakerFramework/test/js/InverseCapabilitiesTests.js:70:13
+            fluid.each@http://localhost:7357/9566/node_modules/infusion/src/framework/core/js/Fluid.js:518:17
+            gpii.tests.matchMakerFramework.inverse.testCommonTermsInference@http://localhost:7357/9566/gpii/node_modules/matchMakerFramework/test/js/InverseCapabilitiesTests.js:65:9
+            run@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:207:4
+            run/<@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:365:5
+            process@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:1457:4
+            start/<@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:483:5
+            
+        message: >
+            Expected inversion for capabilities transformation - os_win7 inversion
+        Log: |
+    ...
+not ok 3 Firefox 57.0 - Composition #1: ../../../gpii/node_modules/matchMakerFramework/test/html/InverseCapabilitiesTest.html
+    ---
+        actual: >
+            [object Object]
+        expected: >
+            [object Object]
+        stack: >
+            runLoggingCallbacks@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:1609:4
+            push@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:958:3
+            propEqual@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:579:3
+            assertDeepEq@http://localhost:7357/9566/node_modules/infusion/tests/test-core/jqUnit/js/jqUnit.js:180:17
+            gpii.tests.matchMakerFramework.inverse.testCommonTermsInference/<@http://localhost:7357/9566/gpii/node_modules/matchMakerFramework/test/js/InverseCapabilitiesTests.js:70:13
+            fluid.each@http://localhost:7357/9566/node_modules/infusion/src/framework/core/js/Fluid.js:518:17
+            gpii.tests.matchMakerFramework.inverse.testCommonTermsInference@http://localhost:7357/9566/gpii/node_modules/matchMakerFramework/test/js/InverseCapabilitiesTests.js:65:9
+            run@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:207:4
+            run/<@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:365:5
+            process@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:1457:4
+            start/<@http://localhost:7357/9566/node_modules/infusion/tests/lib/qunit/js/qunit.js:483:5
+            
+        message: >
+            MatchMakerUtilities: Check inverses: Expected inversion for capabilities transformation - os_win7 inversion
+        Log: |
+    ...
+ok 4 Firefox 57.0 - Tester: Transformation tests
+ok 5 Firefox 57.0 - Tester: gpii.transformer.timeInRange tests
+ok 6 Firefox 57.0 - Composition #1: ../../../gpii/node_modules/transformer/test/html/TransformerTests.html
+ok 7 Firefox 57.0 - Composition #1: ../../../gpii/node_modules/journal/test/html/JournalIdParserTests.html
+ok 8 Firefox 57.0 - Tasks are being processed on addition
+ok 9 Firefox 57.0 - Queue is being processed in the correct order
+ok 10 Firefox 57.0 - Rejected promises causes the queue promise to be rejected
+ok 11 Firefox 57.0 - All promises in queue are rejected when a task fail
+ok 12 Firefox 57.0 - Lifecycle Manager: gpii.lifecycleManager.specToSettingsHandler()
+ok 13 Firefox 57.0 - Lifecycle Manager: gpii.lifecycleManager.responseToSnapshot() no settings
+ok 14 Firefox 57.0 - Lifecycle Manager: gpii.lifecycleManager.responseToSnapshot()
+ok 15 Firefox 57.0 - Lifecycle Manager: gpii.lifecycleManager.invokeSettingsHandler()
+ok 16 Firefox 57.0 - Lifecycle Manager: gpii.lifecycleManager.start() and stop()
+ok 17 Firefox 57.0 - Lifecycle Manager: gpii.lifecycleManager.start() with active: false
+ok 18 Firefox 57.0 - Lifecycle Manager: gpii.lifecycleManager.start() with active: undefined
+ok 19 Firefox 57.0 - Lifecycle Manager: gpii.lifecycleManager.update() without active session
+ok 20 Firefox 57.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: Updating with the same prefs and values as already applied
+ok 21 Firefox 57.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: single pref changed without 'update' directive in solution registry entry
+ok 22 Firefox 57.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, single settings
+ok 23 Firefox 57.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, multiple settings
+ok 24 Firefox 57.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: Updating with reference to 'configure' directive, single settings
+ok 25 Firefox 57.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, and a setting not in the original settings applied to the system
+ok 26 Firefox 57.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, and a an application not in the original settings applied to the system
+ok 27 Firefox 57.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, and 'undefined' value stored in snapshot
+ok 28 Firefox 57.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, and 'undefined' value stored in snapshot on update
+ok 29 Firefox 57.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: Updating with the same prefs and values as already applied
+ok 30 Firefox 57.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: single pref changed without 'update' directive in solution registry entry
+ok 31 Firefox 57.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, single settings
+ok 32 Firefox 57.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, multiple settings
+ok 33 Firefox 57.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: Updating with reference to 'configure' directive, single settings
+ok 34 Firefox 57.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, and a setting not in the original settings applied to the system
+ok 35 Firefox 57.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, and a an application not in the original settings applied to the system
+ok 36 Firefox 57.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, and 'undefined' value stored in snapshot
+ok 37 Firefox 57.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, and 'undefined' value stored in snapshot on update
+ok 38 Firefox 57.0 - Asynchronous update tests: gpii.lifecycleManager.update() tests for 'stop' reference
+ok 39 Firefox 57.0 - Asynchronous update tests: gpii.lifecycleManager.update() tests for 'stop' and 'start' reference
+ok 40 Firefox 57.0 - Composition #1: ../../../gpii/node_modules/lifecycleManager/test/html/LifecycleManagerTest.html
+ok 41 Firefox 57.0 - Dynamic Component Indexer
+ok 42 Firefox 57.0 - Composition #1: ../../../gpii/node_modules/lifecycleManager/test/html/DynamicComponentIndexerTest.html
+ok 43 Firefox 57.0 - Composition #1: ../../../gpii/node_modules/ontologyHandler/test/html/OntologyHandlerUtilitiesTest.html
+ok 44 Firefox 57.0 - settingsHandlers.setSettings
+ok 45 Firefox 57.0 - numberify tests
+ok 46 Firefox 57.0 - Testing gpii.settingsHandlers.copySettings function
+ok 47 Firefox 57.0 - Composition #1: ../../../gpii/node_modules/settingsHandlers/test/web/html/SettingsHandlerUtilitiesTest.html
+ok 48 Firefox 57.0 - gpii.contextManager.utils.findActiveContexts test
+ok 49 Firefox 57.0 - Composition #1: ../../../gpii/node_modules/contextManager/test/html/ContextManagerUtilitiesTests.html
+ok 50 Firefox 57.0 - Test getGrantForAccessToken(): getGrantForAccessToken() should return undefined with an empty dataStore
+ok 51 Firefox 57.0 - Test getGrantForAccessToken(): getGrantForAccessToken() returns undefined for an unknown access token
+ok 52 Firefox 57.0 - Test getGrantForAccessToken() with an access token for resource owner GPII token grant type: getGrantForAccessToken() returns the authorization info in the format for the resource owner GPII token grant type
+ok 53 Firefox 57.0 - Test getGrantForAccessToken() returns undefined for an expired access token: getGrantForAccessToken() returns undefined for an expired access token
+ok 54 Firefox 57.0 - Composition #1: ../../../gpii/node_modules/gpii-oauth2/gpii-oauth2-authz-server/test/html/AuthGrantFinderTests.html
+ok 55 Firefox 57.0 - Test grantGpiiAppInstallationAuthorization(): grantGpiiAppInstallationAuthorization() returns an error with an empty dataStore
+ok 56 Firefox 57.0 - Test grantGpiiAppInstallationAuthorization(): grantGpiiAppInstallationAuthorization() returns an access token
+ok 57 Firefox 57.0 - Test grantGpiiAppInstallationAuthorization(): grantGpiiAppInstallationAuthorization() returns error when a gpii token is not provided in the argument list
+ok 58 Firefox 57.0 - Test grantGpiiAppInstallationAuthorization(): grantGpiiAppInstallationAuthorization() returns error when a client id is not provided in the argument list
+ok 59 Firefox 57.0 - Test grantGpiiAppInstallationAuthorization(): grantGpiiAppInstallationAuthorization() returns error when the gpii token record is not found in the database
+ok 60 Firefox 57.0 - Test grantGpiiAppInstallationAuthorization(): grantGpiiAppInstallationAuthorization() returns error when the client record is not found in the database
+ok 61 Firefox 57.0 - Test grantGpiiAppInstallationAuthorization(): grantGpiiAppInstallationAuthorization() returns error when the client type is not "gpiiAppInstallationClient"
+ok 62 Firefox 57.0 - Composition #1: ../../../gpii/node_modules/gpii-oauth2/gpii-oauth2-authz-server/test/html/AuthorizationServiceTests.html
+ok 63 Firefox 57.0 - Query PouchDB by an existing document id: Querying by an existing document id returns the expected record
+ok 64 Firefox 57.0 - Query PouchDB by an existing document id using term map and direct model: Querying by an existing document id using term map and direct model returns the expected record
+ok 65 Firefox 57.0 - Query PouchDB by an non-existent id: Querying by an non-existent id returns 404
+ok 66 Firefox 57.0 - Query PouchDB by an non-existent id with "notFoundIsEmpty" option being set to true: Querying by an non-existent id with "notFoundIsEmpty" being true returns undefined
+ok 67 Firefox 57.0 - Query PouchDB by a view: Querying by a view returns expected record
+ok 68 Firefox 57.0 - Query PouchDB by a view: Querying by a view returns an empty "rows" array
+ok 69 Firefox 57.0 - Save into PouchDB by a document id: Saving by a document id
+ok 70 Firefox 57.0 - Composition #1: ../../../gpii/node_modules/gpii-oauth2/gpii-oauth2-datastore/test/html/DataSource-PouchDBTests.html
+ok 71 Firefox 57.0 - GPII OAuth2 Utilities: parseBearerAuthorizationHeader() returns undefined if no Authorization header
+ok 72 Firefox 57.0 - GPII OAuth2 Utilities: parseBearerAuthorizationHeader() returns undefined for badly formed Authorization header
+ok 73 Firefox 57.0 - GPII OAuth2 Utilities: parseBearerAuthorizationHeader() returns token from Authorization header
+ok 74 Firefox 57.0 - Composition #1: ../../../gpii/node_modules/gpii-oauth2/gpii-oauth2-utilities/test/html/OAuth2UtilitiesTests.html
+ok 75 Firefox 57.0 - Composition #1: ../../../gpii/node_modules/processReporter/test/web/html/ProcessesBridgeTest.html
+ok 76 Firefox 57.0 - Composition #1: ../../../gpii/node_modules/processReporter/test/web/html/ProcessReporterTest.html
+ok 77 Firefox 57.0 - Composition #2: ../../../gpii/node_modules/canopyMatchMaker/test/web/html/CanopyMatchMakerUtilitiesTests.html
+not ok 78 Chrome 64.0 - Composition #1: ../../../gpii/node_modules/matchMakerFramework/test/html/MatchMakerUtilitiesTest.html
+    ---
+        actual: >
+            
+        expected: >
+            display.screenEnhancement.tracking,display.screenEnhancement.magnification,display.screenEnhancement.-provisional-invertColours,display.screenEnhancement.-provisional-magnifierPosition
+        stack: >
+                at runLoggingCallbacks (http://localhost:7357/7863/node_modules/infusion/tests/lib/qunit/js/qunit.js:1609:19)
+                at F.push (http://localhost:7357/7863/node_modules/infusion/tests/lib/qunit/js/qunit.js:958:3)
+                at F.propEqual (http://localhost:7357/7863/node_modules/infusion/tests/lib/qunit/js/qunit.js:579:9)
+                at Object.assertDeepEq (http://localhost:7357/7863/node_modules/infusion/tests/test-core/jqUnit/js/jqUnit.js:180:23)
+                at Object.gpii.tests.matchMakerUtilities.computeAndOntologizeCapabilitiesFromSolution (http://localhost:7357/7863/gpii/node_modules/matchMakerFramework/test/js/MatchMakerUtilitiesTests.js:280:16)
+                at Test.run (http://localhost:7357/7863/node_modules/infusion/tests/lib/qunit/js/qunit.js:207:18)
+                at http://localhost:7357/7863/node_modules/infusion/tests/lib/qunit/js/qunit.js:365:10
+        message: >
+            MatchMakerUtilities: Compute Capabilities From Solution: solution incl capabilities and transformations
+        Log: |
+    ...
+not ok 79 Chrome 64.0 - MatchMakerUtilities: Check inverses
+    ---
+        actual: >
+            [object Object]
+        expected: >
+            [object Object]
+        stack: >
+                at Object.assertDeepEq (http://localhost:7357/7863/node_modules/infusion/tests/test-core/jqUnit/js/jqUnit.js:180:23)
+                at http://localhost:7357/7863/gpii/node_modules/matchMakerFramework/test/js/InverseCapabilitiesTests.js:70:20
+                at Object.fluid.each (http://localhost:7357/7863/node_modules/infusion/src/framework/core/js/Fluid.js:518:17)
+                at Object.gpii.tests.matchMakerFramework.inverse.testCommonTermsInference (http://localhost:7357/7863/gpii/node_modules/matchMakerFramework/test/js/InverseCapabilitiesTests.js:65:15)
+                at Test.run (http://localhost:7357/7863/node_modules/infusion/tests/lib/qunit/js/qunit.js:207:18)
+                at http://localhost:7357/7863/node_modules/infusion/tests/lib/qunit/js/qunit.js:365:10
+                at process (http://localhost:7357/7863/node_modules/infusion/tests/lib/qunit/js/qunit.js:1457:24)
+        message: >
+            Expected inversion for capabilities transformation - os_win7 inversion
+        Log: |
+    ...
+not ok 80 Chrome 64.0 - Composition #1: ../../../gpii/node_modules/matchMakerFramework/test/html/InverseCapabilitiesTest.html
+    ---
+        actual: >
+            [object Object]
+        expected: >
+            [object Object]
+        stack: >
+                at runLoggingCallbacks (http://localhost:7357/7863/node_modules/infusion/tests/lib/qunit/js/qunit.js:1609:19)
+                at F.push (http://localhost:7357/7863/node_modules/infusion/tests/lib/qunit/js/qunit.js:958:3)
+                at F.propEqual (http://localhost:7357/7863/node_modules/infusion/tests/lib/qunit/js/qunit.js:579:9)
+                at Object.assertDeepEq (http://localhost:7357/7863/node_modules/infusion/tests/test-core/jqUnit/js/jqUnit.js:180:23)
+                at http://localhost:7357/7863/gpii/node_modules/matchMakerFramework/test/js/InverseCapabilitiesTests.js:70:20
+                at Object.fluid.each (http://localhost:7357/7863/node_modules/infusion/src/framework/core/js/Fluid.js:518:17)
+                at Object.gpii.tests.matchMakerFramework.inverse.testCommonTermsInference (http://localhost:7357/7863/gpii/node_modules/matchMakerFramework/test/js/InverseCapabilitiesTests.js:65:15)
+        message: >
+            MatchMakerUtilities: Check inverses: Expected inversion for capabilities transformation - os_win7 inversion
+        Log: |
+    ...
+ok 81 Chrome 64.0 - Composition #1: ../../../gpii/node_modules/transformer/test/html/TransformerTests.html
+ok 82 Chrome 64.0 - Parsing journal ID specifications
+ok 83 Chrome 64.0 - Journal fetch test
+ok 84 Chrome 64.0 - Datestamp to filename formatter
+ok 85 Chrome 64.0 - Composition #1: ../../../gpii/node_modules/journal/test/html/JournalIdParserTests.html
+ok 86 Chrome 64.0 - Tasks are being processed on addition
+ok 87 Chrome 64.0 - Queue is being processed in the correct order
+ok 88 Chrome 64.0 - Rejected promises causes the queue promise to be rejected
+ok 89 Chrome 64.0 - All promises in queue are rejected when a task fail
+ok 90 Chrome 64.0 - Lifecycle Manager: gpii.lifecycleManager.specToSettingsHandler()
+ok 91 Chrome 64.0 - Lifecycle Manager: gpii.lifecycleManager.responseToSnapshot() no settings
+ok 92 Chrome 64.0 - Lifecycle Manager: gpii.lifecycleManager.responseToSnapshot()
+ok 93 Chrome 64.0 - Lifecycle Manager: gpii.lifecycleManager.invokeSettingsHandler()
+ok 94 Chrome 64.0 - Lifecycle Manager: gpii.lifecycleManager.start() and stop()
+ok 95 Chrome 64.0 - Lifecycle Manager: gpii.lifecycleManager.start() with active: false
+ok 96 Chrome 64.0 - Lifecycle Manager: gpii.lifecycleManager.start() with active: undefined
+ok 97 Chrome 64.0 - Lifecycle Manager: gpii.lifecycleManager.update() without active session
+ok 98 Chrome 64.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: Updating with the same prefs and values as already applied
+ok 99 Chrome 64.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: single pref changed without 'update' directive in solution registry entry
+ok 100 Chrome 64.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, single settings
+ok 101 Chrome 64.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, multiple settings
+ok 102 Chrome 64.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: Updating with reference to 'configure' directive, single settings
+ok 103 Chrome 64.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, and a setting not in the original settings applied to the system
+ok 104 Chrome 64.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, and a an application not in the original settings applied to the system
+ok 105 Chrome 64.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, and 'undefined' value stored in snapshot
+ok 106 Chrome 64.0 - Sequential update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, and 'undefined' value stored in snapshot on update
+ok 107 Chrome 64.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: Updating with the same prefs and values as already applied
+ok 108 Chrome 64.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: single pref changed without 'update' directive in solution registry entry
+ok 109 Chrome 64.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, single settings
+ok 110 Chrome 64.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, multiple settings
+ok 111 Chrome 64.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: Updating with reference to 'configure' directive, single settings
+ok 112 Chrome 64.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, and a setting not in the original settings applied to the system
+ok 113 Chrome 64.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, and a an application not in the original settings applied to the system
+ok 114 Chrome 64.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, and 'undefined' value stored in snapshot
+ok 115 Chrome 64.0 - Asynchronous update tests: gpii.lifecycleManager.update() with active user session: Updating with normal reference to settingsHandler block, and 'undefined' value stored in snapshot on update
+ok 116 Chrome 64.0 - Asynchronous update tests: gpii.lifecycleManager.update() tests for 'stop' reference
+ok 117 Chrome 64.0 - Asynchronous update tests: gpii.lifecycleManager.update() tests for 'stop' and 'start' reference
+ok 118 Chrome 64.0 - Composition #1: ../../../gpii/node_modules/lifecycleManager/test/html/LifecycleManagerTest.html
+ok 119 Chrome 64.0 - Composition #1: ../../../gpii/node_modules/lifecycleManager/test/html/DynamicComponentIndexerTest.html
+ok 120 Chrome 64.0 - ontologyServer.filter
+ok 121 Chrome 64.0 - Testing Application Transformats; applicationFlatToISO and applicationISOToFlat
+ok 122 Chrome 64.0 - Composition #1: ../../../gpii/node_modules/ontologyHandler/test/html/OntologyHandlerUtilitiesTest.html
+ok 123 Chrome 64.0 - Composition #1: ../../../gpii/node_modules/settingsHandlers/test/web/html/SettingsHandlerUtilitiesTest.html
+ok 124 Chrome 64.0 - gpii.contextManager.utils.findActiveContexts test
+ok 125 Chrome 64.0 - Composition #1: ../../../gpii/node_modules/contextManager/test/html/ContextManagerUtilitiesTests.html
+ok 126 Chrome 64.0 - Test getGrantForAccessToken(): getGrantForAccessToken() should return undefined with an empty dataStore
+ok 127 Chrome 64.0 - Test getGrantForAccessToken(): getGrantForAccessToken() returns undefined for an unknown access token
+ok 128 Chrome 64.0 - Test getGrantForAccessToken() with an access token for resource owner GPII token grant type: getGrantForAccessToken() returns the authorization info in the format for the resource owner GPII token grant type
+ok 129 Chrome 64.0 - Test getGrantForAccessToken() returns undefined for an expired access token: getGrantForAccessToken() returns undefined for an expired access token
+ok 130 Chrome 64.0 - Composition #1: ../../../gpii/node_modules/gpii-oauth2/gpii-oauth2-authz-server/test/html/AuthGrantFinderTests.html
+ok 131 Chrome 64.0 - Test grantGpiiAppInstallationAuthorization(): grantGpiiAppInstallationAuthorization() returns an error with an empty dataStore
+ok 132 Chrome 64.0 - Test grantGpiiAppInstallationAuthorization(): grantGpiiAppInstallationAuthorization() returns an access token
+ok 133 Chrome 64.0 - Test grantGpiiAppInstallationAuthorization(): grantGpiiAppInstallationAuthorization() returns error when a gpii token is not provided in the argument list
+ok 134 Chrome 64.0 - Test grantGpiiAppInstallationAuthorization(): grantGpiiAppInstallationAuthorization() returns error when a client id is not provided in the argument list
+ok 135 Chrome 64.0 - Test grantGpiiAppInstallationAuthorization(): grantGpiiAppInstallationAuthorization() returns error when the gpii token record is not found in the database
+ok 136 Chrome 64.0 - Test grantGpiiAppInstallationAuthorization(): grantGpiiAppInstallationAuthorization() returns error when the client record is not found in the database
+ok 137 Chrome 64.0 - Test grantGpiiAppInstallationAuthorization(): grantGpiiAppInstallationAuthorization() returns error when the client type is not "gpiiAppInstallationClient"
+ok 138 Chrome 64.0 - Composition #1: ../../../gpii/node_modules/gpii-oauth2/gpii-oauth2-authz-server/test/html/AuthorizationServiceTests.html
+ok 139 Chrome 64.0 - Query PouchDB by an existing document id: Querying by an existing document id returns the expected record
+ok 140 Chrome 64.0 - Query PouchDB by an existing document id using term map and direct model: Querying by an existing document id using term map and direct model returns the expected record
+ok 141 Chrome 64.0 - Query PouchDB by an non-existent id: Querying by an non-existent id returns 404
+ok 142 Chrome 64.0 - Query PouchDB by an non-existent id with "notFoundIsEmpty" option being set to true: Querying by an non-existent id with "notFoundIsEmpty" being true returns undefined
+ok 143 Chrome 64.0 - Query PouchDB by a view: Querying by a view returns expected record
+ok 144 Chrome 64.0 - Query PouchDB by a view: Querying by a view returns an empty "rows" array
+ok 145 Chrome 64.0 - Save into PouchDB by a document id: Saving by a document id
+ok 146 Chrome 64.0 - Composition #1: ../../../gpii/node_modules/gpii-oauth2/gpii-oauth2-datastore/test/html/DataSource-PouchDBTests.html
+ok 147 Chrome 64.0 - Composition #1: ../../../gpii/node_modules/gpii-oauth2/gpii-oauth2-utilities/test/html/OAuth2UtilitiesTests.html
+ok 148 Chrome 64.0 - Composition #1: ../../../gpii/node_modules/processReporter/test/web/html/ProcessesBridgeTest.html
+ok 149 Chrome 64.0 - Composition #1: ../../../gpii/node_modules/processReporter/test/web/html/ProcessReporterTest.html
+ok 150 Chrome 64.0 - Composition #2: ../../../gpii/node_modules/canopyMatchMaker/test/web/html/CanopyMatchMakerUtilitiesTests.html
+
+1..150
+# tests 150
+# pass  144
+# skip  0
+# fail  6
