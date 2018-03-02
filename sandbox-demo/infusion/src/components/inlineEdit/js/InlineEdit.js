@@ -25,36 +25,6 @@ var fluid_2_0_0 = fluid_2_0_0 || {};
         control.dispatchEvent(kE);
     };
 
-    /** Set the caret position to the end of a text field's value, also taking care
-     * to scroll the field so that this position is visible.
-     * @param {DOM node} control The control to be scrolled (input, or possibly textarea)
-     * @param value The current value of the control
-     */
-    fluid.setCaretToEnd = function (control, value) {
-        var pos = value ? value.length : 0;
-
-        try {
-            control.focus();
-        // see http://www.quirksmode.org/dom/range_intro.html - in Opera, must detect setSelectionRange first,
-        // since its support for Microsoft TextRange is buggy
-            if (control.setSelectionRange) {
-
-                control.setSelectionRange(pos, pos);
-                if ($.browser.mozilla && pos > 0) {
-                  // ludicrous fix for Firefox failure to scroll to selection position, inspired by
-                  // http://bytes.com/forum/thread496726.html
-                    fluid.inlineEdit.sendKey(control, "keypress", 92, 92); // type in a junk character
-                    fluid.inlineEdit.sendKey(control, "keydown", 8, 0); // delete key must be dispatched exactly like this
-                    fluid.inlineEdit.sendKey(control, "keypress", 8, 0);
-                }
-            } else if (control.createTextRange) {
-                var range = control.createTextRange();
-                range.move("character", pos);
-                range.select();
-            }
-        } catch (e) {}
-    };
-
     fluid.inlineEdit.switchToViewMode = function (that) {
         that.editContainer.hide();
         that.displayModeRenderer.show();
@@ -178,7 +148,7 @@ var fluid_2_0_0 = fluid_2_0_0 || {};
         // Work around for FLUID-726
         // Without 'setTimeout' the finish handler gets called with the event and the edit field is inactivated.
         setTimeout(function () {
-            fluid.setCaretToEnd(that.editField[0], that.editView.value());
+            that.editField.focus();
             if (that.options.selectOnEdit) {
                 that.editField[0].select();
             }
@@ -251,8 +221,10 @@ var fluid_2_0_0 = fluid_2_0_0 || {};
             content: that.options.tooltipText,
             position: {
                 my: "left top",
-                at: "left bottom",
-                offset: "0 5"
+                at: "left bottom+25%", // add a 25% offset to keep the tooltip from overlapping the element it is for
+                // setting the "of" property to ensure that the tooltip is positioned relative to that.viewEl
+                // even when keyboard focus is on that.textEditButton
+                of: that.viewEl
             },
             target: "*",
             delay: that.options.tooltipDelay,
@@ -383,8 +355,16 @@ var fluid_2_0_0 = fluid_2_0_0 || {};
             editModeInstruction.show();
 
             var editFieldPosition = editField.offset();
+            // For FLUID-5980 (https://issues.fluidproject.org/browse/FLUID-5980)
+            //
+            // From the jQuery height docs (http://api.jquery.com/height/)
+            // "As of jQuery 1.8, this may require retrieving the CSS height plus
+            // box-sizing property and then subtracting any potential border and
+            // padding on each element when the element has box-sizing: border-box.
+            // To avoid this penalty, use .css( "height" ) rather than .height()."
+            var editFieldHeight = parseInt(editField.css("height"), 10);
             editModeInstruction.css({left: editFieldPosition.left});
-            editModeInstruction.css({top: editFieldPosition.top + editField.height() + 5});
+            editModeInstruction.css({top: editFieldPosition.top + editFieldHeight + 5});
         });
     };
 
@@ -953,7 +933,7 @@ var fluid_2_0_0 = fluid_2_0_0 || {};
         distributeOptions: {
             source: "{that}.options",
             // TODO: Appalling requirement to evade FLUID-5887 check - otherwise all of this fluid.modelComponent material is broadcast down to each component.
-            // "source" distributions are silly and dangerous in any case, but they have become fairly widely used, together with the expectation that the 
+            // "source" distributions are silly and dangerous in any case, but they have become fairly widely used, together with the expectation that the
             // material from "defaults" can be broadcast too. But clearly material that is from base grade defaults is unwelcome to be distributed.
             // This seems to imply that we've got no option but to start supporting "provenance" in options and defaults - highly expensive.
             exclusions: ["members.inlineEdits", "members.modelRelay", "members.applier", "members.model", "selectors.editables", "events"],

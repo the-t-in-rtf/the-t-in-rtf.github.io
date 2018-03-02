@@ -33,8 +33,8 @@ var fluid_2_0_0 = fluid_2_0_0 || {};
     };
 
     fluid.pager.bindLinkClick = function (link, initiatePageChange, eventArg) {
-        link.unbind("click.fluid.pager");
-        link.bind("click.fluid.pager", function () {
+        link.off("click.fluid.pager");
+        link.on("click.fluid.pager", function () {
             initiatePageChange.fire(eventArg);
             return false;
         });
@@ -155,17 +155,19 @@ var fluid_2_0_0 = fluid_2_0_0 || {};
             localID: page + 1,
             value: page + 1,
             pageIndex: page,
-            decorators: [{
-                identify: "pageLink:" + page
-            },
-            {
-                type: "jQuery",
-                func: "click",
-                args: function (event) {
-                    initiatePageChange.fire({pageIndex: page});
-                    event.preventDefault();
+            decorators: [
+                {
+                    identify: "pageLink:" + page
+                },
+                {
+                    type: "jQuery",
+                    func: "click",
+                    args: function (event) {
+                        initiatePageChange.fire({pageIndex: page});
+                        event.preventDefault();
+                    }
                 }
-            }]
+            ]
         };
 
         if (isCurrent) {
