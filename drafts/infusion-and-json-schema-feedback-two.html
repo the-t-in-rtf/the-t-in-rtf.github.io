@@ -139,43 +139,43 @@ examples.</p>
 look like by default.  We currently use the validator <a href="https://github.com/epoberezkin/ajv">AJV</a>, so I wanted to use that
 to provide some sample validation errors and talk about the key concerns.  For the first two examples, let's assume
 we're using a schema like the following:</p>
-<div class="highlight"><pre><span class="err">{</span><span class="x"></span>
-<span class="x">    &quot;</span><span class="p">$</span><span class="nv">schema</span><span class="x">&quot;: &quot;http://json-schema.org/draft-04/schema</span><span class="err">#</span><span class="x">&quot;,</span>
-<span class="x">    &quot;title&quot;: &quot;Deep schema to test variable nesting and paths.&quot;,</span>
-<span class="x">    &quot;type&quot;:  &quot;object&quot;,</span>
-<span class="x">    &quot;properties&quot;: </span><span class="err">{</span><span class="x"></span>
-<span class="x">        &quot;deep&quot;: </span><span class="err">{</span><span class="x"></span>
-<span class="x">            &quot;type&quot;: &quot;object&quot;,</span>
-<span class="x">            &quot;properties&quot;: </span><span class="err">{</span><span class="x"></span>
-<span class="x">                &quot;required&quot;: </span><span class="err">{</span><span class="x"></span>
-<span class="x">                    &quot;type&quot;: &quot;boolean&quot;</span>
-<span class="x">                }</span>
-<span class="x">            },</span>
-<span class="x">            &quot;required&quot;: [&quot;required&quot;]</span>
-<span class="x">        }</span>
-<span class="x">    }</span>
-<span class="x">}</span>
+<div class="highlight"><pre><span class="p">{</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/draft-04/schema#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Deep schema to test variable nesting and paths.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;type&quot;</span><span class="p">:</span>  <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;deep&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 
 
 <p>Let's say we try to validate the following:</p>
-<div class="highlight"><pre>{
-     &quot;required&quot;: true,
-     &quot;deep&quot;: { &quot;required&quot;: &quot;a string&quot; }
-}
+<div class="highlight"><pre><span class="p">{</span>
+     <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+     <span class="nt">&quot;deep&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="s2">&quot;a string&quot;</span> <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 
 
 <p>AJV returns an error like:</p>
-<div class="highlight"><pre>{
-  &quot;keyword&quot;: &quot;type&quot;,
-  &quot;dataPath&quot;: &quot;.deep.required&quot;,
-  &quot;schemaPath&quot;: &quot;#/properties/deep/properties/required/type&quot;,
-  &quot;params&quot;: {
-    &quot;type&quot;: &quot;boolean&quot;
-  },
-  &quot;message&quot;: &quot;should be boolean&quot;
-}
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;keyword&quot;</span><span class="p">:</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;dataPath&quot;</span><span class="p">:</span> <span class="s2">&quot;.deep.required&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;schemaPath&quot;</span><span class="p">:</span> <span class="s2">&quot;#/properties/deep/properties/required/type&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;should be boolean&quot;</span>
+<span class="p">}</span>
 </pre></div>
 
 
@@ -191,22 +191,22 @@ matching failures, as in:</p>
 
 <p>Here's another example for the same schema.  Let's say we leave out the "deep" required field and attempt to validate
 the following:</p>
-<div class="highlight"><pre>{
-     &quot;required&quot;: true
-}
+<div class="highlight"><pre><span class="p">{</span>
+     <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">}</span>
 </pre></div>
 
 
 <p>AJV reports an error like the following:</p>
-<div class="highlight"><pre>{
-  &quot;keyword&quot;: &quot;required&quot;,
-  &quot;dataPath&quot;: &quot;.deep&quot;,
-  &quot;schemaPath&quot;: &quot;#/properties/deep/required&quot;,
-  &quot;params&quot;: {
-    &quot;missingProperty&quot;: &quot;required&quot;
-  },
-  &quot;message&quot;: &quot;should have required property &#39;required&#39;&quot;
-}
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;keyword&quot;</span><span class="p">:</span> <span class="s2">&quot;required&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;dataPath&quot;</span><span class="p">:</span> <span class="s2">&quot;.deep&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;schemaPath&quot;</span><span class="p">:</span> <span class="s2">&quot;#/properties/deep/required&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;missingProperty&quot;</span><span class="p">:</span> <span class="s2">&quot;required&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;should have required property &#39;required&#39;&quot;</span>
+<span class="p">}</span>
 </pre></div>
 
 
@@ -216,43 +216,43 @@ relative to the enclosing object, and the JSON pointer points to the array of AL
 effort made to say that required field #2 is the specific field that's missing.</p>
 <p>There is also the special case of the "anyOf" and "allOf" constructs, which are arrays where the index of the failing
 rule is considered.  Let's say we have a schema like the following:</p>
-<div class="highlight"><pre><span class="err">{</span><span class="x"></span>
-<span class="x">    &quot;</span><span class="p">$</span><span class="nv">schema</span><span class="x">&quot;: &quot;http://json-schema.org/draft-04/schema</span><span class="err">#</span><span class="x">&quot;,</span>
-<span class="x">    &quot;id&quot;:      &quot;password.json&quot;,</span>
-<span class="x">    &quot;title&quot;:   &quot;Password Validation Schema&quot;,</span>
-<span class="x">    &quot;type&quot;:    &quot;object&quot;,</span>
-<span class="x">    &quot;properties&quot;: </span><span class="err">{</span><span class="x"></span>
-<span class="x">        &quot;password&quot;: </span><span class="err">{</span><span class="x"></span>
-<span class="x">          &quot;description&quot;: &quot;Password must be 8 or more characters, and have at least one uppercase letter, at least one lowercase letter, and at least one number or special character.&quot;,</span>
-<span class="x">          &quot;allOf&quot;: [</span>
-<span class="x">            </span><span class="err">{</span><span class="x"> &quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 8 },</span>
-<span class="x">            </span><span class="err">{</span><span class="x"> &quot;type&quot;: &quot;string&quot;, &quot;pattern&quot;: &quot;[A-Z]+&quot;},</span>
-<span class="x">            </span><span class="err">{</span><span class="x"> &quot;type&quot;: &quot;string&quot;, &quot;pattern&quot;: &quot;[a-z]+&quot;},</span>
-<span class="x">            </span><span class="err">{</span><span class="x"> &quot;type&quot;: &quot;string&quot;, &quot;pattern&quot;: &quot;[^a-zA-Z]&quot;}</span>
-<span class="x">          ]</span>
-<span class="x">        }</span>
-<span class="x">  },</span>
-<span class="x">     &quot;required&quot;: [&quot;password&quot;]</span>
+<div class="highlight"><pre><span class="p">{</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/draft-04/schema#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span>      <span class="s2">&quot;password.json&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;title&quot;</span><span class="p">:</span>   <span class="s2">&quot;Password Validation Schema&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;type&quot;</span><span class="p">:</span>    <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;password&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Password must be 8 or more characters, and have at least one uppercase letter, at least one lowercase letter, and at least one number or special character.&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;allOf&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="nt">&quot;minLength&quot;</span><span class="p">:</span> <span class="mi">8</span> <span class="p">},</span>
+            <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="nt">&quot;pattern&quot;</span><span class="p">:</span> <span class="s2">&quot;[A-Z]+&quot;</span><span class="p">},</span>
+            <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="nt">&quot;pattern&quot;</span><span class="p">:</span> <span class="s2">&quot;[a-z]+&quot;</span><span class="p">},</span>
+            <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="nt">&quot;pattern&quot;</span><span class="p">:</span> <span class="s2">&quot;[^a-zA-Z]&quot;</span><span class="p">}</span>
+          <span class="p">]</span>
+        <span class="p">}</span>
+  <span class="p">},</span>
+     <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span>
 
-<span class="x">}</span>
+<span class="p">}</span>
 </pre></div>
 
 
 <p>Let's say we try to validate the following:</p>
-<div class="highlight"><pre>{ &quot;password&quot;: &quot;2Short&quot; }
+<div class="highlight"><pre><span class="p">{</span> <span class="nt">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;2Short&quot;</span> <span class="p">}</span>
 </pre></div>
 
 
 <p>AJV will return an error like:</p>
-<div class="highlight"><pre>{
-  &quot;keyword&quot;: &quot;minLength&quot;,
-  &quot;dataPath&quot;: &quot;.password&quot;,
-  &quot;schemaPath&quot;: &quot;#/properties/password/allOf/0/minLength&quot;,
-  &quot;params&quot;: {
-    &quot;limit&quot;: 8
-  },
-  &quot;message&quot;: &quot;should NOT be shorter than 8 characters&quot;
-}
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;keyword&quot;</span><span class="p">:</span> <span class="s2">&quot;minLength&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;dataPath&quot;</span><span class="p">:</span> <span class="s2">&quot;.password&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;schemaPath&quot;</span><span class="p">:</span> <span class="s2">&quot;#/properties/password/allOf/0/minLength&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">8</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;should NOT be shorter than 8 characters&quot;</span>
+<span class="p">}</span>
 </pre></div>
 
 
