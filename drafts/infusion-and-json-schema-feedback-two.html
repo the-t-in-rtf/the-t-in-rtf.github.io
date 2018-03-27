@@ -310,7 +310,7 @@ notation like the following (again, both "short" and "long" examples are provide
 deal in relative paths, I would suggest that all string templates for error messages use the full EL path within the
 object being validated, as shown above.  This offers good flexibility versus schemes like only offering access to the
 failing data itself.</p>
-<h2>Required Fields ##</h2>
+<h2>Required Fields</h2>
 <p>So, how do we deal with the special case of required fields?  I would suggest that our intermediate validation error
 format follow the JSON Schema draft v3 convention, and make <code>required</code> a property of the missing material itself, as in:</p>
 <div class="highlight"><pre><span class="p">{</span>
