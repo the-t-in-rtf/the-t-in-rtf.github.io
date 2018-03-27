@@ -3,7 +3,7 @@
       xmlns:og="http://ogp.me/ns#"
       xmlns:fb="https://www.facebook.com/2008/fbml">
 <head>
-    <title>Hello, everyone...</title>
+    <title>Infusion and JSON Schema...</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -12,9 +12,9 @@
     <!-- Open Graph tags -->
 
             <meta property="og:type" content="article"/>
-            <meta property="og:title" content="Hello, everyone..."/>
-            <meta property="og:url" content="http://the-t-in-rtf.github.io/hello-everyone.html"/>
-            <meta property="og:description" content="Hello, everyone..."/>
+            <meta property="og:title" content="Infusion and JSON Schema..."/>
+            <meta property="og:url" content="http://the-t-in-rtf.github.io/infusion-and-json-schema.html"/>
+            <meta property="og:description" content="An overview of the combined use of Infusion and JSON Schema and the conversation to date."/>
 
     <!-- Bootstrap -->
         <link rel="stylesheet" href="http://the-t-in-rtf.github.io/theme/css/bootstrap.min.css" type="text/css"/>
@@ -40,10 +40,10 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                        <li >
+                        <li class="active">
                             <a href="http://the-t-in-rtf.github.io/category/code.html">Code</a>
                         </li>
-                        <li class="active">
+                        <li >
                             <a href="http://the-t-in-rtf.github.io/category/non-code.html">Non-code</a>
                         </li>
             </ul>
@@ -62,10 +62,10 @@
         <article>
             <header class="page-header">
                 <h1>
-                    <a href="http://the-t-in-rtf.github.io/hello-everyone.html"
+                    <a href="http://the-t-in-rtf.github.io/infusion-and-json-schema.html"
                        rel="bookmark"
-                       title="Permalink to Hello, everyone...">
-                        Hello, everyone...
+                       title="Permalink to Infusion and JSON Schema...">
+                        Infusion and JSON Schema...
                     </a>
                 </h1>
             </header>
@@ -75,14 +75,53 @@
 <footer class="post-info">
     <span class="label label-default">Date</span>
     <span class="published">
-        <i class="icon-calendar"></i>Sun 12 January 2014
+        <i class="icon-calendar"></i>Tue 16 May 2017
     </span>
 
 
 
+<span class="label label-default">Tags</span>
+	<a href="http://the-t-in-rtf.github.io/tag/json-schema.html">JSON Schema</a>
 </footer><!-- /.post-info -->                    </div>
                 </div>
-                <p>Hello, everyone.  I've just started working with <a href="http://raisingthefloor.org/" title="Raising the Floor">Raising the Floor</a>.  I'm currently working on the <a href="http://wiki.gpii.net/index.php/Common_Terms_Registry" title="Common Terms Registry">Common Terms Registry</a>, and will soon be working on the <a href="http://wiki.gpii.net/index.php/Unified_Listing" title="Unified Listing">Unified Listing</a>.  I will be using this blog to share things I learn as part of my journey with the team.</p>
+                <h1>Introduction</h1>
+<p>In recent discussions in the offsite and in previous PCP API meetings, we have been talking through a few different strategies for validating settings (and component options in general) using <a href="http://json-schema.org/">JSON Schemas</a>.  In this collection of articles, I will attempt to summarise a range of approaches.  My hope is that with clearer examples, we can make an informed decision about which choices make sense to proceed with.  I say "choices" because I believe, as with so many of our choices (<a href="https://github.com/SeleniumHQ/selenium/tree/master/javascript/node/selenium-webdriver">webdriver</a> vs. <a href="https://github.com/testem/testem">Testem</a>, for example), there may be room for more than one approach within the larger community.</p>
+<h1>Why are we even talking about this?</h1>
+<p>There are a few specific projects currently under development where the ability to validate options using JSON Schemas is directly relevant:</p>
+<ol>
+<li><a href="https://issues.gpii.net/browse/UX-180">The UI portion of the PCP API</a> that Bern, Javi and others are working on.</li>
+<li><a href="https://github.com/sgithens/gpii-devpmt">The "Dev PMT" Steve is working on.</a>, where settings are input based on the associated JSON Schema (for now, just the overall "type").</li>
+<li><a href="https://github.com/the-t-in-rtf/gpii-live-registries">The "Live Registries"</a>, which proposes breaking down the existing solutions data in universal into a separate repository with versioned releases.</li>
+</ol>
+<p>In addition, there have been previous efforts within the community to use JSON Schemas, for example:</p>
+<ol>
+<li>JSON Schemas are used within the <a href="https://github.com/GPII/first-discovery-server/blob/master/src/js/configUtils.js#L41">First Discovery Server</a> to validate component options.</li>
+<li>The <a href="https://github.com/GPII/gpii-json-schema">gpii-json-schema library)</a> is used within the Unified Listing and PTD to perform both client and server-side validation of model data.</li>
+</ol>
+<p>Between our legacy and ongoing work, we have a need to:</p>
+<ol>
+<li>Validate user input and give appropriate feedback.</li>
+<li>Validate component options.</li>
+<li>Generate UIs based on schemas.</li>
+</ol>
+<h1>So where do we go from here?</h1>
+<p>Among other things, we still need at least tentative agreement regarding:</p>
+<ol>
+<li>How we can reuse and extend schema validation rules.</li>
+<li>How to provide end-user-friendly feedback, both regarding the purpose of a field (instructions), and feedback when data is invalid (errors).</li>
+</ol>
+<p>I will attempt to summarise the approaches suggested to date for each of these in subsequent sections, which are intended to be read in no particular order:</p>
+<ul>
+<li><a href="http://the-t-in-rtf.github.io/infusion-and-json-schema-reuse.html">Reusing and Extending Schema Rules</a></li>
+<li><a href="http://the-t-in-rtf.github.io/infusion-and-json-schema-feedback.html">Providing End User Feedback</a></li>
+</ul>
+<p>Within each of these, I will attempt to demonstrate a range of approaches:</p>
+<ol>
+<li>A more "component centric" approach, where schema information is written directly in component options.</li>
+<li>A more "schema centric" approach, where common schema information is stored in external files.</li>
+<li>Options for working somewhere between the two, for example, writing inline schemas that link to external files as needed.</li>
+</ol>
+<p>There will be a summary in each of the above sections, but this document will not attempt to present any decisions or make strong recommendations.  Rather, it is intended to serve as a starting point for the next few rounds of conversation.</p>
             </div>
             <!-- /.entry-content -->
     <hr />
@@ -92,8 +131,8 @@
         <script type="text/javascript">
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'thetinrtf'; // required: replace example with your forum shortname
-            var disqus_identifier = 'hello-everyone';
-            var disqus_url = 'http://the-t-in-rtf.github.io/hello-everyone.html';
+            var disqus_identifier = 'infusion-and-json-schema';
+            var disqus_url = 'http://the-t-in-rtf.github.io/infusion-and-json-schema.html';
 
             /* * * DON'T EDIT BELOW THIS LINE * * */
             (function () {
