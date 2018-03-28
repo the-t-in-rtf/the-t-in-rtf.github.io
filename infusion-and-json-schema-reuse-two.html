@@ -146,18 +146,18 @@ options merging:</p>
 
 <p>The merged schema would effectively be:</p>
 <div class="highlight"><pre><span class="p">{</span>
-        <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/draft-07/schema&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
-                <span class="nt">&quot;minLength&quot;</span><span class="p">:</span> <span class="mi">4</span>
-            <span class="p">},</span>
-            <span class="nt">&quot;address&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
-            <span class="p">}</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/draft-07/schema&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;minLength&quot;</span><span class="p">:</span> <span class="mi">4</span>
         <span class="p">},</span>
-        <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-    <span class="p">}</span>
+        <span class="nt">&quot;address&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+<span class="p">}</span>
 </pre></div>
 
 
@@ -346,12 +346,14 @@ more validation passes. I would propose that we do the following after options e
    JSON Schema draft standard).</li>
 <li>Validate the component options against the schema.</li>
 </ol>
-<p>The first step would immediately and dramatically make it clear to authors when they have merged material in a way that
-requires the addition of <code>mergePolicy</code> rules.</p>
+<p>The first step would immediately and dramatically make it clear to authors when they have merged schema definitions in a
+way that requires the addition of <code>mergePolicy</code> rules.</p>
 <h1>Conclusion</h1>
-<p>In summary, I am proposing using options merging and expansion in combination with <code>mergePolicy</code> rules to allow us to
-express schema definitions within component options.   I am also proposing that we validate the merged schema first, and
-then validate the component options.</p>
+<p>In summary, I am proposing that we:</p>
+<ol>
+<li>Use options merging and expansion in combination with <code>mergePolicy</code> rules to allow us to express schema definitions within component options.</li>
+<li>After options expansion and merging, validate the merged schema first, and if there are no errors, validate the component options using the merged schema.</li>
+</ol>
 <p>Although this draft outlines a handful of ways we might proceed, it's meant as a starting point for discussion.  I will
 write up the conclusions we reach and proceed to sketch out "schema validated components" based on what we agree. </p>
             </div>

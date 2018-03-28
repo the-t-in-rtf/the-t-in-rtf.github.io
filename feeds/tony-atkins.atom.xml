@@ -61,18 +61,18 @@ options merging:&lt;/p&gt;
 
 &lt;p&gt;The merged schema would effectively be:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="nt"&gt;&amp;quot;$schema&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;http://json-schema.org/draft-07/schema&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="nt"&gt;&amp;quot;properties&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-            &lt;span class="nt"&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-                &lt;span class="nt"&gt;&amp;quot;type&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;string&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                &lt;span class="nt"&gt;&amp;quot;minLength&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;
-            &lt;span class="p"&gt;},&lt;/span&gt;
-            &lt;span class="nt"&gt;&amp;quot;address&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-                &lt;span class="nt"&gt;&amp;quot;type&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;string&amp;quot;&lt;/span&gt;
-            &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;$schema&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;http://json-schema.org/draft-07/schema&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;properties&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;quot;type&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;string&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;quot;minLength&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;
         &lt;span class="p"&gt;},&lt;/span&gt;
-        &lt;span class="nt"&gt;&amp;quot;required&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;quot;address&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;quot;type&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;string&amp;quot;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;},&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;required&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -261,12 +261,14 @@ more validation passes. I would propose that we do the following after options e
    JSON Schema draft standard).&lt;/li&gt;
 &lt;li&gt;Validate the component options against the schema.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;The first step would immediately and dramatically make it clear to authors when they have merged material in a way that
-requires the addition of &lt;code&gt;mergePolicy&lt;/code&gt; rules.&lt;/p&gt;
+&lt;p&gt;The first step would immediately and dramatically make it clear to authors when they have merged schema definitions in a
+way that requires the addition of &lt;code&gt;mergePolicy&lt;/code&gt; rules.&lt;/p&gt;
 &lt;h1&gt;Conclusion&lt;/h1&gt;
-&lt;p&gt;In summary, I am proposing using options merging and expansion in combination with &lt;code&gt;mergePolicy&lt;/code&gt; rules to allow us to
-express schema definitions within component options.   I am also proposing that we validate the merged schema first, and
-then validate the component options.&lt;/p&gt;
+&lt;p&gt;In summary, I am proposing that we:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Use options merging and expansion in combination with &lt;code&gt;mergePolicy&lt;/code&gt; rules to allow us to express schema definitions within component options.&lt;/li&gt;
+&lt;li&gt;After options expansion and merging, validate the merged schema first, and if there are no errors, validate the component options using the merged schema.&lt;/li&gt;
+&lt;/ol&gt;
 &lt;p&gt;Although this draft outlines a handful of ways we might proceed, it's meant as a starting point for discussion.  I will
 write up the conclusions we reach and proceed to sketch out "schema validated components" based on what we agree. &lt;/p&gt;</content><category term="JSON Schema"></category></entry><entry><title>Infusion and JSON Schemas, Part 4: End User Feedback, Redux</title><link href="http://the-t-in-rtf.github.io/infusion-and-json-schema-feedback-two.html" rel="alternate"></link><published>2018-03-26T15:30:00+02:00</published><updated>2018-03-26T15:30:00+02:00</updated><author><name>Tony Atkins &lt;tony@raisingthefloor.org&gt;</name></author><id>tag:the-t-in-rtf.github.io,2018-03-26:/infusion-and-json-schema-feedback-two.html</id><summary type="html">&lt;p&gt;An updated discussion of the issues involved in providing end-user feedback when validation options using a JSON Schema.&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;In previous posts like &lt;a href="http://the-t-in-rtf.github.io/infusion-and-json-schema-feedback.html"&gt;this one&lt;/a&gt;, I wrote about a JSON (meta)schema-based approach to
