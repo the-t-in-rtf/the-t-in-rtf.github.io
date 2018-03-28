@@ -140,7 +140,7 @@ look like by default.  We currently use the validator <a href="https://github.co
 to provide some sample validation errors and talk about the key concerns.  For the first two examples, let's assume
 we're using a schema like the following:</p>
 <div class="highlight"><pre><span class="p">{</span>
-    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/draft-04/schema#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/draft-07/schema#&quot;</span><span class="p">,</span>
     <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Deep schema to test variable nesting and paths.&quot;</span><span class="p">,</span>
     <span class="nt">&quot;type&quot;</span><span class="p">:</span>  <span class="s2">&quot;object&quot;</span><span class="p">,</span>
     <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -225,7 +225,7 @@ effort made to say that required field #2 is the specific field that's missing.<
 <p>There is also the special case of the "anyOf" and "allOf" constructs, which are arrays where the index of the failing
 rule is considered.  Let's say we have a schema like the following:</p>
 <div class="highlight"><pre><span class="p">{</span>
-    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/draft-04/schema#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/draft-07/schema#&quot;</span><span class="p">,</span>
     <span class="nt">&quot;id&quot;</span><span class="p">:</span>      <span class="s2">&quot;password.json&quot;</span><span class="p">,</span>
     <span class="nt">&quot;title&quot;</span><span class="p">:</span>   <span class="s2">&quot;Password Validation Schema&quot;</span><span class="p">,</span>
     <span class="nt">&quot;type&quot;</span><span class="p">:</span>    <span class="s2">&quot;object&quot;</span><span class="p">,</span>
@@ -348,7 +348,48 @@ format follow the JSON Schema draft v3 convention, and make <code>required</code
 
 <p>As long as we can agree on this flattened structure, the authoring of error message hints becomes fairly
 straightforward.</p>
+<h2>"Dereferencing" Schemas</h2>
+<p>All of my examples above have presented schemas that define all properties directly.  Many schema
+authors (including myself) follow the best practice of using "definitions" to allow easier reuse within the schema, and
+from other schemas, as in:</p>
+<div class="highlight"><pre><span class="p">{</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/draft-07/schema#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;definitions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="nt">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;email&quot;</span><span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;from&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#/definitions/email&quot;</span> <span class="p">},</span>
+        <span class="nt">&quot;to&quot;</span><span class="p">:</span>   <span class="p">{</span> <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#/definitions/email&quot;</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>In gpii-json-schema, we use <a href="https://www.npmjs.com/package/json-schema-deref">json-schema-deref</a> to "dereference" this
+into something like:</p>
+<div class="highlight"><pre><span class="p">{</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/draft-07/schema#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;definitions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="nt">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;email&quot;</span><span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;from&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="nt">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;email&quot;</span> <span class="p">},</span>
+        <span class="nt">&quot;to&quot;</span><span class="p">:</span>   <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="nt">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;email&quot;</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>The <code>$ref</code> values used into the original are replaced with the full definition.  This allows us to more simply follow
+the strategy outlined above of representing a rule that has been broken in terms of a schema snippet.</p>
 <h1>Conclusion</h1>
+<p>In summary, I am proposing that we:</p>
+<ol>
+<li>Represent UI hints using a structure that relates "path to material" to the appropriate message key.</li>
+<li>Represent validation error messages using a structure that relates "path to material" and "failing rule" to the appropriate message key.</li>
+<li>Agree upon and transform the raw AJV output to our own validation error format.</li>
+<li>Dereference schemas before using them for validation purposes.</li>
+</ol>
 <p>My goal here is to provide a proposal as a starting point, and detailed enough examples to spur a good discussion.  I
 plan to write up the group consensus and use that as part of upcoming work in the gpii-json-schema package.</p>
             </div>

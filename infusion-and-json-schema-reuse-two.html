@@ -340,16 +340,20 @@ in additional options, both in the "restoring" grade, and in any derived grades.
 <p>In the upcoming <a href="https://issues.fluidproject.org/browse/FLUID-6148">"Potentia II"</a> work on Infusion, we will gain
 the ability to bind actions to early parts of the component lifecycle, and to  prevent component creation from
 proceeding further if there are problems.  As Antranig hinted at in a previous meeting, we might use this to bind one or
-more validation passes.  At a minimum, I would propose making two passes:</p>
+more validation passes. I would propose that we do the following after options expansion and merging:</p>
 <ol>
-<li>Validating the merged, expanded schema definition itself.</li>
-<li>Validating the component options against the schema.</li>
+<li>Validate the merged, expanded schema definition itself against its meta schema (typically a particular version of the
+   JSON Schema draft standard).</li>
+<li>Validate the component options against the schema.</li>
 </ol>
 <p>The first step would immediately and dramatically make it clear to authors when they have merged material in a way that
 requires the addition of <code>mergePolicy</code> rules.</p>
 <h1>Conclusion</h1>
+<p>In summary, I am proposing using options merging and expansion in combination with <code>mergePolicy</code> rules to allow us to
+express schema definitions within component options.   I am also proposing that we validate the merged schema first, and
+then validate the component options.</p>
 <p>Although this draft outlines a handful of ways we might proceed, it's meant as a starting point for discussion.  I will
-write up the conclusions we reach and proceed to sketch out "schema validated components" based on what we agree.</p>
+write up the conclusions we reach and proceed to sketch out "schema validated components" based on what we agree. </p>
             </div>
             <!-- /.entry-content -->
     <hr />
