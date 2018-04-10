@@ -1,0 +1,40 @@
+ok 1 Firefox 58.0 - Composition #1: /gpii/node_modules/matchMakerFramework/test/html/MatchMakerUtilitiesTest.html
+ok 2 Firefox 58.0 - Composition #1: /gpii/node_modules/matchMakerFramework/test/html/InverseCapabilitiesTest.html
+ok 3 Firefox 58.0 - Composition #1: /gpii/node_modules/transformer/test/html/TransformerTests.html
+ok 4 Firefox 58.0 - Composition #1: /gpii/node_modules/journal/test/html/JournalIdParserTests.html
+ok 5 Firefox 58.0 - Composition #1: /gpii/node_modules/lifecycleManager/test/html/LifecycleManagerTest.html
+ok 6 Firefox 58.0 - Composition #1: /gpii/node_modules/lifecycleManager/test/html/DynamicComponentIndexerTest.html
+ok 7 Firefox 58.0 - Composition #1: /gpii/node_modules/ontologyHandler/test/html/OntologyHandlerUtilitiesTest.html
+ok 8 Firefox 58.0 - Composition #1: /gpii/node_modules/settingsHandlers/test/web/html/SettingsHandlerUtilitiesTest.html
+ok 9 Firefox 58.0 - Composition #1: /gpii/node_modules/contextManager/test/html/ContextManagerUtilitiesTests.html
+ok 10 Firefox 58.0 - Composition #1: /gpii/node_modules/gpii-oauth2/gpii-oauth2-authz-server/test/html/AuthGrantFinderTests.html
+ok 11 Firefox 58.0 - Composition #1: /gpii/node_modules/gpii-oauth2/gpii-oauth2-authz-server/test/html/AuthorizationServiceTests.html
+ok 12 Firefox 58.0 - Composition #1: /gpii/node_modules/gpii-oauth2/gpii-oauth2-datastore/test/html/DataSource-PouchDBTests.html
+ok 13 Firefox 58.0 - Composition #1: /gpii/node_modules/gpii-oauth2/gpii-oauth2-utilities/test/html/OAuth2UtilitiesTests.html
+ok 14 Firefox 58.0 - Composition #1: /gpii/node_modules/processReporter/test/web/html/ProcessesBridgeTest.html
+ok 15 Firefox 58.0 - Composition #1: /gpii/node_modules/processReporter/test/web/html/ProcessReporterTest.html
+ok 16 Firefox 58.0 - Composition #1: /gpii/node_modules/canopyMatchMaker/test/web/html/CanopyMatchMakerUtilitiesTests.html
+ok 17 Chrome 65.0 - Composition #1: /gpii/node_modules/matchMakerFramework/test/html/MatchMakerUtilitiesTest.html
+ok 18 Chrome 65.0 - Composition #1: /gpii/node_modules/matchMakerFramework/test/html/InverseCapabilitiesTest.html
+ok 19 Chrome 65.0 - Composition #1: /gpii/node_modules/transformer/test/html/TransformerTests.html
+ok 20 Chrome 65.0 - Composition #1: /gpii/node_modules/journal/test/html/JournalIdParserTests.html
+ok 21 Chrome 65.0 - Composition #1: /gpii/node_modules/lifecycleManager/test/html/LifecycleManagerTest.html
+ok 22 Chrome 65.0 - Composition #1: /gpii/node_modules/lifecycleManager/test/html/DynamicComponentIndexerTest.html
+ok 23 Chrome 65.0 - Composition #1: /gpii/node_modules/ontologyHandler/test/html/OntologyHandlerUtilitiesTest.html
+ok 24 Chrome 65.0 - Composition #1: /gpii/node_modules/settingsHandlers/test/web/html/SettingsHandlerUtilitiesTest.html
+ok 25 Chrome 65.0 - Composition #1: /gpii/node_modules/contextManager/test/html/ContextManagerUtilitiesTests.html
+ok 26 Chrome 65.0 - Composition #1: /gpii/node_modules/gpii-oauth2/gpii-oauth2-authz-server/test/html/AuthGrantFinderTests.html
+ok 27 Chrome 65.0 - Composition #1: /gpii/node_modules/gpii-oauth2/gpii-oauth2-authz-server/test/html/AuthorizationServiceTests.html
+ok 28 Chrome 65.0 - Composition #1: /gpii/node_modules/gpii-oauth2/gpii-oauth2-datastore/test/html/DataSource-PouchDBTests.html
+ok 29 Chrome 65.0 - Composition #1: /gpii/node_modules/gpii-oauth2/gpii-oauth2-utilities/test/html/OAuth2UtilitiesTests.html
+ok 30 Chrome 65.0 - Composition #1: /gpii/node_modules/processReporter/test/web/html/ProcessesBridgeTest.html
+ok 31 Chrome 65.0 - Composition #1: /gpii/node_modules/processReporter/test/web/html/ProcessReporterTest.html
+ok 32 Chrome 65.0 - Composition #1: /gpii/node_modules/canopyMatchMaker/test/web/html/CanopyMatchMakerUtilitiesTests.html
+
+1..32
+# tests 32
+# pass  32
+# skip  0
+# fail  0
+
+# ok
