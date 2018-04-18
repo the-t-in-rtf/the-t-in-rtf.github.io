@@ -9,6 +9,12 @@
         that.fuse = new Fuse(gpii.ul["import"].ableData, that.options.fuseOptions);
     };
 
+    gpii.ul.imports.ableData.search.filterKeys = function (that, event) {
+        if (event.keyCode === 13) {
+            that.performSearch(event);
+        }
+    };
+
     gpii.ul.imports.ableData.search.performSearch = function (that, event) {
         event.preventDefault();
         var searchInput = that.locate("searchInput");
@@ -48,9 +54,13 @@
             ]
         },
         invokers: {
+            filterKeys: {
+                funcName: "gpii.ul.imports.ableData.search.filterKeys",
+                args: ["{that}", "{arguments}.0"] // event
+            },
             performSearch: {
                 funcName: "gpii.ul.imports.ableData.search.performSearch",
-                args: ["{that}", "{arguments}.0"]
+                args: ["{that}", "{arguments}.0"] // event
             }
         },
         listeners: {
@@ -62,6 +72,11 @@
                 "this": "{that}.dom.searchSubmit",
                 method: "on",
                 args:   ["click", "{that}.performSearch"]
+            },
+            "onCreate.bindInputEnter": {
+                "this": "{that}.dom.searchInput",
+                method: "on",
+                args: ["keyup", "{that}.filterKeys"]
             }
         },
         components: {
