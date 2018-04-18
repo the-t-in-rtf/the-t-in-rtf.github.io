@@ -88,10 +88,10 @@
                             main: "{{body}}"
                         },
                         partials: {
-                            result: "<tr><td>{{title}}</td><td>{{#each category}}{{.}}, {{/each}}</td><td><a href=\"{{link}}\" target=\"_blank\">View in AbleData</a></td></tr>"
+                            result: "<tr><td>{{title}}</td><td>{{description}}</td><td>{{#each category}}{{.}}, {{/each}}</td><td><a href=\"{{link}}\" target=\"_blank\">View in AbleData</a></td></tr>"
                         },
                         pages: {
-                            "results": "{{#if results}}<p>Found {{results.length}} records matching your search terms.</p>\n<table><thead><tr><th>Title</th><th>Categories</th><th>Link</th></tr></thead><tbody>{{#each results}}{{>result .}}{{/each}}</tbody></table>{{else}}<p>No results found.</p>{{/if}}"
+                            "results": "{{#if results}}<p>Found {{results.length}} records matching your search terms.</p>\n<table><thead><tr><th>Title</th><th>Description</th><th>Categories</th><th>Link</th></tr></thead><tbody>{{#each results}}{{>result .}}{{/each}}</tbody></table>{{else}}<p>No results found.</p>{{/if}}"
                         }
                     }
                 }
