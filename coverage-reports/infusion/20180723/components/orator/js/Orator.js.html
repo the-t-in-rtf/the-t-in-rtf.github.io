@@ -1,0 +1,2990 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for components/orator/js/Orator.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">All files</a> / <a href="index.html">components/orator/js</a> Orator.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>168/168</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">94.79% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>91/96</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>31/31</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>168/168</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+648
+649
+650
+651
+652
+653
+654
+655
+656
+657
+658
+659
+660
+661
+662
+663
+664
+665
+666
+667
+668
+669
+670
+671
+672
+673
+674
+675
+676
+677
+678
+679
+680
+681
+682
+683
+684
+685
+686
+687
+688
+689
+690
+691
+692
+693
+694
+695
+696
+697
+698
+699
+700
+701
+702
+703
+704
+705
+706
+707
+708
+709
+710
+711
+712
+713
+714
+715
+716
+717
+718
+719
+720
+721
+722
+723
+724
+725
+726
+727
+728
+729
+730
+731
+732
+733
+734
+735
+736
+737
+738
+739
+740
+741
+742
+743
+744
+745
+746
+747
+748
+749
+750
+751
+752
+753
+754
+755
+756
+757
+758
+759
+760
+761
+762
+763
+764
+765
+766
+767
+768
+769
+770
+771
+772
+773
+774
+775
+776
+777
+778
+779
+780
+781
+782
+783
+784
+785
+786
+787
+788
+789
+790
+791
+792
+793
+794
+795
+796
+797
+798
+799
+800
+801
+802
+803
+804
+805
+806
+807
+808
+809
+810
+811
+812
+813
+814
+815
+816
+817
+818
+819
+820
+821
+822
+823
+824
+825
+826
+827
+828
+829
+830
+831
+832
+833
+834
+835
+836
+837
+838
+839
+840
+841
+842
+843
+844
+845
+846
+847
+848
+849
+850
+851
+852
+853
+854
+855
+856
+857
+858
+859
+860
+861
+862
+863
+864
+865
+866
+867
+868
+869
+870
+871
+872
+873
+874
+875
+876
+877
+878
+879
+880
+881
+882
+883
+884
+885
+886
+887
+888
+889
+890
+891
+892
+893
+894
+895
+896
+897
+898
+899
+900
+901
+902
+903
+904
+905
+906
+907
+908
+909
+910
+911
+912
+913
+914
+915
+916
+917
+918
+919
+920
+921
+922
+923
+924
+925
+926
+927
+928
+929
+930
+931
+932
+933
+934
+935
+936
+937
+938
+939
+940
+941
+942
+943
+944
+945
+946
+947
+948
+949
+950
+951
+952
+953
+954
+955
+956
+957
+958
+959
+960
+961
+962
+963
+964
+965
+966
+967
+968
+969
+970
+971
+972
+973
+974
+975
+976</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">32x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">32x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">48x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">46x</span>
+<span class="cline-any cline-yes">46x</span>
+<span class="cline-any cline-yes">46x</span>
+<span class="cline-any cline-yes">46x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">46x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">191x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">52x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">48x</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-yes">90x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">66x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*
+Copyright 2013-2018 OCAD University
+&nbsp;
+Licensed under the Educational Community License (ECL), Version 2.0 or the New
+BSD license. You may not use this file except in compliance with one these
+Licenses.
+&nbsp;
+You may obtain a copy of the ECL 2.0 License and BSD License at
+https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
+*/
+&nbsp;
+var fluid_3_0_0 = fluid_3_0_0 || <span class="branch-1 cbranch-no" title="branch not covered" >{};</span>
+&nbsp;
+(function ($, fluid) {
+    "use strict";
+&nbsp;
+    /**********************************************
+     * fluid.orator
+     *
+     * A component for self voicing a web page
+     **********************************************/
+&nbsp;
+    fluid.defaults("fluid.orator", {
+        gradeNames: ["fluid.viewComponent"],
+        selectors: {
+            controller: ".flc-orator-controller",
+            content: ".flc-orator-content"
+        },
+        model: {
+            enabled: true,
+            play: false
+        },
+        components: {
+            tts: {
+                type: "fluid.textToSpeech"
+            },
+            controller: {
+                type: "fluid.orator.controller",
+                options: {
+                    parentContainer: "{orator}.container",
+                    model: {
+                        playing: "{orator}.model.play",
+                        enabled: "{orator}.model.enabled"
+                    }
+                }
+            },
+            selectionReader: {
+                type: "fluid.orator.selectionReader",
+                container: "{that}.container",
+                options: {
+                    model: {
+                        enabled: "{orator}.model.enabled"
+                    }
+                }
+            },
+            domReader: {
+                type: "fluid.orator.domReader",
+                container: "{that}.dom.content",
+                options: {
+                    model: {
+                        tts: {
+                            enabled: "{orator}.model.enabled"
+                        }
+                    },
+                    listeners: {
+                        "utteranceOnEnd.domReaderStop": {
+                            changePath: "{orator}.model.play",
+                            value: false,
+                            source: "domReader.utteranceOnEnd",
+                            priority: "after:removeHighlight"
+                        }
+                    },
+                    modelListeners: {
+                        "{orator}.model.play": {
+                            funcName: "fluid.orator.handlePlayToggle",
+                            args: ["{that}", "{change}.value"],
+                            namespace: "domReader.handlePlayToggle"
+                        }
+                    }
+                }
+            }
+        },
+        modelListeners: {
+            "enabled": {
+                listener: "{tts}.cancel",
+                namespace: "orator.clearSpeech"
+            }
+        },
+        distributeOptions: [{
+            source: "{that}.options.tts",
+            target: "{that tts}.options",
+            removeSource: true,
+            namespace: "ttsOpts"
+        }, {
+            source: "{that}.options.controller",
+            target: "{that controller}.options",
+            removeSource: true,
+            namespace: "controllerOpts"
+        }, {
+            source: "{that}.options.domReader",
+            target: "{that domReader}.options",
+            removeSource: true,
+            namespace: "domReaderOpts"
+        }, {
+            source: "{that}.options.selectionReader",
+            target: "{that selectionReader}.options",
+            removeSource: true,
+            namespace: "selectionReaderOpts"
+        }]
+    });
+&nbsp;
+    fluid.orator.handlePlayToggle = function (that, state) {
+        if (state) {
+            that.play();
+        } else {
+            that.pause();
+        }
+    };
+&nbsp;
+    /**********************************************
+     * fluid.orator.controller
+     *
+     * Provides a UI Widget to control the Orator
+     **********************************************/
+&nbsp;
+    fluid.defaults("fluid.orator.controller", {
+        gradeNames: ["fluid.containerRenderingView"],
+        selectors: {
+            playToggle: ".flc-orator-controller-playToggle"
+        },
+        styles: {
+            play: "fl-orator-controller-play"
+        },
+        strings: {
+            play: "play",
+            pause: "pause"
+        },
+        model: {
+            playing: false,
+            enabled: true
+        },
+        markup: {
+            container: "&lt;div class=\"flc-orator-controller fl-orator-controller\"&gt;" +
+                "&lt;div class=\"fl-icon-orator\" aria-hidden=\"true\"&gt;&lt;/div&gt;" +
+                "&lt;button class=\"flc-orator-controller-playToggle\"&gt;" +
+                    "&lt;span class=\"fl-orator-controller-playToggle fl-icon-orator-playToggle\" aria-hidden=\"true\"&gt;&lt;/span&gt;" +
+                "&lt;/button&gt;&lt;/div&gt;"
+        },
+        invokers: {
+            play: {
+                changePath: "playing",
+                value: true,
+                source: "play"
+            },
+            pause: {
+                changePath: "playing",
+                value: false,
+                source: "pause"
+            },
+            toggle: {
+                funcName: "fluid.orator.controller.toggleState",
+                // Not providing an option for the explicit state value because
+                // when called through the jQuery click event the event object
+                // is passed in.
+                args: ["{that}", "playing"]
+            },
+            // overriding the addToParent to "prepend" the container to the parentContainer
+            addToParent: {
+                args: ["{that}.options.parentContainer", "{arguments}.0", "prepend"]
+            }
+        },
+        listeners: {
+            "onCreate.bindClick": {
+                "this": "{that}.dom.playToggle",
+                method: "click",
+                args: ["{that}.toggle"]
+            }
+        },
+        modelListeners: {
+            "playing": {
+                listener: "fluid.orator.controller.setToggleView",
+                args: ["{that}", "{change}.value"]
+            },
+            "enabled": {
+                "this": "{that}.container",
+                method: "toggle",
+                args: ["{change}.value"],
+                namespace: "toggleView"
+            }
+        }
+    });
+&nbsp;
+    /**
+     * Used to toggle the state of a model value at a specified path. The new state will be the inverse of the current
+     * boolean value at the specified model path, or can be set explicitly by passing in a 'state' value. It's likely
+     * that this method will be used in conjunction with a click handler. In that case it's most likely that the state
+     * will be toggling the existing model value.
+     *
+     * @param {Component} that - the component
+     * @param {String|Array} path - the path, into the model, for the value to toggle
+     * @param {Boolean} state - (optional) explicit state to set the model value to
+     */
+    fluid.orator.controller.toggleState = function (that, path, state) {
+        var newState = fluid.isValue(state) ? state : !fluid.get(that.model, path);
+        // the !! ensures that the newState is a boolean value.
+        that.applier.change(path, !!newState, "ADD", "toggleState");
+    };
+&nbsp;
+    /**
+     * Sets the view state of the toggle controller.
+     * True - play style added
+     *      - aria-label set to the `pause` string
+     * False - play style removed
+     *       - aria-label set to the `play` string
+     *
+     * @param {Component} that - the component
+     * @param {Boolean} state - the state to set the controller to
+     */
+    fluid.orator.controller.setToggleView = function (that, state) {
+        var playToggle = that.locate("playToggle");
+        playToggle.toggleClass(that.options.styles.play, state);
+        playToggle.attr({
+            "aria-label": that.options.strings[state ? "pause" : "play"]
+        });
+    };
+&nbsp;
+&nbsp;
+    /*******************************************************************************
+     * fluid.orator.domReader
+     *
+     * Reads in text from a DOM element and voices it
+     *******************************************************************************/
+&nbsp;
+    fluid.defaults("fluid.orator.domReader", {
+        gradeNames: ["fluid.viewComponent"],
+        selectors: {
+            highlight: ".flc-orator-highlight"
+        },
+        markup: {
+            highlight: "&lt;mark class=\"flc-orator-highlight fl-orator-highlight\"&gt;&lt;/mark&gt;"
+        },
+        events: {
+            onQueueSpeech: null,
+            onReadFromDOM: null,
+            utteranceOnEnd: null,
+            utteranceOnBoundary: null,
+            utteranceOnError: null,
+            utteranceOnMark: null,
+            utteranceOnPause: null,
+            utteranceOnResume: null,
+            utteranceOnStart: null
+        },
+        utteranceEventMap: {
+            onboundary: "utteranceOnBoundary",
+            onend: "utteranceOnEnd",
+            onerror: "utteranceOnError",
+            onmark:"utteranceOnMark",
+            onpause: "utteranceOnPause",
+            onresume: "utteranceOnResume",
+            onstart: "utteranceOnStart"
+        },
+        model: {
+            tts: {
+                paused: false,
+                speaking: false,
+                enabled: true
+            },
+            parseQueueLength: 0,
+            parseIndex: null,
+            ttsBoundary: null
+        },
+        modelRelay: [{
+            target: "parseIndex",
+            backward: "never",
+            namespace: "getClosestIndex",
+            singleTransform: {
+                type: "fluid.transforms.free",
+                func: "fluid.orator.domReader.getClosestIndex",
+                args: ["{that}", "{that}.model.ttsBoundary"]
+            }
+        }],
+        members: {
+            parseQueue: [],
+            range: {
+                expander: {
+                    this: "document",
+                    method: "createRange"
+                }
+            }
+        },
+        components: {
+            parser: {
+                type: "fluid.orator.domReader.parser"
+            }
+        },
+        invokers: {
+            parsedToString: "fluid.orator.domReader.parsedToString",
+            readFromDOM: {
+                funcName: "fluid.orator.domReader.readFromDOM",
+                args: ["{that}", "{that}.container"]
+            },
+            removeHighlight: {
+                funcName: "fluid.orator.domReader.unWrap",
+                args: ["{that}.dom.highlight"]
+            },
+            setParseQueue: {
+                funcName: "fluid.orator.domReader.setParseQueue",
+                args: ["{that}", "{arguments}.0"]
+            },
+            resetParseQueue: {
+                funcName: "fluid.orator.domReader.setParseQueue",
+                args: ["{that}"]
+            },
+            highlight: {
+                funcName: "fluid.orator.domReader.highlight",
+                args: ["{that}", "{arguments}.0"]
+            },
+            play: {
+                funcName: "fluid.orator.domReader.play",
+                args: ["{that}", "{fluid.textToSpeech}.resume"]
+            },
+            pause: {
+                funcName: "fluid.orator.domReader.pause",
+                args: ["{that}", "{fluid.textToSpeech}.pause"]
+            },
+            queueSpeech: {
+                funcName: "fluid.orator.domReader.queueSpeech",
+                args: ["{that}", "{arguments}.0", true, "{arguments}.1"]
+            }
+        },
+        modelListeners: {
+            "highlight": {
+                listener: "{that}.highlight",
+                path: ["parseIndex", "parseQueueLength"]
+            }
+        },
+        listeners: {
+            "onQueueSpeech.removeExtraWhiteSpace": "fluid.orator.domReader.removeExtraWhiteSpace",
+            "onQueueSpeech.queueSpeech": {
+                func: "{fluid.textToSpeech}.queueSpeech",
+                args: ["{arguments}.0", "{arguments}.1.interrupt", "{arguments}.1"],
+                priority: "after:removeExtraWhiteSpace"
+            },
+            "utteranceOnEnd.resetParseQueue": {
+                listener: "{that}.resetParseQueue"
+            },
+            "utteranceOnEnd.removeHighlight": {
+                listener: "{that}.removeHighlight",
+                priority: "after:resetParseQueue"
+            },
+            "utteranceOnEnd.updateTTSModel": {
+                changePath: "tts",
+                value: {
+                    speaking: false,
+                    paused: false
+                }
+            },
+            "utteranceOnStart.updateTTSModel": {
+                changePath: "tts",
+                value: {
+                    speaking: true,
+                    paused: false
+                }
+            },
+            "utteranceOnPause.updateTTSModel": {
+                changePath: "tts",
+                value: {
+                    speaking: true,
+                    paused: true
+                }
+            },
+            "utteranceOnResume.updateTTSModel": {
+                changePath: "tts",
+                value: {
+                    speaking: true,
+                    paused: false
+                }
+            },
+            "utteranceOnBoundary.setCurrentBoundary": {
+                changePath: "ttsBoundary",
+                value: "{arguments}.0.charIndex",
+                source: "utteranceOnBoundary"
+            },
+            "onDestroy.detachRange": {
+                "this": "{that}.range",
+                method: "detach"
+            }
+        }
+    });
+&nbsp;
+    fluid.orator.domReader.play = function (that, resumeFn) {
+        if (that.model.tts.enabled) {
+            if (that.model.tts.paused) {
+                resumeFn();
+            } else if (!that.model.tts.speaking) {
+                that.readFromDOM();
+            }
+        }
+    };
+&nbsp;
+    fluid.orator.domReader.pause = function (that, pauseFn) {
+        if (that.model.tts.speaking &amp;&amp; !that.model.tts.paused) {
+            pauseFn();
+        }
+    };
+&nbsp;
+    fluid.orator.domReader.mapUtteranceEvents = function (that, utterance, utteranceEventMap) {
+        fluid.each(utteranceEventMap, function (compEventName, utteranceEvent) {
+            var compEvent = that.events[compEventName];
+            utterance[utteranceEvent] = compEvent.fire;
+        });
+    };
+&nbsp;
+    fluid.orator.domReader.removeExtraWhiteSpace = function (text) {
+        var promise = fluid.promise();
+        // force a string value
+        var str = text.toString();
+        // trim whitespace
+        str = str.trim();
+&nbsp;
+        if (str) {
+            promise.resolve(str);
+        } else {
+            promise.reject("The text is empty");
+        }
+&nbsp;
+        return promise;
+    };
+&nbsp;
+    /**
+     * Operates the core "transforming promise workflow" for queuing an utterance. The initial listener is provided the
+     * initial text; which then proceeds through the transform chain to arrive at the final text.
+     * To change the speech function (e.g for testing) the onQueueSpeech.queueSpeech listener can be overridden.
+     *
+     * @param {Component} that - The component
+     * @param {String} text - The text to be synthesized
+     * @param {Boolean} interrupt - Used to indicate if this text should be queued or replace existing utterances.
+     *                              This will be passed along to the listeners in the options; `options.interrupt`.
+     * @param {Object} options - (optional) options to configure the utterance with. This will also be interpolated with
+     *                           the interrupt parameter and event mappings. See: fluid.textToSpeech.queueSpeech in
+     *                           TextToSpeech.js for an example of utterance options for that speech function.
+     *
+     * @return {Promise} - A promise for the final resolved text
+     */
+    fluid.orator.domReader.queueSpeech = function (that, text, interrupt, options) {
+        options = options || {};
+        options.interrupt = interrupt || <span class="branch-1 cbranch-no" title="branch not covered" >options.interrupt;</span>
+        // map events
+        fluid.orator.domReader.mapUtteranceEvents(that, options, that.options.utteranceEventMap);
+&nbsp;
+        return fluid.promise.fireTransformEvent(that.events.onQueueSpeech, text, options);
+    };
+&nbsp;
+    /**
+     * Unwraps the contents of the element by removing the tag surrounding the content and placing the content
+     * as a node within the element's parent. The parent is also normalized to combine any adjacent textnodes.
+     *
+     * @param {String|jQuery|DomElement} elm - element to unwrap
+     */
+    fluid.orator.domReader.unWrap = function (elm) {
+        elm = $(elm);
+&nbsp;
+        if (elm.length) {
+            var parent = elm.parent();
+            // Remove the element, but place its contents within the parent.
+            elm.contents().unwrap();
+            // Normalize the parent to cleanup textnodes
+            parent[0].normalize();
+        }
+    };
+&nbsp;
+    /**
+     * Sets the parseQueue and related model values
+     *
+     * @param {Component} that - the component
+     * @param {DomWordMap[]} parseQueue - An array of {DomWordMap} objects containing the position mappings from a parsed
+     *                                   {DomElement}.
+     */
+    fluid.orator.domReader.setParseQueue = function (that, parseQueue) {
+        that.parseQueue = parseQueue || [];
+        that.applier.change("", {
+            parseQueueLength: that.parseQueue.length,
+            parseIndex: null,
+            ttsBoundary: null
+        }, "ADD", "resetParseQueue");
+    };
+&nbsp;
+    /**
+     * Positional information about a word parsed from the text in a {DomElement}. This can be used for mappings between
+     * a synthesizer's speech boundary and the word's location within the DOM.
+     * The structure of each data point is as follows:
+     *  {
+     *      blockIndex: {Integer}, // the index into the entire block of text being parsed from the DOM
+     *      startOffset: {Integer}, // the start offset of the current `word` relative to the closest
+     *                             // enclosing DOM element
+     *      endOffset: {Integer}, // the end offset of the current `word` relative to the closest
+     *                           // enclosing DOM element
+     *      node: {DomNode}, // the current child node being parsed
+     *      childIndex: {Integer}, // the index of the child node being parsed relative to its parent
+     *      parentNode: {DomElement}, // the parent DOM node
+     *      word: {String} // the text, `word`, parsed from the node. (It may contain only whitespace.)
+     *   }
+     *
+     * @typedef {Object} DomWordMap
+     */
+&nbsp;
+    /**
+     * Combines the parsed text into a String.
+     *
+     * @param {DomWordMap[]} parsed - An array of {DomWordMap} objects containing the position mappings from a parsed
+     *                                   {DomElement}.
+     *
+     * @return {String} - The parsed text combined into a String.
+     */
+    fluid.orator.domReader.parsedToString = function (parsed) {
+        var words = fluid.transform(parsed, function (block) {
+            return block.word;
+        });
+&nbsp;
+        return words.join("");
+    };
+&nbsp;
+    /**
+     * Parses the DOM element into data points to use for highlighting the text, and queues the text into the self
+     * voicing engine. The parsed data points are added to the component's `parseQueue`
+     *
+     * @param {Component} that - the component
+     * @param {String|jQuery|DomElement} elm - The DOM node to read
+     */
+    fluid.orator.domReader.readFromDOM = function (that, elm) {
+        elm = $(elm);
+&nbsp;
+        // only execute if there are nodes to read from
+        if (elm.length) {
+            var parsedFromElm = that.parser.parse(elm[0]);
+            that.setParseQueue(parsedFromElm);
+            that.queueSpeech(that.parsedToString(parsedFromElm));
+        }
+    };
+&nbsp;
+    /**
+     * Returns the index of the closest data point from the parseQueue based on the boundary provided.
+     *
+     * @param {Component} that - The component
+     * @param {Integer} boundary - The boundary value used to compare against the blockIndex of the parsed data points.
+     *                             If the boundary is undefined or out of bounds, `undefined` will be returned.
+     *
+     * @return {Integer|undefined} - Will return the index of the closest data point in the parseQueue. If the boundary
+     *                               cannot be located within the parseQueue, `undefined` is returned.
+     */
+    fluid.orator.domReader.getClosestIndex = function (that, boundary) {
+        var parseQueue = that.parseQueue;
+&nbsp;
+        if (!parseQueue.length || !fluid.isValue(boundary)) {
+            return undefined;
+        };
+&nbsp;
+        var maxIndex = Math.max(parseQueue.length - 1, 0);
+        var index = Math.max(Math.min(that.model.parseIndex || 0, maxIndex), 0);
+        var maxBoundary = parseQueue[maxIndex].blockIndex + parseQueue[maxIndex].word.length;
+&nbsp;
+        if (boundary &gt; maxBoundary || boundary &lt; 0) {
+            return undefined;
+        }
+&nbsp;
+        while (index &gt;= 0) {
+            var nextIndex = index + 1;
+            var prevIndex = index - 1;
+            var currentBlockIndex = parseQueue[index].blockIndex;
+            var nextBlockIndex = index &lt; maxIndex ? parseQueue[nextIndex].blockIndex : (maxBoundary + 1);
+&nbsp;
+            // Break if the boundary lies within the current block
+            if (boundary &gt;= currentBlockIndex &amp;&amp; boundary &lt; nextBlockIndex) {
+                break;
+            }
+&nbsp;
+            if (currentBlockIndex &gt; boundary) {
+                index = prevIndex;
+            } else {
+                index = nextIndex;
+            }
+        }
+&nbsp;
+        return index;
+&nbsp;
+    };
+&nbsp;
+    /**
+     * Highlights text from the parseQueue according to the specified boundary. Highlights are performed by wrapping
+     * the appropriate text in the markup specified by `that.options.markup.highlight`.
+     *
+     * @param {Component} that - the component
+     * @param {Integer} boundary - the boundary point used to find the text to highlight. Typically this is the
+     *                             utterance boundary returned from the utteranceOnBoundary event.
+     */
+    fluid.orator.domReader.highlight = function (that) {
+        that.removeHighlight();
+&nbsp;
+        if (that.model.parseQueueLength &amp;&amp; fluid.isValue(that.model.parseIndex)) {
+            var data = that.parseQueue[that.model.parseIndex];
+            var rangeNode = data.parentNode.childNodes[data.childIndex];
+&nbsp;
+            that.range.selectNode(rangeNode);
+            that.range.setStart(rangeNode, data.startOffset);
+            that.range.setEnd(rangeNode, data.endOffset);
+            that.range.surroundContents($(that.options.markup.highlight)[0]);
+        }
+    };
+&nbsp;
+&nbsp;
+    /*******************************************************************************
+     * fluid.orator.domReader.parser
+     *
+     * Parses the text from the DOM into a format that is suitable for reading back
+     * by the fluid.orator.domReader
+     *******************************************************************************/
+&nbsp;
+    fluid.defaults("fluid.orator.domReader.parser", {
+        gradeNames: ["fluid.component"],
+        invokers: {
+            parse: {
+                funcName: "fluid.orator.domReader.parser.parse",
+                args: ["{that}", "{arguments}.0", "{arguments}.1"]
+            },
+            hasTextToRead: "fluid.orator.domReader.parser.hasTextToRead",
+            isWord: "fluid.orator.domReader.parser.isWord",
+            addParsedData: "fluid.orator.domReader.parser.addParsedData"
+        }
+    });
+&nbsp;
+    // Constants representing DOM node types.
+    fluid.orator.domReader.parser.nodeType = {
+        ELEMENT_NODE: 1,
+        TEXT_NODE: 3
+    };
+&nbsp;
+    /**
+     * Tests if a string is a word, that is it has a value and is not only whitespace.
+     * inspired by https://stackoverflow.com/a/2031143
+     *
+     * @param {String} str - the String to test
+     *
+     * @return {Boolean} - `true` if a word, `false` otherwise.
+     */
+    fluid.orator.domReader.parser.isWord = function (str) {
+        return fluid.isValue(str) &amp;&amp; /\S/.test(str);
+    };
+&nbsp;
+    /**
+     * Determines if there is text in an element that should be read.
+     * Will return false in the following conditions:
+     * - elm is falsey (undefined, null, etc.)
+     * - elm's offsetHeight is 0 (e.g. display none set on itself or its parent)
+     * - elm has no text or only whitespace
+     * - elm or its parent has `aria-hidden="true"` set.
+     *
+     * NOTE: Text added by pseudo elements (e.g. :before, :after) are not considered.
+     * NOTE: This method is not supported in IE 11 because innerText returns the text for some hidden elements
+     *       that is inconsistent with modern browsers.
+     *
+     * @param {jQuery|DomElement} elm - either a DOM node or a jQuery element
+     *
+     * @return {Boolean} - returns true if there is rendered text within the element and false otherwise.
+     *                     (See rules above)
+     */
+    fluid.orator.domReader.parser.hasTextToRead = function (elm) {
+        elm = fluid.unwrap(elm);
+&nbsp;
+        return elm &amp;&amp;
+               !!elm.offsetHeight &amp;&amp;
+               fluid.orator.domReader.parser.isWord(elm.innerText) &amp;&amp;
+               !$(elm).closest("[aria-hidden=\"true\"]").length;
+    };
+&nbsp;
+    /**
+     * Adds a {DomWordMap} to the 'parsed' {DomWordMap[]} array, containing the position mappings for the parsed DOM
+     * elements.
+     *
+     * See: DomWordMap TypeDef for a detailed description of its structure.
+     *
+     * @param {DomWordMap[]} parsed - An array of {DomWordMap} objects containing the position mappings from a parsed
+     *                                   {DomElement}.
+     * @param {String} word - The word, parsed from the node, to be added
+     * @param {DomNode} childNode - The current textnode being operated on
+     * @param {Integer} blockIndex - The index into the entire block of text being parsed from the DOM
+     * @param {Integer} charIndex - The index into the current node being operated on, that is the start index of the
+     *                              word in the string representing the text of the node.
+     * @param {Integer} childIndex - The index of the node in the list of its parent's child nodes.
+     */
+    fluid.orator.domReader.parser.addParsedData = function (parsed, word, childNode, blockIndex, charIndex, childIndex) {
+        parsed.push({
+            blockIndex: blockIndex,
+            startOffset: charIndex,
+            endOffset: charIndex + word.length,
+            node: childNode,
+            childIndex: childIndex,
+            parentNode: childNode.parentNode,
+            word: word
+        });
+    };
+&nbsp;
+    /**
+     * Recursively parses a DOM element and it's sub elements to construct an array of data points representing the
+     * words and space between the words. This data structure provides the means for locating text to highlight as the
+     * self voicing engine runs.
+     * NOTE: consecutive whitespace is collapsed to the first whitespace character.
+     * NOTE: hidden text is skipped.
+     *
+     * @param {Component} that - the component
+     * @param {jQuery|DomElement} elm - the DOM node to parse
+     * @param {Integer} blockIndex - The `blockIndex` represents the index into the entire block of text being parsed.
+     *                              It defaults to 0 and is primarily used internally for recursive calls.
+     *
+     * @return {DomWordMap[]} - An array of {DomWordMap} objects containing the position mappings parsed from `elm`.
+     */
+    fluid.orator.domReader.parser.parse = function (that, elm, blockIndex) {
+        var parsed = [];
+        elm = fluid.unwrap(elm);
+        blockIndex = blockIndex || 0;
+&nbsp;
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (that.hasTextToRead(elm)) {
+            var childNodes = elm.childNodes;
+&nbsp;
+            $.each(childNodes, function (childIndex, childNode) {
+                if (childNode.nodeType === fluid.orator.domReader.parser.nodeType.TEXT_NODE) {
+                    var words = childNode.textContent.split(/(\s+)/); // split on whitespace, and capture whitespace
+                    // charIndex is the start index of the word in the nested block of text
+                    var charIndex = 0;
+&nbsp;
+                    fluid.each(words, function (word) {
+                        if (that.isWord(word)) {
+                            that.addParsedData(parsed, word, childNode, blockIndex, charIndex, childIndex);
+                            blockIndex += word.length;
+                        // if the current `word` is not an empty string and the last parsed `word` is not whitespace
+                        } else if (word &amp;&amp; that.isWord(fluid.get(parsed, [(parsed.length - 1), "word"]))) {
+                            that.addParsedData(parsed, word, childNode, blockIndex, charIndex, childIndex);
+                            blockIndex += word.length;
+                        }
+                        charIndex += word.length;
+                    });
+                } else if (childNode.nodeType === fluid.orator.domReader.parser.nodeType.ELEMENT_NODE &amp;&amp;
+                    that.hasTextToRead(childNode)) {
+                    parsed = parsed.concat(fluid.orator.domReader.parser.parse(that, childNode, blockIndex));
+                    <span class="missing-if-branch" title="else path not taken" >E</span>if (parsed.length) {
+                        var lastParsed = parsed[parsed.length - 1];
+                        blockIndex = lastParsed.blockIndex + lastParsed.word.length;
+                    }
+                }
+            });
+        }
+&nbsp;
+        return parsed;
+    };
+&nbsp;
+&nbsp;
+&nbsp;
+    /*******************************************************************************
+     * fluid.orator.selectionReader
+     *
+     * Reads in text from a selection and voices it
+     *******************************************************************************/
+&nbsp;
+    fluid.defaults("fluid.orator.selectionReader", {
+        gradeNames: ["fluid.viewComponent"],
+        selectors: {
+            play: ".flc-orator-selectionReader-play"
+        },
+        strings: {
+            playButton: "play"
+        },
+        styles: {
+            above: "fl-orator-selectionReader-above",
+            below: "fl-orator-selectionReader-below"
+        },
+        markup: {
+            playButton: "&lt;button class=\"flc-orator-selectionReader-play fl-orator-selectionReader-play\"&gt;&lt;span class=\"fl-icon-orator\"&gt;&lt;/span&gt;&lt;span&gt;%playButton&lt;/span&gt;&lt;/button&gt;"
+        },
+        model: {
+            enabled: true,
+            showUI: false,
+            play: false,
+            text: ""
+        },
+        // similar to em values as it will be multiplied by the container's font-size
+        offsetScale: {
+            edge: 3,
+            pointer: 2.5
+        },
+        events: {
+            onSelectionChanged: null,
+            utteranceOnEnd: null
+        },
+        listeners: {
+            "onCreate.bindEvents": {
+                funcName: "fluid.orator.selectionReader.bindSelectionEvents",
+                args: ["{that}"]
+            },
+            "onSelectionChanged.updateText": "{that}.getSelectedText",
+            "utteranceOnEnd.stop": {
+                changePath: "play",
+                value: false,
+                source: "stopMethod"
+            }
+        },
+        modelListeners: {
+            "showUI": {
+                funcName: "fluid.orator.selectionReader.renderPlayButton",
+                args: ["{that}", "{change}.value"],
+                namespace: "render"
+            },
+            "text": {
+                func: "{that}.stop",
+                namespace: "stopPlayingWhenTextChanges"
+            },
+            "play": {
+                func: "fluid.orator.selectionReader.queueSpeech",
+                args: ["{that}", "{change}.value", "{fluid.textToSpeech}.queueSpeech"],
+                namespace: "queueSpeech"
+            },
+            "enabled": {
+                funcName: "fluid.orator.selectionReader.updateText",
+                args: ["{that}", "{change}.value"],
+                namespace: "updateText"
+            }
+        },
+        modelRelay: [{
+            source: "text",
+            target: "showUI",
+            backward: "never",
+            namespace: "showUIControl",
+            singleTransform: {
+                type: "fluid.transforms.stringToBoolean"
+            }
+        }],
+        invokers: {
+            getSelectedText: {
+                changePath: "text",
+                value: {
+                    expander: {
+                        funcName: "fluid.orator.selectionReader.getSelectedText"
+                    }
+                },
+                source: "getSelectedText"
+            },
+            play: {
+                changePath: "play",
+                value: true,
+                source: "playMethod"
+            },
+            stop: {
+                funcName: "fluid.orator.selectionReader.stopSpeech",
+                args: ["{that}.model.play", "{fluid.textToSpeech}.cancel"]
+            }
+        }
+    });
+&nbsp;
+    fluid.orator.selectionReader.stopSpeech = function (state, cancelFn) {
+        if (state) {
+            cancelFn();
+        }
+    };
+&nbsp;
+    fluid.orator.selectionReader.queueSpeech = function (that, state, speechFn) {
+        if (state) {
+            speechFn(that.model.text, true, {onend: that.events.utteranceOnEnd.fire});
+        }
+    };
+&nbsp;
+    fluid.orator.selectionReader.bindSelectionEvents = function (that) {
+        $(document).on("selectionchange", function (e) {
+            if (that.model.enabled) {
+                that.events.onSelectionChanged.fire(e);
+            }
+        });
+    };
+&nbsp;
+    fluid.orator.selectionReader.updateText = function (that, state) {
+        if (state) {
+            that.getSelectedText();
+        } else {
+            that.applier.change("text", "", "ADD", "updateText");
+        }
+    };
+&nbsp;
+    /**
+     * Retrieves the text from the current selection
+     *
+     * @return {String} - the text from the current selection
+     */
+    fluid.orator.selectionReader.getSelectedText = function () {
+        return window.getSelection().toString();
+    };
+&nbsp;
+    fluid.orator.selectionReader.location = {
+        TOP: 0,
+        RIGHT: 1,
+        BOTTOM: 2,
+        LEFT: 3
+    };
+&nbsp;
+    /**
+     * Returns a position object containing coordinates for absolutely positioning the play button
+     * relative to a passed in rect. By default it will be placed above the rect unless there is a collision with the
+     * top of the window. In which case it will be placed below. This will be captured in the "location" propertied,
+     * and is specified by a constant (See: fluid.orator.selectionReader.location).
+     *
+     * In addition to collision detection wth the top of the window, collision detection for the left and right edges of
+     * the window are also taken into account. However, the position will not be flipped, but will be translated
+     * slightly to ensure that the item being placed is displayed on screen. These calculations are facilitated through
+     * an offsetScale object passed in.
+     *
+     * @param {Object} rect - A DOMRect object, used to calculate placement against. Specifically the "top", "bottom",
+     *                        and "left" properties may be used for positioning.
+     * @param {Float} fontSize - the base font to multiple the offset against
+     * @param {Object} offsetScale - (Optional) an object containing specified offsets: "edge" and "pointer". The "edge"
+     *                               offset refers to the minimum distance between the button and the window edges. The
+     *                               "pointer" offset refers to the distance between the button and the coordinates the
+     *                               DOMRect refers too. This is provides space for an arrow to point from the button.
+     *                               Offsets all default to 1.
+     * @param {Object} wndw - (Optional) Mainly this is provided for testing to allow mocking of the Window's scroll
+     *                        offsets.
+     *
+     * @return {Object} - An object containing the coordinates for positioning the play button.
+     *                    It takes the form {top: Float, left: Float, location: Integer}
+     *                    For location constants see: fluid.orator.selectionReader.location
+     */
+    fluid.orator.selectionReader.calculatePosition = function (rect, fontSize, offsetScale, wndw) {
+        var position = {};
+        var edgeOffset = fontSize * (fluid.get(offsetScale, "edge") || 1);
+        var pointerOffset = fontSize * (fluid.get(offsetScale, "pointer") || 1);
+        wndw = wndw || window;
+&nbsp;
+        if (rect.top &lt; edgeOffset) {
+            position.top = rect.bottom + wndw.pageYOffset;
+            position.location = fluid.orator.selectionReader.location.BOTTOM;
+        } else {
+            position.top = rect.top + wndw.pageYOffset - pointerOffset;
+            position.location = fluid.orator.selectionReader.location.TOP;
+        }
+&nbsp;
+        position.left = Math.min(
+            Math.max(rect.left + wndw.pageXOffset, edgeOffset + wndw.pageXOffset),
+            (document.documentElement.clientWidth + wndw.pageXOffset - edgeOffset)
+        );
+&nbsp;
+        return position;
+    };
+&nbsp;
+    fluid.orator.selectionReader.renderPlayButton = function (that, state) {
+        if (state) {
+            var selectionRange = window.getSelection().getRangeAt(0);
+            var rect = selectionRange.getClientRects()[0];
+            var fontSize = parseFloat(that.container.css("font-size"));
+            var position = fluid.orator.selectionReader.calculatePosition(rect, fontSize, that.options.offsetScale);
+            var playMarkup = fluid.stringTemplate(that.options.markup.playButton, that.options.strings);
+            var playButton = $(playMarkup);
+&nbsp;
+            playButton.css({
+                top:  position.top,
+                left: position.left
+            });
+            var positionClass = that.options.styles[position.location === fluid.orator.selectionReader.location.TOP ? "above" : <span class="branch-1 cbranch-no" title="branch not covered" >"below"]</span>;
+            playButton.addClass(positionClass);
+            playButton.click(that.play);
+            playButton.appendTo(that.container);
+&nbsp;
+            // cleanup range
+            selectionRange.detach();
+&nbsp;
+        } else {
+            that.locate("play").remove();
+        }
+    };
+&nbsp;
+})(jQuery, fluid_3_0_0);
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Jul 23 2018 12:25:38 GMT+0200 (CEST)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>
