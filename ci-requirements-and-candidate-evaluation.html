@@ -103,7 +103,7 @@ features of various tools.</p>
 <li>Build pipelines that result in creating releases, deploying updated containers, et cetera.</li>
 </ol>
 <p>For the purposes of this discussion I am focused on the first, the process of managing changes to our repositories.</p>
-<h2>Requirements</h2>
+<h2>How We Manage Code Changes</h2>
 <p>Our codebases are hosted in an organisational repository that contains the "target" for changes, generally the "master"
 branch of our codebase.  We tend to make changes to our code roughly as follows:</p>
 <ol>
@@ -122,19 +122,21 @@ branch of our codebase.  We tend to make changes to our code roughly as follows:
 </ol>
 <p>CI is key for the third step in this process, which is illustrated in the following diagram.</p>
 <p><img alt="Pull request workflow diagram." src="../images/pull-request-details.svg"></p>
-<p>In this context, CI builds provide a shared and consistent way to talk about test failures, coverage reports, log
-output, and are often used many times within a single review.</p>
-<p>Most of our core requirements are the same moving forward.  The one key improvement we have discussed is devolving as
-much ownership as we can of build configurations to the community contributing changes to each project.  Although we
-have experimented with tools that support decentralised build configurations, currently our build configurations are
-managed centrally in a separate repository, and there is one build configuration per codebase.</p>
+<p>In this process of reviewing a proposed change, CI builds provide a shared and consistent way to talk about test
+failures, coverage reports, log output.  Each pull request review often involves many changes and associated builds.
+It is critical that we be able to view the results of a CI build in the context of the associate pull request.</p>
+<h2>CI Requirements</h2>
+<p>In addition to supporting our development workflow (see above), an important key improvement we have discussed is
+devolving as much ownership as we can of build configurations to the community contributing changes to each project. 
+Although we have experimented with tools that support decentralised build configurations, currently our build
+configurations are managed centrally in a separate repository, and there is one build configuration per codebase.</p>
 <p>For the future, we want to have much of the build configuration be part of the codebase, so that:</p>
 <ol>
 <li>Changes can be tested in isolation without disrupting other ongoing work.</li>
 <li>The developer submitting a change to the build can demonstrate in context that the changes work as expected.</li>
 </ol>
-<p>As we will review a comparison chart of a range of solutions, let's break those down into requirements with a shorthand
-term for each:</p>
+<p>As we will review a comparison chart of a range of solutions, let's break the requirements down and define a shorthand
+name for each:</p>
 <ul>
 <li><strong>Remote Forks</strong>: An acceptable solution should be able to monitor pull requests against an organisational repository
   but test against the contributor's repository and branch.</li>
