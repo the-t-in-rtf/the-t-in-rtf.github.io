@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:og="http://ogp.me/ns#"
+      xmlns:fb="https://www.facebook.com/2008/fbml">
+<head>
+    <title>CI Requirements and Candidate Evaluation.</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Open Graph tags -->
+
+            <meta property="og:type" content="article"/>
+            <meta property="og:title" content="CI Requirements and Candidate Evaluation."/>
+            <meta property="og:url" content="http://the-t-in-rtf.github.io/ci-requirements-and-candidate-evaluation.html"/>
+            <meta property="og:description" content="A comparison of our requirements for CI as a tool in managing changes to our repositories."/>
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="http://the-t-in-rtf.github.io/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="http://the-t-in-rtf.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+    <link href="http://the-t-in-rtf.github.io/theme/css/pygments.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://the-t-in-rtf.github.io/theme/css/style.css" type="text/css"/>
+    <!-- JavaScript plugins (requires jQuery) -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+
+
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://the-t-in-rtf.github.io" class="navbar-brand">The "T" in RtF</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="http://the-t-in-rtf.github.io/category/code.html">Code</a>
+                        </li>
+                        <li >
+                            <a href="http://the-t-in-rtf.github.io/category/non-code.html">Non-code</a>
+                        </li>
+                        <li class="active">
+                            <a href="http://the-t-in-rtf.github.io/category/qa.html">Qa</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://the-t-in-rtf.github.io/archives.html"><i class="icon-th-list"></i>Archives</a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</nav>
+<!-- /.navbar -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="http://the-t-in-rtf.github.io/ci-requirements-and-candidate-evaluation.html"
+                       rel="bookmark"
+                       title="Permalink to CI Requirements and Candidate Evaluation.">
+                        CI Requirements and Candidate Evaluation.
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="icon-calendar"></i>Wed 25 July 2018
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://the-t-in-rtf.github.io/tag/ci.html">CI</a>
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <h2>Introduction</h2>
+<p>We currently have a mixture of legacy Jenkins build configurations, BuildKite builds (for Infusion) and experiments with
+tools like GitLab.  This page attempts to compare build requirements with the features of various tools.</p>
+<h2>Requirements</h2>
+<p>Although we could also talk about build pipelines that result in deploying updated containers and the like, for the
+purposes of this discussion I am focused on the process of managing changes to our repositories in the way we tend to
+work, namely:</p>
+<ul>
+<li>An organisational repository contains the "master" of our code.</li>
+<li>Individuals wishing to make changes:</li>
+<li>Create a JIRA ticket describing their work or take ownership of an existing ticket.</li>
+<li>"Fork" the organisational repository.</li>
+<li>Create a branch in their repository for their work.</li>
+<li>Submit a pull request for their work against a branch in the organisational repository (typically against "master).</li>
+<li>Once a pull has been submitted:</li>
+<li>If the request is from a core committer, builds are run automatically.</li>
+<li>Otherwise, someone with access must comment on the issue to trigger a build.</li>
+<li>Build results are displayed inline as part of the discussion thread on the PR.</li>
+<li>For builds that use our legacy Jenkins setup, a build can be retriggered by commenting.</li>
+<li>Build configurations are managed centrally, but are common to all branches and forks of the repository.</li>
+</ul>
+<p>This describes our current legacy Jenkins setup and BuildKite builds.  All but the last point are use cases we need to
+support.  On the last point, as we have discussed, we want to devolve as much ownership as we can of build
+configurations to the community contributing changes to each project.</p>
+<p>As we will review a comparison chart of a range of solutions, let's break those down into requirements with a shorthand
+term for each:</p>
+<ul>
+<li><strong>Remote Forks</strong>: An acceptable solution should be able to monitor pull requests against an organisational repository
+  but test against the contributor's repository and branch.</li>
+<li><strong>Results in Pull Request</strong>: The results of a build should be summarised in the PR, with a link to more details.</li>
+<li><strong>Access Controls</strong>: Many of our libraries are open source.  We want to allow nearly anyone to
+  contribute, but do not want to allow just anyone to use our build resources.</li>
+<li><strong>Restart Builds</strong>: If a build fails for reasons that seem unique to CI, we commonly restart the build to
+  confirm.</li>
+<li><strong>In-branch Configuration</strong>: The rules that govern the unique parts of a build (dependencies, test commands,
+  artifacts, et cetera) should live within the repository, so that changes to the CI configuration can be managed by the
+  community of contributors with only minimal support from operations.</li>
+<li><strong>Local Agents</strong>: It should be possible to use our own build agents.</li>
+</ul>
+<h2>Solution Comparison</h2>
+<table>
+<thead>
+<tr>
+<th>Stars</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="Three Stars" src="../images/three-stars.svg"></td>
+<td>Supports the use case easily (for example, with only configuration options).</td>
+</tr>
+<tr>
+<td><img alt="Two Stars" src="../images/two-stars.svg"></td>
+<td>Supports the use case less well (multiple clicks, plugins required, partial functionality).</td>
+</tr>
+<tr>
+<td><img alt="One Stars" src="../images/one-star.svg"></td>
+<td>May support the use case with custom development.</td>
+</tr>
+<tr>
+<td><img alt="No Stars" src="../images/no-stars.svg"></td>
+<td>Cannot support the use case.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Solution</th>
+<th>Remote Forks</th>
+<th>Results in PR</th>
+<th>Access Controls</th>
+<th>Restart Builds</th>
+<th>In-branch Config</th>
+<th>Local Agents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BuildKite</td>
+<td><img alt="One Star" src="../images/one-star.svg"></td>
+<td><img alt="Two Stars" src="../images/two-stars.svg"></td>
+<td><img alt="One Stars" src="../images/one-star.svg"></td>
+<td><img alt="One Stars" src="../images/one-star.svg"></td>
+<td><img alt="Three Stars" src="../images/three-stars.svg"></td>
+<td><img alt="One Stars" src="../images/one-star.svg"></td>
+</tr>
+<tr>
+<td>GitLab</td>
+<td><img alt="One Stars" src="../images/one-star.svg"></td>
+<td><img alt="One Star" src="../images/one-star.svg"></td>
+<td><img alt="One Star" src="../images/one-star.svg"></td>
+<td><img alt="One Star" src="../images/one-star.svg"></td>
+<td><img alt="Three Stars" src="../images/three-stars.svg"></td>
+<td><img alt="Three Stars" src="../images/three-stars.svg"></td>
+</tr>
+<tr>
+<td>Jenkins (legacy)</td>
+<td><img alt="Two Stars" src="../images/two-stars.svg"></td>
+<td><img alt="Two Stars" src="../images/two-stars.svg"></td>
+<td><img alt="Two Stars" src="../images/two-stars.svg"></td>
+<td><img alt="Two Stars" src="../images/two-stars.svg"></td>
+<td><img alt="One Stars" src="../images/one-star.svg"></td>
+<td><img alt="Three Stars" src="../images/three-stars.svg"></td>
+</tr>
+<tr>
+<td>Jenkins Pipelines</td>
+<td><img alt="Three Stars" src="../images/three-stars.svg"></td>
+<td><img alt="Three Stars" src="../images/three-stars.svg"></td>
+<td><img alt="One Stars" src="../images/one-star.svg"></td>
+<td><img alt="Three Stars" src="../images/three-stars.svg"></td>
+<td><img alt="Three Stars" src="../images/three-stars.svg"></td>
+<td><img alt="Three Stars" src="../images/three-stars.svg"></td>
+</tr>
+<tr>
+<td>Travis CI</td>
+<td><img alt="Three Stars" src="../images/three-stars.svg"></td>
+<td><img alt="One Stars" src="../images/one-star.svg"></td>
+<td><img alt="One Stars" src="../images/one-star.svg"></td>
+<td><img alt="One Stars" src="../images/one-star.svg"></td>
+<td><img alt="Three Stars" src="../images/three-stars.svg"></td>
+<td><img alt="No Stars" src="../images/no-stars.svg"></td>
+</tr>
+</tbody>
+</table>
+<h3>BuildKite</h3>
+<p>BuildKite does not support the remote fork model we use by default.  BuildKite displays results in a PR, but only as
+a webhook results summary.  It does not have the ability to comment.  It does not support the type of access controls
+or comment-based restarting of jobs that we are accustomed to.  It only supports a single client by default. In
+addition, build results require an account, and you cannot view logs without access.</p>
+<p>Avtar has developed a custom service that we use with webhooks, which closes most of the gaps between the built-in
+functionality and our use cases.</p>
+<h3>GitLab</h3>
+<p>GitLab does not directly support the remote fork model we use.  By default, GitLab does not support the type of access
+controls we are accustomed to, or retriggering of builds.  GitLabl also does not support results as comments, there is
+is currently a <a href="https://gitlab.com/gitlab-org/gitlab-ce/issues/23902">feature request</a>.</p>
+<p>We would need to build an external service that closes the gaps.  There is a good API for building services
+like this, but we would have to build a new service largely from scratch.</p>
+<h3>Jenkins (legacy)</h3>
+<p>Our Jenkins legacy configuration obviously satisfies all of our use cases.  However, although we have traditionally used
+Jenkins and the multi-job plugin, there are supportability concerns about that long term.  It was not owned or supported
+for some time, and although development has resumed, there are still concerns about using that versus something built by
+and supported by the Jenkins team.</p>
+<h3>Jenkins Pipelines</h3>
+<p>Jenkins Pipelines offer key improvements over the legacy solution in that:</p>
+<ol>
+<li>they provide their own robust declarative syntax</li>
+<li>they have support for complex chaining of builds, including a try/catch/finally construct that ensures that a
+   sequence of builds stops on the first failure, but that teardown steps are still allowed to execute.</li>
+</ol>
+<p>Jenkins Pipelines support the remote fork model we use.  They offer the type of access controls we require, but
+permission checks are only respected when retriggering builds from a comment.  The ability to hold off on an initial
+build (or a rebuild when a new commit is made).</p>
+<p>As with many other solutions, Jenkins Pipelines would require some custom development.  However, they have the concept
+of a "trait", and you can add new "traits" to change the behaviour of existing features.   This suggests that the
+development effort involved would be lower, especially since as far as we know we only need to close a single major gap.</p>
+<h2>Travis CI</h2>
+            </div>
+            <!-- /.entry-content -->
+    <hr />
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'thetinrtf'; // required: replace example with your forum shortname
+            var disqus_identifier = 'ci-requirements-and-candidate-evaluation';
+            var disqus_url = 'http://the-t-in-rtf.github.io/ci-requirements-and-candidate-evaluation.html';
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function () {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript';
+                dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 well well-sm" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="icon-home icon-large"></i>Social</h4></li>
+                    <li class="list-group-item"><a href="https://twitter.com/duhrer"><i
+                            class="icon-twitter-sign icon-large"></i>twitter
+                    </a></li>
+                    <li class="list-group-item"><a href="http://www.linkedin.com/profile/view?id=31505257"><i
+                            class="icon-linkedin-sign icon-large"></i>linkedin
+                    </a></li>
+                    <li class="list-group-item"><a href="http://github.com/the-t-in-rtf/"><i
+                            class="icon-github-sign icon-large"></i>github
+                    </a></li>
+
+
+
+                <li class="list-group-item"><a href="http://the-t-in-rtf.github.io/tags.html"><h4><i class="icon-tags icon-large"></i>Tags</h4></a></li>
+        </ul>
+    </section>
+</aside>        </div>
+    </div>
+</div>
+<footer>
+    <div class="container">
+        <hr>
+        <p class="pull-right"><i class="icon-arrow-up"></i> <a href="#">Back to top</a></p>
+
+
+        <p>&copy; 2018 Tony Atkins <tony@raisingthefloor.org> &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a></p>
+    </div>
+</footer>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="http://the-t-in-rtf.github.io/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="http://the-t-in-rtf.github.io/theme/js/respond.min.js"></script>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'thetinrtf'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+
+
+</body>
+</html>
