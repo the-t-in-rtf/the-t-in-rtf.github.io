@@ -14,7 +14,7 @@ features of various tools.&lt;/p&gt;
    target platform.&lt;/li&gt;
 &lt;li&gt;Build pipelines that result in creating releases, deploying updated containers, et cetera.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;For the purposes of this discussion I am focused on the first, the process of managing changes to our repositories.&lt;/p&gt;
+&lt;p&gt;For the purposes of this discussion I am focusing on the first, the process of managing changes to our repositories.&lt;/p&gt;
 &lt;h2&gt;How We Manage Code Changes&lt;/h2&gt;
 &lt;p&gt;Our codebases are hosted in an organisational repository that contains the "target" for changes, generally the "master"
 branch of our codebase.  We tend to make changes to our code roughly as follows:&lt;/p&gt;
@@ -25,7 +25,8 @@ branch of our codebase.  We tend to make changes to our code roughly as follows:
 &lt;li&gt;Create a JIRA ticket describing their work or take ownership of an existing ticket.&lt;/li&gt;
 &lt;li&gt;"Fork" the organisational repository.&lt;/li&gt;
 &lt;li&gt;Create a branch in their repository for their work.&lt;/li&gt;
-&lt;li&gt;Submit a pull request for their work against a branch in the organisational repository (typically against "master).&lt;/li&gt;
+&lt;li&gt;Submit a pull request for their work against a branch in the organisational repository (typically against
+      "master).&lt;/li&gt;
 &lt;li&gt;Once a pull has been submitted:&lt;/li&gt;
 &lt;li&gt;If the request is from a core committer, builds are run automatically.&lt;/li&gt;
 &lt;li&gt;Otherwise, someone with access must comment on the issue to trigger a build.&lt;/li&gt;
@@ -35,8 +36,10 @@ branch of our codebase.  We tend to make changes to our code roughly as follows:
 &lt;p&gt;CI is key for the third step in this process, which is illustrated in the following diagram.&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Pull request workflow diagram." src="../images/pull-request-details.svg"&gt;&lt;/p&gt;
 &lt;p&gt;In this process of reviewing a proposed change, CI builds provide a shared and consistent way to talk about test
-failures, coverage reports, log output.  Each pull request review often involves many changes and associated builds.
-It is critical that we be able to view the results of a CI build in the context of the associate pull request.&lt;/p&gt;
+failures, coverage reports, log output, et cetera.  Each pull request review often involves many changes and associated
+builds.  It is critical that we be able to view the results of a CI build in the context of the associate pull request,
+and that we be able to manage the permission checks and triggering of builds from the context of the pull request
+itself.&lt;/p&gt;
 &lt;h2&gt;CI Requirements&lt;/h2&gt;
 &lt;p&gt;In addition to supporting our development workflow (see above), an important key improvement we have discussed is
 devolving as much ownership as we can of build configurations to the community contributing changes to each project. 
@@ -63,6 +66,7 @@ name for each:&lt;/p&gt;
 &lt;li&gt;&lt;strong&gt;Local Agents&lt;/strong&gt;: It should be possible to use our own build agents.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Solution Comparison&lt;/h2&gt;
+&lt;p&gt;The following legend outlines the rating system we used when evaluating solutions.&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -89,6 +93,7 @@ name for each:&lt;/p&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
+&lt;p&gt;The solutions comparison table below gives a summary of how each of the evaluated CI tools matches our requirements.&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -149,6 +154,7 @@ name for each:&lt;/p&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
+&lt;p&gt;Continue reading for a detailed breakdown for each solution evaluated.&lt;/p&gt;
 &lt;h3&gt;BuildKite&lt;/h3&gt;
 &lt;p&gt;BuildKite does not support the remote fork model we use by default.  BuildKite displays results in a PR, but only as
 a webhook results summary.  It does not have the ability to comment.  It does not support the type of access controls
