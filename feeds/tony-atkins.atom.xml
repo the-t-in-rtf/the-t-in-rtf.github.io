@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>The "T" in RtF - Tony Atkins</title><link href="http://the-t-in-rtf.github.io/" rel="alternate"></link><link href="http://the-t-in-rtf.github.io/feeds/tony-atkins.atom.xml" rel="self"></link><id>http://the-t-in-rtf.github.io/</id><updated>2018-07-25T14:30:00+02:00</updated><entry><title>CI Requirements and Candidate Evaluation.</title><link href="http://the-t-in-rtf.github.io/ci-requirements-and-candidate-evaluation.html" rel="alternate"></link><published>2018-07-25T14:30:00+02:00</published><updated>2018-07-25T14:30:00+02:00</updated><author><name>Tony Atkins &lt;tony@raisingthefloor.org&gt;</name></author><id>tag:the-t-in-rtf.github.io,2018-07-25:/ci-requirements-and-candidate-evaluation.html</id><summary type="html">&lt;p&gt;A comparison of our requirements for CI as a tool in managing changes to our repositories.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;We currently have a mixture of legacy Jenkins build configurations, BuildKite builds (for Infusion) and experiments with
-tools like GitLab.  This page attempts to compare build requirements with the features of various tools.&lt;/p&gt;
+&lt;p&gt;Continuous Integration (CI) is a key part of our development process both within the Fluid community and within the
+GPII.  CI gives an objective and more or less immediate view of the health of our code, and of the quality of changes we
+propose to make to our code.  It is an essential safety net to help distributed teams working on rapidly evolving
+systems.&lt;/p&gt;
+&lt;p&gt;Within the Fluid community and GPII, we currently have a mixture of legacy Jenkins build configurations, BuildKite
+builds (for Infusion) and experiments with tools like GitLab.  This page attempts to compare build requirements with the
+features of various tools.&lt;/p&gt;
+&lt;p&gt;There are many uses for CI:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Builds that are run to evaluate proposed code changes.&lt;/li&gt;
+&lt;li&gt;Nightly builds that guard against problems with changes inherited from dependencies, such as a new version of the
+   target platform.&lt;/li&gt;
+&lt;li&gt;Build pipelines that result in creating releases, deploying updated containers, et cetera.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;For the purposes of this discussion I am focused on the first, the process of managing changes to our repositories.&lt;/p&gt;
 &lt;h2&gt;Requirements&lt;/h2&gt;
-&lt;p&gt;Although we could also talk about build pipelines that result in deploying updated containers and the like, for the
-purposes of this discussion I am focused on the process of managing changes to our repositories in the way we tend to
-work, namely:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;An organisational repository contains the "master" of our code.&lt;/li&gt;
+&lt;p&gt;Our codebases are hosted in an organisational repository that contains the "target" for changes, generally the "master"
+branch of our codebase.  We tend to make changes to our code roughly as follows:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The need for a change (bug fix, new feature) is identified.&lt;/li&gt;
+&lt;li&gt;The change is written up and discussed, generally as a JIRA ticket.&lt;/li&gt;
 &lt;li&gt;Individuals wishing to make changes:&lt;/li&gt;
 &lt;li&gt;Create a JIRA ticket describing their work or take ownership of an existing ticket.&lt;/li&gt;
 &lt;li&gt;"Fork" the organisational repository.&lt;/li&gt;
@@ -18,11 +31,20 @@ work, namely:&lt;/p&gt;
 &lt;li&gt;Otherwise, someone with access must comment on the issue to trigger a build.&lt;/li&gt;
 &lt;li&gt;Build results are displayed inline as part of the discussion thread on the PR.&lt;/li&gt;
 &lt;li&gt;For builds that use our legacy Jenkins setup, a build can be retriggered by commenting.&lt;/li&gt;
-&lt;li&gt;Build configurations are managed centrally, but are common to all branches and forks of the repository.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;This describes our current legacy Jenkins setup and BuildKite builds.  All but the last point are use cases we need to
-support.  On the last point, as we have discussed, we want to devolve as much ownership as we can of build
-configurations to the community contributing changes to each project.&lt;/p&gt;
+&lt;/ol&gt;
+&lt;p&gt;CI is key for the third step in this process, which is illustrated in the following diagram.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Pull request workflow diagram." src="../images/pull-request-details.svg"&gt;&lt;/p&gt;
+&lt;p&gt;In this context, CI builds provide a shared and consistent way to talk about test failures, coverage reports, log
+output, and are often used many times within a single review.&lt;/p&gt;
+&lt;p&gt;Most of our core requirements are the same moving forward.  The one key improvement we have discussed is devolving as
+much ownership as we can of build configurations to the community contributing changes to each project.  Although we
+have experimented with tools that support decentralised build configurations, currently our build configurations are
+managed centrally in a separate repository, and there is one build configuration per codebase.&lt;/p&gt;
+&lt;p&gt;For the future, we want to have much of the build configuration be part of the codebase, so that:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Changes can be tested in isolation without disrupting other ongoing work.&lt;/li&gt;
+&lt;li&gt;The developer submitting a change to the build can demonstrate in context that the changes work as expected.&lt;/li&gt;
+&lt;/ol&gt;
 &lt;p&gt;As we will review a comparison chart of a range of solutions, let's break those down into requirements with a shorthand
 term for each:&lt;/p&gt;
 &lt;ul&gt;
@@ -134,7 +156,7 @@ addition, build results require an account, and you cannot view logs without acc
 functionality and our use cases.&lt;/p&gt;
 &lt;h3&gt;GitLab&lt;/h3&gt;
 &lt;p&gt;GitLab does not directly support the remote fork model we use.  By default, GitLab does not support the type of access
-controls we are accustomed to, or retriggering of builds.  GitLabl also does not support results as comments, there is
+controls we are accustomed to, or retriggering of builds.  GitLab also does not support results as comments, there is
 is currently a &lt;a href="https://gitlab.com/gitlab-org/gitlab-ce/issues/23902"&gt;feature request&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;We would need to build an external service that closes the gaps.  There is a good API for building services
 like this, but we would have to build a new service largely from scratch.&lt;/p&gt;
@@ -156,7 +178,11 @@ build (or a rebuild when a new commit is made).&lt;/p&gt;
 &lt;p&gt;As with many other solutions, Jenkins Pipelines would require some custom development.  However, they have the concept
 of a "trait", and you can add new "traits" to change the behaviour of existing features.   This suggests that the
 development effort involved would be lower, especially since as far as we know we only need to close a single major gap.&lt;/p&gt;
-&lt;h2&gt;Travis CI&lt;/h2&gt;</content><category term="CI"></category></entry><entry><title>Infusion and JSON Schemas, Part 5: Reuse and Extension, Part Two</title><link href="http://the-t-in-rtf.github.io/infusion-and-json-schema-reuse-two.html" rel="alternate"></link><published>2018-03-27T15:30:00+02:00</published><updated>2018-03-27T15:30:00+02:00</updated><author><name>Tony Atkins &lt;tony@raisingthefloor.org&gt;</name></author><id>tag:the-t-in-rtf.github.io,2018-03-27:/infusion-and-json-schema-reuse-two.html</id><summary type="html">&lt;p&gt;An updated discussion of the issues involved in reusing and extending JSON Schemas between components.&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;h3&gt;Travis CI&lt;/h3&gt;
+&lt;p&gt;Travis CI does not support the types of custom build agents we require.  It also would require significantly more
+development to close a range of gaps.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Jenkins Pipelines plus limited custom development seems to be the best approach for us moving forward.&lt;/p&gt;</content><category term="CI"></category></entry><entry><title>Infusion and JSON Schemas, Part 5: Reuse and Extension, Part Two</title><link href="http://the-t-in-rtf.github.io/infusion-and-json-schema-reuse-two.html" rel="alternate"></link><published>2018-03-27T15:30:00+02:00</published><updated>2018-03-27T15:30:00+02:00</updated><author><name>Tony Atkins &lt;tony@raisingthefloor.org&gt;</name></author><id>tag:the-t-in-rtf.github.io,2018-03-27:/infusion-and-json-schema-reuse-two.html</id><summary type="html">&lt;p&gt;An updated discussion of the issues involved in reusing and extending JSON Schemas between components.&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;Earlier in this series (late 2017), I wrote up some approaches to &lt;a href="http://the-t-in-rtf.github.io/infusion-and-json-schema-reuse.html"&gt;extending and reusing JSON Schema
 definitions&lt;/a&gt;, talking about how a child grade might modify the JSON Schema defined
 by its parent or other more distant ancestors.&lt;/p&gt;
