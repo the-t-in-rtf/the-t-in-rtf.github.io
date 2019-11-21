@@ -1,5 +1,342 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>The "T" in RtF - Tony Atkins</title><link href="http://the-t-in-rtf.github.io/" rel="alternate"></link><link href="http://the-t-in-rtf.github.io/feeds/tony-atkins.atom.xml" rel="self"></link><id>http://the-t-in-rtf.github.io/</id><updated>2018-07-25T14:30:00+02:00</updated><entry><title>CI Requirements and Candidate Evaluation.</title><link href="http://the-t-in-rtf.github.io/ci-requirements-and-candidate-evaluation.html" rel="alternate"></link><published>2018-07-25T14:30:00+02:00</published><updated>2018-07-25T14:30:00+02:00</updated><author><name>Tony Atkins &lt;tony@raisingthefloor.org&gt;</name></author><id>tag:the-t-in-rtf.github.io,2018-07-25:/ci-requirements-and-candidate-evaluation.html</id><summary type="html">&lt;p&gt;A comparison of our requirements for CI as a tool in managing changes to our repositories.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>The "T" in RtF - Tony Atkins</title><link href="http://the-t-in-rtf.github.io/" rel="alternate"></link><link href="http://the-t-in-rtf.github.io/feeds/tony-atkins.atom.xml" rel="self"></link><id>http://the-t-in-rtf.github.io/</id><updated>2019-11-18T11:00:00+01:00</updated><entry><title>Adding versioning support to the Solutions Registry, Part 1.</title><link href="http://the-t-in-rtf.github.io/lsr-versioning-part-one.html" rel="alternate"></link><published>2019-11-18T11:00:00+01:00</published><updated>2019-11-18T11:00:00+01:00</updated><author><name>Tony Atkins &lt;tony@raisingthefloor.org&gt;</name></author><id>tag:the-t-in-rtf.github.io,2019-11-18:/lsr-versioning-part-one.html</id><summary type="html">&lt;p&gt;A summary of the issues involved in adding versioning support to the Solutions Registry and Morphic.&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;Morphic takes an expression of a user's needs and wants and reconfigure a machine to reflect those needs and wants as
+well as possible.  The user's needs and wants are expressed as "preferences", which may either be a "generic
+preference", or specific to a particular application.  These are transformed into "settings", which are expressed in
+terms of the specific solutions available on a given machine.&lt;/p&gt;
+&lt;p&gt;A "solution" is how we represent a specific piece of software that a setting relates to.  These may be features of the
+operating system, or third-party applications.  Each entry within the Solutions Registry defines:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The context (generally operating system) in which a solution may be found.&lt;/li&gt;
+&lt;li&gt;How to detect whether the solution is running.&lt;/li&gt;
+&lt;li&gt;How to start and stop the solution.&lt;/li&gt;
+&lt;li&gt;How the solution's configuration options are controlled.&lt;/li&gt;
+&lt;li&gt;The specific configuration options available for the solution.&lt;/li&gt;
+&lt;li&gt;Transformations of the application-specific settings to and from "generic preference terms".&lt;/li&gt;
+&lt;li&gt;How to describe the solution and settings when presenting information to an end user.&lt;/li&gt;
+&lt;li&gt;How to install the solution if it is not available ("Install on Demand").&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Each of these pieces of information is currently only defined for a single version of a given solution.  We have &lt;a href="https://issues.gpii.net/browse/GPII-111"&gt;long identified the need to support multiple
+versions of a single "solution"&lt;/a&gt;, and this draft outlines a few related
+concerns and possible strategies for adding this key feature.&lt;/p&gt;
+&lt;h1&gt;The Problem in More Detail&lt;/h1&gt;
+&lt;p&gt;Let's start with a simple example in which we wish to configure a handful of settings for a single solution:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;{
+    &amp;quot;flat&amp;quot;: {
+        &amp;quot;name&amp;quot;: &amp;quot;JAWS&amp;quot;,
+        &amp;quot;contexts&amp;quot;: {
+            &amp;quot;gpii-default&amp;quot;: {
+                &amp;quot;name&amp;quot;: &amp;quot;Sample JAWS preferences&amp;quot;,
+                &amp;quot;preferences&amp;quot;: {
+                    &amp;quot;http://registry.gpii.net/applications/com.freedomscientific.jaws&amp;quot;: {
+                        &amp;quot;HTML.Acronyms&amp;quot;: 1,
+                        &amp;quot;ENU-Global.Volume&amp;quot;: 95
+                    }
+                },
+                &amp;quot;http://registry.gpii.net/applications/com.freedomscientific.jaws/enabled&amp;quot;: true
+            }
+        }
+    }
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The &lt;code&gt;com.freedomscientific.jaws&lt;/code&gt; portion of the two keys above is a unique identifier that correspond to an entry in
+the Windows portion of the Solutions Registry.  Here is a greatly simplified version of that entry:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;{
+    &amp;quot;com.freedomscientific.jaws&amp;quot;: {
+        &amp;quot;name&amp;quot;: &amp;quot;JAWS&amp;quot;,
+        &amp;quot;contexts&amp;quot;: {
+            &amp;quot;OS&amp;quot;: [
+                {
+                    &amp;quot;id&amp;quot;: &amp;quot;win32&amp;quot;
+                }
+            ]
+        },
+        &amp;quot;capabilities&amp;quot;: [
+            &amp;quot;http://registry\\.gpii\\.net/common/screenReaderTTS/enabled&amp;quot;
+        ],
+        &amp;quot;settingsHandlers&amp;quot;: {
+            &amp;quot;configuration1&amp;quot;: {
+                &amp;quot;type&amp;quot;: &amp;quot;gpii.settingsHandlers.INISettingsHandler&amp;quot;,
+                &amp;quot;liveness&amp;quot;: &amp;quot;manualRestart&amp;quot;,
+                &amp;quot;options&amp;quot;: {
+                    &amp;quot;filename&amp;quot;: &amp;quot;&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;environment&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;.APPDATA}\\Freedom Scientific\\JAWS\\2019\\Settings\\enu\\DEFAULT.JCF&amp;quot;
+                },
+                &amp;quot;supportedSettings&amp;quot;: {
+                    &amp;quot;HTML.Acronyms&amp;quot;: {
+                        &amp;quot;schema&amp;quot;: {
+                            &amp;quot;title&amp;quot;: &amp;quot;Acronyms&amp;quot;,
+                            &amp;quot;description&amp;quot;: &amp;quot;If this is enabled, acronyms with a title attribute will have their title read instead of the on screen text.&amp;quot;,
+                            &amp;quot;type&amp;quot;: &amp;quot;number&amp;quot;,
+                            &amp;quot;default&amp;quot;: 0,
+                            &amp;quot;enum&amp;quot;: [
+                                0,
+                                1
+                            ],
+                            &amp;quot;enumLabels&amp;quot;: [
+                                &amp;quot;off&amp;quot;,
+                                &amp;quot;on&amp;quot;
+                            ]
+                        }
+                    },
+                }
+            },
+            &amp;quot;configuration2&amp;quot;: {
+                &amp;quot;type&amp;quot;: &amp;quot;gpii.settingsHandlers.INISettingsHandler&amp;quot;,
+                &amp;quot;liveness&amp;quot;: &amp;quot;manualRestart&amp;quot;,
+                &amp;quot;options&amp;quot;: {
+                    &amp;quot;filename&amp;quot;: &amp;quot;&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;environment&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;.APPDATA}\\Freedom Scientific\\JAWS\\2019\\Settings\\VoiceProfiles\\GPII.VPF&amp;quot;
+                },
+                &amp;quot;supportedSettings&amp;quot;: {
+                    &amp;quot;ENU-Global.Volume&amp;quot;: {
+                        &amp;quot;schema&amp;quot;: {
+                            &amp;quot;title&amp;quot;: &amp;quot;Global Volume&amp;quot;,
+                            &amp;quot;description&amp;quot;: &amp;quot;The volume for all announcements.&amp;quot;,
+                            &amp;quot;type&amp;quot;: &amp;quot;integer&amp;quot;,
+                            &amp;quot;minimum&amp;quot;: 10,
+                            &amp;quot;maximum&amp;quot;: 100,
+                            &amp;quot;default&amp;quot;: 100
+                        }
+                    }
+                },
+                &amp;quot;capabilitiesTransformations&amp;quot;: {
+                    &amp;quot;ENU-Global\\.Volume&amp;quot;: {
+                        &amp;quot;transform&amp;quot;: {
+                            &amp;quot;type&amp;quot;: &amp;quot;fluid.transforms.linearScale&amp;quot;,
+                            &amp;quot;inputPath&amp;quot;: &amp;quot;http://registry\\.gpii\\.net/common/volumeTTS&amp;quot;,
+                            &amp;quot;factor&amp;quot;: 100
+                        }
+                    }
+                },
+                &amp;quot;inverseCapabilitiesTransformations&amp;quot;: {
+                    &amp;quot;http://registry\\.gpii\\.net/common/volumeTTS&amp;quot;: {
+                        &amp;quot;transform&amp;quot;: {
+                            &amp;quot;type&amp;quot;: &amp;quot;fluid.transforms.linearScale&amp;quot;,
+                            &amp;quot;inputPath&amp;quot;: &amp;quot;ENU-Global\\.Volume&amp;quot;,
+                            &amp;quot;factor&amp;quot;: 0.01
+                        }
+                    }
+                }
+            }
+        },
+        &amp;quot;launchHandlers&amp;quot;: {
+            &amp;quot;launcher&amp;quot;: {
+                &amp;quot;type&amp;quot;: &amp;quot;gpii.launchHandlers.flexibleHandler&amp;quot;,
+                &amp;quot;options&amp;quot;: {
+                    &amp;quot;getState&amp;quot;: [
+                        {
+                            &amp;quot;type&amp;quot;: &amp;quot;gpii.processReporter.find&amp;quot;,
+                            &amp;quot;command&amp;quot;: &amp;quot;jfw.exe&amp;quot;
+                        }
+                    ],
+                    &amp;quot;setTrue&amp;quot;: [
+                        {
+                            &amp;quot;type&amp;quot;: &amp;quot;gpii.launch.exec&amp;quot;,
+                            &amp;quot;command&amp;quot;: &amp;quot;\&amp;quot;&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;registry&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;.HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\JAWS2019.exe\\}\&amp;quot;&amp;quot;
+                        }
+                    ],
+                    &amp;quot;setFalse&amp;quot;: [
+                        {
+                            &amp;quot;type&amp;quot;: &amp;quot;gpii.windows.closeProcessByName&amp;quot;,
+                            &amp;quot;filename&amp;quot;: &amp;quot;jfw.exe&amp;quot;
+                        },
+                        {
+                            &amp;quot;type&amp;quot;: &amp;quot;gpii.windows.closeProcessByName&amp;quot;,
+                            &amp;quot;filename&amp;quot;: &amp;quot;fsSynth32.exe&amp;quot;
+                        },
+                        {
+                            &amp;quot;type&amp;quot;: &amp;quot;gpii.windows.closeProcessByName&amp;quot;,
+                            &amp;quot;filename&amp;quot;: &amp;quot;jhookldr.exe&amp;quot;
+                        },
+                        // New for JAWS 2018 and higher.
+                        {
+                            &amp;quot;type&amp;quot;: &amp;quot;gpii.windows.closeProcessByName&amp;quot;,
+                            &amp;quot;filename&amp;quot;: &amp;quot;ScannerHandler.exe&amp;quot;
+                        }
+                    ]
+                }
+            }
+        },
+        &amp;quot;isInstalled&amp;quot;: [
+            {
+                &amp;quot;type&amp;quot;: &amp;quot;gpii.deviceReporter.registryKeyExists&amp;quot;,
+                &amp;quot;hKey&amp;quot;: &amp;quot;HKEY_LOCAL_MACHINE&amp;quot;,
+                &amp;quot;path&amp;quot;: &amp;quot;Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\JAWS2019.exe&amp;quot;,
+                &amp;quot;subPath&amp;quot;: &amp;quot;&amp;quot;,
+                &amp;quot;dataType&amp;quot;: &amp;quot;REG_SZ&amp;quot;
+            }
+        ]
+    }
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;That entry contains multiple key pieces of information that are specific to a particular version of JAWS:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The location of the main INI file.&lt;/li&gt;
+&lt;li&gt;The location of the voice profile INI file.&lt;/li&gt;
+&lt;li&gt;The location in the registry that we use to confirm whether JAWS is installed.&lt;/li&gt;
+&lt;li&gt;The path to the JAWS binary used by the launch handler.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Each of these mean that we can only work with a single version of JAWS (currently JAWS 2019).  We have discussed
+strategies for creating secondary entries for sub versions, but this only solves the problem of sharing common settings
+between solutions, and does not address other issues.&lt;/p&gt;
+&lt;p&gt;We have discussed addressing this by defining multiple entries, each of which would use the normal Fluid options merging
+to overlay the information unique to their version.  Once we have multiple solutions for &lt;code&gt;com.freedomscientific.jaws.12&lt;/code&gt;,
+&lt;code&gt;com.freedomscientific.jaws.2017&lt;/code&gt;, &lt;code&gt;com.freedomscientific.jaws.2018&lt;/code&gt;, &lt;code&gt;com.freedomscientific.jaws.2019&lt;/code&gt;, et cetera, 
+we need to answer a few questions:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;How do users express their desire to have an application use a particular setting, and have that respected across versions?&lt;/li&gt;
+&lt;li&gt;How do we ensure that only one version is launched?  Which version?&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Cross-version Settings for Applications&lt;/h2&gt;
+&lt;p&gt;The solution id is currently part of the URL used as a key for the application settings.  If we define a new entry for
+&lt;code&gt;com.freedom.scientific.jaws.2020&lt;/code&gt;, our only way of expressing settings for that solution/version at the moment is to
+include that id in the URL.  So, if we wanted to ensure that JAWS was enabled, we might express the need to launch each
+version:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;{
+    &amp;quot;flat&amp;quot;: {
+        &amp;quot;name&amp;quot;: &amp;quot;JAWS&amp;quot;,
+        &amp;quot;contexts&amp;quot;: {
+            &amp;quot;gpii-default&amp;quot;: {
+                &amp;quot;name&amp;quot;: &amp;quot;Enable JAWS&amp;quot;,
+                &amp;quot;http://registry.gpii.net/applications/com.freedomscientific.jaws.12/enabled&amp;quot;: true,
+                &amp;quot;http://registry.gpii.net/applications/com.freedomscientific.jaws.2017/enabled&amp;quot;: true,
+                &amp;quot;http://registry.gpii.net/applications/com.freedomscientific.jaws.2018/enabled&amp;quot;: true,
+                &amp;quot;http://registry.gpii.net/applications/com.freedomscientific.jaws.2019/enabled&amp;quot;: true
+            }
+        }
+    }
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is overly verbose and extremely brittle.  We may be carrying around versions that have long vanished from the wild.
+We also have no way of knowing when there are new versions available, and that the previously expressed need to
+"enable JAWS" should apply to the new version without the user taking any action.  We also can't always assume that only
+one version of a solution is installed on a given machine, and the above might result in our attempting to configure and
+launch more than one version of JAWS.&lt;/p&gt;
+&lt;p&gt;It seems clear to me that what we need is a way to represent an application more generally.  Instead of the above, we
+ideally want for a user to be able to express then need to enable JAWS using something like the following payload:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;{
+    &amp;quot;flat&amp;quot;: {
+        &amp;quot;name&amp;quot;: &amp;quot;JAWS&amp;quot;,
+        &amp;quot;contexts&amp;quot;: {
+            &amp;quot;gpii-default&amp;quot;: {
+                &amp;quot;name&amp;quot;: &amp;quot;Enable JAWS&amp;quot;,
+                &amp;quot;http://registry.gpii.net/applications/com.freedomscientific.jaws/enabled&amp;quot;: true
+            }
+        }
+    }
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In order for this to work, we need some way to make our way from the &lt;code&gt;com.freedomscientific.jaws&lt;/code&gt; namespace to whichever
+version is actually available.  Currently, the list of available solutions looks something like:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[
+    {
+        &amp;quot;id&amp;quot;: &amp;quot;com.freedomscientific.jaws&amp;quot;
+    },
+    {
+        &amp;quot;id&amp;quot;: &amp;quot;org.nvda-project&amp;quot;
+    }
+]
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We might simply choose to extend this to use a syntax like:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[
+    {
+        &amp;quot;id&amp;quot;: &amp;quot;com.freedomscientific.jaws&amp;quot;,
+        &amp;quot;version&amp;quot;: &amp;quot;com.freedomscientific.jaws.2020&amp;quot;
+    },
+    {
+        &amp;quot;id&amp;quot;: &amp;quot;org.nvda-project&amp;quot;,
+        &amp;quot;version&amp;quot;: &amp;quot;org.nvda-project&amp;quot;
+    }
+]
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In the first "versioned" example (JAWS), the &lt;code&gt;version&lt;/code&gt; information indicates the grade name of a particular version of
+JAWS.  In the second "unversioned" example, the &lt;code&gt;version&lt;/code&gt; information indicates the "general" grade.  This opens up the
+possibility of transforming the "general" namespace to and from the "versioned" namespace.  It also allows us to keep
+individual solutions fairly simple.  But how do we provide enough information to the device reporter to enable it to
+build the improved list of installed solutions? I can see a few ways to do this:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;"Version Holding Solutions": Make the "versions" child components of the "general" entry.&lt;/li&gt;
+&lt;li&gt;"Application Capabilities": Express each version as a separate solution, but also express the relationship between a version and its "generic"
+   equivalent.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;Version Holding Solutions&lt;/h3&gt;
+&lt;p&gt;In the first scenario, we store the relationship information in the "general" solution itself, perhaps as a simple array
+of IDs:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;{
+    &amp;quot;com.freedomscientific.jaws&amp;quot;: {
+        &amp;quot;name&amp;quot;: &amp;quot;JAWS&amp;quot;,
+        &amp;quot;versions&amp;quot;: [
+            &amp;quot;http://registry\\.gpii\\.net/application/com\\.freedomscientific\\.jaws\\.2019&amp;quot;,
+            &amp;quot;http://registry\\.gpii\\.net/application/com\\.freedomscientific\\.jaws\\.2018&amp;quot;
+        ]
+        // ...        
+    }
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;A key strength of this is that it allows us to express a preferred order of resolution, i.e. from newest to  oldest. A
+disadvantage is that it requires you to know about versions and to update the "general" version when each version is
+added.  Another key thing to note is that if the context of a "general" solution does not match one or more "versioned"
+equivalents, you might end up with references to solutions that cannot be installed, and which may have been filtered
+out of the set of solutions already.  You would need some mechanism to guard against attempting to retrieve these
+"phantom limbs".&lt;/p&gt;
+&lt;h3&gt;Application Capabilities&lt;/h3&gt;
+&lt;p&gt;Another option here would be to expand the previous &lt;code&gt;capabilities&lt;/code&gt; feature to also cover the "generic" version of the
+application.  Here is a skeleton of a JAWS 2020 entry that might build on the example above.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;{
+    &amp;quot;com.freedomscientific.jaws.2020&amp;quot;: {
+        &amp;quot;name&amp;quot;: &amp;quot;JAWS 2020&amp;quot;,
+        &amp;quot;contexts&amp;quot;: {
+            &amp;quot;OS&amp;quot;: [{ &amp;quot;id&amp;quot;: &amp;quot;win32&amp;quot; }]
+        },
+        &amp;quot;capabilities&amp;quot;: [
+            &amp;quot;http://registry\\.gpii\\.net/application/com\\.freedomscientific\\.jaws/enabled&amp;quot;
+        ]        
+    }
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;A key strength of this approach is that is that it better supports a "contrib" model, i.e. a volunteer may fill in an
+entry for JAWS 2020 in isolation, and can clearly express the relationship without modifying the original entry.&lt;/p&gt;
+&lt;p&gt;This approach is also much safer when filtering by context (generally operating system), in that the relationship
+between any "versioned" solutions is filtered out along with them when we filter to the context.&lt;/p&gt;
+&lt;h3&gt;Changes to the Device Reporter&lt;/h3&gt;
+&lt;p&gt;In order for either of these strategies to work, the device reporter (or something that coordinates with the device
+reporter) will have to scan through the full range of solution entries for a given platform, and make sense of the
+relationships between "versioned" and "general" solutions.  It would also have to make the decision about which version
+to report as installed if multiple versions are installed.  We should talk about this in some depth, my assumption is
+that we will generally prefer the latest version, and that there will almost always be only one version installed.&lt;/p&gt;
+&lt;h3&gt;Which Version to Use/Install?&lt;/h3&gt;
+&lt;p&gt;We can either allow people to "pin" settings to a "versioned" solution, or agree that the "general" version is meant to
+correspond to the "newest compatible version" for the given context.  I would argue against the former unless we have
+strong use cases.&lt;/p&gt;
+&lt;p&gt;If we to use the "newest compatible" version of each "general" solution, then how do we define that?  Versions may be
+semver, free strings, really anything.  If we decided to have the  "general" solution keep track of all its versions,
+then this can be handled with a prioritised map of versions or with simple array ordering.&lt;/p&gt;
+&lt;p&gt;An idea that would work with "versioned solutions" is to have our own "internal" version indicator, which indicates
+whether the version is older (lower in number) than its peers or newer (higher in number).  The device reporter or
+any other part of the system that encounters multiple versions could use the "internal" version indicator to decide
+(for example) to install the newest compatible version, or to launch the newest installed version.&lt;/p&gt;
+&lt;h3&gt;Install on Demand&lt;/h3&gt;
+&lt;p&gt;Steve Grundell is currently working on adding the ability to
+&lt;a href="https://github.com/GPII/universal/pull/608"&gt;install solutions on demand&lt;/a&gt;.  This work needs to also be made aware of
+the concept of versions, and we need to make the same decision there about which version to install if there are
+multiples.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Those are my thoughts on how we might handle versions, I will discuss with the group and flesh things out further.&lt;/p&gt;</content><category term="LSR"></category></entry><entry><title>CI Requirements and Candidate Evaluation.</title><link href="http://the-t-in-rtf.github.io/ci-requirements-and-candidate-evaluation.html" rel="alternate"></link><published>2018-07-25T14:30:00+02:00</published><updated>2018-07-25T14:30:00+02:00</updated><author><name>Tony Atkins &lt;tony@raisingthefloor.org&gt;</name></author><id>tag:the-t-in-rtf.github.io,2018-07-25:/ci-requirements-and-candidate-evaluation.html</id><summary type="html">&lt;p&gt;A comparison of our requirements for CI as a tool in managing changes to our repositories.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;Continuous Integration (CI) is a key part of our development process both within the Fluid community and within the
 GPII.  CI gives an objective and more or less immediate view of the health of our code, and of the quality of changes we
 propose to make to our code.  It is an essential safety net to help distributed teams working on rapidly evolving
