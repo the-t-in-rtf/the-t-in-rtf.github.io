@@ -73,7 +73,7 @@
 
 	<p>
 		A path starts in the centre of the first square, and ends in the centre of the last square.  Squares along the
-		path that are neither the start nor the end of the path are bisected by a line or arc running between the point
+		path that are neither the start nor the end of the path are bisected by a line or arc running between the points
 		at which the path enters and exits the square.  The diagram below illustrates the approach using only straight
 		line segments, with ball "markers" to indicate the points at which square boundaries are traversed. 
 	</p>
@@ -168,7 +168,7 @@
 <h3>Indicating Forward Motion and Progress</h3>
 
 <p>
-	By using a CSS animation to change the dash offset of the line, we can suggest a direction of motion that the cursor
+	By using a CSS animation to change the dash offset of the line, we can suggest the direction of motion that the cursor
 	will follow.
 </p>
 
@@ -204,7 +204,7 @@
 </svg>
 
 <p>
-	While code is executing, the positional marker will move along the path. Portions of the path that have already been
+	While code is executing, the positional marker moves along the path. Portions of the path that have already been
 	traveled appear solid. Portions of the path that have not yet been traveled appear as animated dashes.
 </p>
 
@@ -247,7 +247,7 @@
 <h3>Indicating Outcomes</h3>
 
 <p>
-	If we add a target destination to an exercise, we need some way of indicating whether or not the programmed path
+	If we add a target destination to an exercise, we need some way of indicating whether or not the selected path
 	reaches the goal.  A green animated path is one that reaches the goal.
 </p>
 
@@ -343,8 +343,8 @@
 
 
 <p>
-	For paths that are not blocked, but which do not reach, we can use a neutral style, as the path may simply be
-	incomplete rather than blocked.
+	For paths that are not blocked, but which do not reach the target, we can use a neutral style, as the path may
+	simply be incomplete rather than unreachable.
 </p>
 
 <svg width="150" height="150">
