@@ -4,60 +4,67 @@
 
     <style>
       svg marker {
-	  overflow: visible;
+		  overflow: visible;
       }
 
-      svg marker polygon {
-	  stroke: none;
-	  fill: black;
-      }
-
-      .robot {
+ 	 .robot {
 		  stroke-width: 5px;
 		  stroke: black;
 		  fill: white;
       }
 
       svg path {
-	  stroke-linecap: round;
-	  stroke-width: 5px;
-	  fill: transparent;
+		stroke-width: 5px;
+		fill: transparent;
       }
 
 	  .grid {
 		  stroke: grey;
 	  }
 
-      .solid-lines {
+ 	  .path-traveled {
 	  stroke: grey;
       }
 
-	  .path-traveled {
-	  stroke: grey;
-      }
-
-      .dashy-curve {
-	  stroke-dasharray: 10, 10;
-	  stroke: grey;
-      }
+      .dashed {
+		  stroke-dasharray: 10, 5;
+	  }
 
       @keyframes ants {
-	  to {
-	      stroke-dashoffset: 0;
-	  }
+		to {
+			stroke-dashoffset: 0;
+		}
       }
 
       .animated {
-	  stroke-dashoffset: 100;
-	  stroke: grey;
-	  animation: ants 5s linear;
-	  animation-iteration-count: infinite;
+		stroke-dashoffset: 100;
+		animation: ants 5s linear;
+		animation-iteration-count: infinite;
       }
 
-	  .success {
+	  polygon.blocked {
+		  fill: red;
+	  }
+
+	  path.blocked {
+		  stroke: red;
+	  }
+
+	  polygon.success {
+		  fill: green
+	  }
+
+	  path.success {
 		  stroke: green;
 	  }
 
+	  polygon.neutral {
+		  fill: #6666ff;
+	  }
+
+	  path.neutral {
+		  stroke: #6666ff;
+	  }
     </style>
   </head>
   <body>
@@ -104,7 +111,7 @@
 			 "
 	  />
 
-	  <path class="solid-lines"
+	  <path class="neutral"
 	  	style="marker-mid: url(#markerBall)"
 	    d="M 25 25
 	       L 25 49
@@ -117,7 +124,7 @@
 		   L 49 123
 	       L 40 123"/>
 		   
-		<polygon points="30 123 40 128 40 118" style="fill:grey"/>
+		<polygon points="30 123 40 128 40 118"  class="neutral"/>
 
 		<circle class="robot" cx=25 cy=25 r=15></circle>
   </svg>
@@ -143,7 +150,7 @@
 			 "
 	  />
 
-	<path class="dashy-curve"
+	<path class="dashed neutral"
 	style="marker-mid: url(#markerBall)"
 	d="M 25 25
 		 L 25 49
@@ -157,7 +164,7 @@
 		 L 33 123"/>
 
 
-	<polygon points="30 123 40 128 40 118" style="fill:grey"/>
+	<polygon points="30 123 40 128 40 118" class="neutral"/>
 
 
 	<circle class="robot"  cx=25 cy=25 r=15></circle>
@@ -173,7 +180,20 @@
 </p>
 
 <svg width="150" height="150">
-	<path class="dashy-curve animated"
+	<!-- example grid -->
+	<path class="grid"
+		d="M 0 0 L 500 0
+		   M 0 50 L 500 50
+		   M 0 100 L 500 100
+		   M 0 150 L 500 150
+		   M 0 0 L 0 500
+		   M 50 0 L 50 500
+		   M 100 0 L 100 500
+		   M 150 0 L 150 500
+		   "
+	/>
+
+	<path class="dashed animated neutral"
 	  d="M 25 25
 		 L 25 49
 		 A 25 25 180 0 0 49 74
@@ -184,23 +204,9 @@
 		 A 25 25 0   0 1 100 123
 		 L 40 123"/>
 
-	<polygon points="30 123 40 128 40 118" style="fill:grey"/>
+	<polygon points="30 123 40 128 40 118" class="neutral"/>
 
 	<circle class="robot"  cx=25 cy=25 r=15></circle>
-
-
-	  <!-- example grid -->
-	  <path class="grid"
-		  d="M 0 0 L 500 0
-		     M 0 50 L 500 50
-			 M 0 100 L 500 100
-			 M 0 150 L 500 150
-			 M 0 0 L 0 500
-			 M 50 0 L 50 500
-			 M 100 0 L 100 500
-			 M 150 0 L 150 500
-			 "
-	  />
 </svg>
 
 <p>
@@ -209,7 +215,20 @@
 </p>
 
 <svg width="150" height="150">
-	<path class="path-traveled"
+	<!-- example grid -->
+	<path class="grid"
+		d="M 0 0 L 500 0
+		   M 0 50 L 500 50
+		   M 0 100 L 500 100
+		   M 0 150 L 500 150
+		   M 0 0 L 0 500
+		   M 50 0 L 50 500
+		   M 100 0 L 100 500
+		   M 150 0 L 150 500
+		   "
+	/>
+
+	<path class="neutral"
 	  d="M 25 25
 		 L 25 49
 		 A 25 25 180 0 0 49 74
@@ -218,30 +237,16 @@
 		 A 25 25 90  0 1 125 49
 		 L 125 75"/>
 
-	<path class="dashy-curve animated"
+	<path class="neutral dashed animated"
 	  d="M 125 75
 	  	 L 125 98
 		 A 25 25 0   0 1 100 123
 		 L 40 123"
 	/>
 
-	<polygon points="30 123 40 128 40 118" style="fill:grey"/>
+	<polygon points="30 123 40 128 40 118" class="neutral"/>
 
 	<circle class="robot"  cx=125 cy=75 r=15></circle>
-
-
-	  <!-- example grid -->
-	  <path class="grid"
-		  d="M 0 0 L 500 0
-		     M 0 50 L 500 50
-			 M 0 100 L 500 100
-			 M 0 150 L 500 150
-			 M 0 0 L 0 500
-			 M 50 0 L 50 500
-			 M 100 0 L 100 500
-			 M 150 0 L 150 500
-			 "
-	  />
 </svg>
 
 <h3>Indicating Outcomes</h3>
@@ -266,7 +271,20 @@
 	  </marker>
 	</defs>
 
-	<path class="dashy-curve animated success"
+	<!-- example grid -->
+	<path class="grid"
+		d="M 0 0 L 500 0
+		   M 0 50 L 500 50
+		   M 0 100 L 500 100
+		   M 0 150 L 500 150
+		   M 0 0 L 0 500
+		   M 50 0 L 50 500
+		   M 100 0 L 100 500
+		   M 150 0 L 150 500
+		   "
+	/>
+
+	<path class="dashed animated success"
 	  d="M 25 25
 		 L 25 49
 		 A 25 25 180 0 0 49 74
@@ -280,19 +298,6 @@
 	<circle class="robot"  cx=25 cy=25 r=15></circle>
 
 	<text x=109 y=137 style="font-size:32px">🏆</text>
-
-	  <!-- example grid -->
-	  <path class="grid"
-		  d="M 0 0 L 500 0
-		     M 0 50 L 500 50
-			 M 0 100 L 500 100
-			 M 0 150 L 500 150
-			 M 0 0 L 0 500
-			 M 50 0 L 50 500
-			 M 100 0 L 100 500
-			 M 150 0 L 150 500
-			 "
-	  />
 </svg>
 
 
@@ -304,41 +309,40 @@
 </p>
 
 <svg width="150" height="150">
+	<!-- example grid -->
+	<path class="grid"
+		d="M 0 0 L 500 0
+		   M 0 50 L 500 50
+		   M 0 100 L 500 100
+		   M 0 150 L 500 150
+		   M 0 0 L 0 500
+		   M 50 0 L 50 500
+		   M 100 0 L 100 500
+		   M 150 0 L 150 500
+		   "
+	/>
 	
-	<path class="dashy-curve animated" style="stroke: red"
+	<path class="dashed animated blocked"
 	d="M 25 25
 	L 25 49
 	A 25 25 180 0 0 49 75
 	L 75 75"/>
 	
 	
-	<path class="dashy-curve" style="stroke:grey"
+	<path class="dashed neutral"
 	d="M 75 75
 	L 119 75
 	A 5 5 180 0 1 124 79
 	L 124 85
 	"/>
 	
-	<polygon points="125 93 120 83 130 83" style="fill:grey"/>
+	<polygon points="125 93 120 83 130 83" class="neutral"/>
 
 	<circle class="robot"  cx=25 cy=25 r=15></circle>
 
 	<text x=59 y=87 style="font-size:32px">🛑</text>
 
 	<text x=109 y=137 style="font-size:32px">🏆</text>
-
-	  <!-- example grid -->
-	  <path class="grid"
-		  d="M 0 0 L 500 0
-		     M 0 50 L 500 50
-			 M 0 100 L 500 100
-			 M 0 150 L 500 150
-			 M 0 0 L 0 500
-			 M 50 0 L 50 500
-			 M 100 0 L 100 500
-			 M 150 0 L 150 500
-			 "
-	  />
 </svg>
 
 
@@ -348,31 +352,30 @@
 </p>
 
 <svg width="150" height="150">
-	<path class="dashy-curve animated"
-	  style="stroke:grey"
+	<!-- example grid -->
+	<path class="grid"
+		d="M 0 0 L 500 0
+		   M 0 50 L 500 50
+		   M 0 100 L 500 100
+		   M 0 150 L 500 150
+		   M 0 0 L 0 500
+		   M 50 0 L 50 500
+		   M 100 0 L 100 500
+		   M 150 0 L 150 500
+		   "
+	/>
+
+	<path class="dashed animated neutral"
 	  d="M 25 25
 		 L 120 25"/>
 
-	<polygon points="125 25 115 20 115 30" style="fill:grey"/>
+	<polygon points="125 25 115 20 115 30" class="neutral"/>
 
 	<circle class="robot"  cx=25 cy=25 r=15></circle>
 
 	<text x=59 y=87 style="font-size:32px">🛑</text>
 
 	<text x=109 y=137 style="font-size:32px">🏆</text>
-
-	  <!-- example grid -->
-	  <path class="grid"
-		  d="M 0 0 L 500 0
-		     M 0 50 L 500 50
-			 M 0 100 L 500 100
-			 M 0 150 L 500 150
-			 M 0 0 L 0 500
-			 M 50 0 L 50 500
-			 M 100 0 L 100 500
-			 M 150 0 L 150 500
-			 "
-	  />
 </svg>
 
 </body>
