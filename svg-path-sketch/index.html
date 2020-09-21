@@ -1,0 +1,379 @@
+<html>
+  <head>
+    <title>Representing a Path of Travel using SVG</title>
+
+    <style>
+      svg marker {
+	  overflow: visible;
+      }
+
+      svg marker polygon {
+	  stroke: none;
+	  fill: black;
+      }
+
+      .robot {
+		  stroke-width: 5px;
+		  stroke: black;
+		  fill: white;
+      }
+
+      svg path {
+	  stroke-linecap: round;
+	  stroke-width: 5px;
+	  fill: transparent;
+      }
+
+	  .grid {
+		  stroke: grey;
+	  }
+
+      .solid-lines {
+	  stroke: grey;
+      }
+
+	  .path-traveled {
+	  stroke: grey;
+      }
+
+      .dashy-curve {
+	  stroke-dasharray: 10, 10;
+	  stroke: grey;
+      }
+
+      @keyframes ants {
+	  to {
+	      stroke-dashoffset: 0;
+	  }
+      }
+
+      .animated {
+	  stroke-dashoffset: 100;
+	  stroke: grey;
+	  animation: ants 5s linear;
+	  animation-iteration-count: infinite;
+      }
+
+	  .success {
+		  stroke: green;
+	  }
+
+    </style>
+  </head>
+  <body>
+
+	<h2>An Approach to Using SVGs to Indicate a "Path"</h2>
+
+	<p>
+		Based on discussions with the team, I have sketched out some working examples of how to represent the motion of
+		a "cursor" using pathing.  See below for examples.
+	</p>
+
+	<h3>Basic Logic</h3>
+
+	<p>
+		A path starts in the centre of the first square, and ends in the centre of the last square.  Squares along the
+		path that are neither the start nor the end of the path are bisected by a line or arc running between the point
+		at which the path enters and exits the square.  The diagram below illustrates the approach using only straight
+		line segments, with ball "markers" to indicate the points at which square boundaries are traversed. 
+	</p>
+    
+    <svg width="150" height="150">
+      <defs>
+		<marker
+			id="markerBall"
+			markerWidth=2
+			markerHeight=2
+			refX=0
+			refY=0
+		>
+			<circle cx=0 cy=0 r=1 fill="blue"/>
+		</marker>
+	  </defs>
+
+	  <!-- example grid -->
+	  <path class="grid"
+		  d="M 0 0 L 500 0
+		     M 0 50 L 500 50
+			 M 0 100 L 500 100
+			 M 0 150 L 500 150
+			 M 0 0 L 0 500
+			 M 50 0 L 50 500
+			 M 100 0 L 100 500
+			 M 150 0 L 150 500
+			 "
+	  />
+
+	  <path class="solid-lines"
+	  	style="marker-mid: url(#markerBall)"
+	    d="M 25 25
+	       L 25 49
+	       L 49 74
+	       L 74 49
+	       L 100 25
+	       L 125 49
+	       L 125 98
+		   L 100 123
+		   L 49 123
+	       L 40 123"/>
+		   
+		<polygon points="30 123 40 128 40 118" style="fill:grey"/>
+
+		<circle class="robot" cx=25 cy=25 r=15></circle>
+  </svg>
+
+  <p>
+	  When the path passes through a square and remains on the same row or column, a straight line is drawn between the
+	  mid-point of the cell boundary.  When the direction changes, i.e. when a "turn" occurs, an arc is drawn.  Here's
+	  the same set of waypoints outlined in the previous diagram, but now in addition to using lines for straight
+	  portions, "turns" are represented using arcs.
+  </p>
+
+  <svg width="150" height="150">
+	  <!-- example grid -->
+	  <path class="grid"
+		  d="M 0 0 L 500 0
+		     M 0 50 L 500 50
+			 M 0 100 L 500 100
+			 M 0 150 L 500 150
+			 M 0 0 L 0 500
+			 M 50 0 L 50 500
+			 M 100 0 L 100 500
+			 M 150 0 L 150 500
+			 "
+	  />
+
+	<path class="dashy-curve"
+	style="marker-mid: url(#markerBall)"
+	d="M 25 25
+		 L 25 49
+		 A 25 25 180 0 0 49 74
+		 A 25 25 270 0 0 74 49
+		 A 25 25 180 0 1 100 25
+		 A 25 25 90  0 1 125 49
+		 L 125 98
+		 A 25 25 0   0 1 100 123
+		 L 49 123
+		 L 33 123"/>
+
+
+	<polygon points="30 123 40 128 40 118" style="fill:grey"/>
+
+
+	<circle class="robot"  cx=25 cy=25 r=15></circle>
+
+	<use xlink:xref="#markerBall" x=25 y=50/>
+</svg>
+
+<h3>Indicating Forward Motion and Progress</h3>
+
+<p>
+	By using a CSS animation to change the dash offset of the line, we can suggest a direction of motion that the cursor
+	will follow.
+</p>
+
+<svg width="150" height="150">
+	<path class="dashy-curve animated"
+	  d="M 25 25
+		 L 25 49
+		 A 25 25 180 0 0 49 74
+		 A 25 25 270 0 0 74 49
+		 A 25 25 180 0 1 100 25
+		 A 25 25 90  0 1 125 49
+		 L 125 98
+		 A 25 25 0   0 1 100 123
+		 L 40 123"/>
+
+	<polygon points="30 123 40 128 40 118" style="fill:grey"/>
+
+	<circle class="robot"  cx=25 cy=25 r=15></circle>
+
+
+	  <!-- example grid -->
+	  <path class="grid"
+		  d="M 0 0 L 500 0
+		     M 0 50 L 500 50
+			 M 0 100 L 500 100
+			 M 0 150 L 500 150
+			 M 0 0 L 0 500
+			 M 50 0 L 50 500
+			 M 100 0 L 100 500
+			 M 150 0 L 150 500
+			 "
+	  />
+</svg>
+
+<p>
+	While code is executing, the positional marker will move along the path. Portions of the path that have already been
+	traveled appear solid. Portions of the path that have not yet been traveled appear as animated dashes.
+</p>
+
+<svg width="150" height="150">
+	<path class="path-traveled"
+	  d="M 25 25
+		 L 25 49
+		 A 25 25 180 0 0 49 74
+		 A 25 25 270 0 0 74 49
+		 A 25 25 180 0 1 100 25
+		 A 25 25 90  0 1 125 49
+		 L 125 75"/>
+
+	<path class="dashy-curve animated"
+	  d="M 125 75
+	  	 L 125 98
+		 A 25 25 0   0 1 100 123
+		 L 40 123"
+	/>
+
+	<polygon points="30 123 40 128 40 118" style="fill:grey"/>
+
+	<circle class="robot"  cx=125 cy=75 r=15></circle>
+
+
+	  <!-- example grid -->
+	  <path class="grid"
+		  d="M 0 0 L 500 0
+		     M 0 50 L 500 50
+			 M 0 100 L 500 100
+			 M 0 150 L 500 150
+			 M 0 0 L 0 500
+			 M 50 0 L 50 500
+			 M 100 0 L 100 500
+			 M 150 0 L 150 500
+			 "
+	  />
+</svg>
+
+<h3>Indicating Outcomes</h3>
+
+<p>
+	If we add a target destination to an exercise, we need some way of indicating whether or not the programmed path
+	reaches the goal.  A green animated path is one that reaches the goal.
+</p>
+
+<svg width="150" height="150">
+	<defs>
+	  <marker
+	  id="markerArrow"
+	  markerWidth="2"
+	  markerHeight="2"
+	  refX="-0.5"
+	  refY="0"
+	  orient="auto"
+	  markerUnits="strokeWidth"
+	  >
+		  <polygon points="1 0 -2 1 -2 -1">
+	  </marker>
+	</defs>
+
+	<path class="dashy-curve animated success"
+	  d="M 25 25
+		 L 25 49
+		 A 25 25 180 0 0 49 74
+		 A 25 25 270 0 0 74 49
+		 A 25 25 180 0 1 100 25
+		 A 25 25 90  0 1 125 49
+		 L 125 85"/>
+
+	<polygon points="125 93 120 83 130 83" style="fill:green"/>
+
+	<circle class="robot"  cx=25 cy=25 r=15></circle>
+
+	<text x=109 y=137 style="font-size:32px">🏆</text>
+
+	  <!-- example grid -->
+	  <path class="grid"
+		  d="M 0 0 L 500 0
+		     M 0 50 L 500 50
+			 M 0 100 L 500 100
+			 M 0 150 L 500 150
+			 M 0 0 L 0 500
+			 M 50 0 L 50 500
+			 M 100 0 L 100 500
+			 M 150 0 L 150 500
+			 "
+	  />
+</svg>
+
+
+<p>
+	If we introduce blockers or obstacles (or define the boundaries of the grid as obstacles), we should indicate that
+	the proposed path is obstructed.  The segments leading to the obstruction are animated, indicating that motion up
+	to the obstacle can take place.  The segments after are greyed out and dashed, but not animated, as no motion can
+	take place beyond the obstacle.
+</p>
+
+<svg width="150" height="150">
+	
+	<path class="dashy-curve animated" style="stroke: red"
+	d="M 25 25
+	L 25 49
+	A 25 25 180 0 0 49 75
+	L 75 75"/>
+	
+	
+	<path class="dashy-curve" style="stroke:grey"
+	d="M 75 75
+	L 119 75
+	A 5 5 180 0 1 124 79
+	L 124 85
+	"/>
+	
+	<polygon points="125 93 120 83 130 83" style="fill:grey"/>
+
+	<circle class="robot"  cx=25 cy=25 r=15></circle>
+
+	<text x=59 y=87 style="font-size:32px">🛑</text>
+
+	<text x=109 y=137 style="font-size:32px">🏆</text>
+
+	  <!-- example grid -->
+	  <path class="grid"
+		  d="M 0 0 L 500 0
+		     M 0 50 L 500 50
+			 M 0 100 L 500 100
+			 M 0 150 L 500 150
+			 M 0 0 L 0 500
+			 M 50 0 L 50 500
+			 M 100 0 L 100 500
+			 M 150 0 L 150 500
+			 "
+	  />
+</svg>
+
+
+<p>
+	For paths that are not blocked, but which do not reach, we can use a neutral style, as the path may simply be
+	incomplete rather than blocked.
+</p>
+
+<svg width="150" height="150">
+	<path class="dashy-curve animated"
+	  style="stroke:grey"
+	  d="M 25 25
+		 L 120 25"/>
+
+	<polygon points="125 25 115 20 115 30" style="fill:grey"/>
+
+	<circle class="robot"  cx=25 cy=25 r=15></circle>
+
+	<text x=59 y=87 style="font-size:32px">🛑</text>
+
+	<text x=109 y=137 style="font-size:32px">🏆</text>
+
+	  <!-- example grid -->
+	  <path class="grid"
+		  d="M 0 0 L 500 0
+		     M 0 50 L 500 50
+			 M 0 100 L 500 100
+			 M 0 150 L 500 150
+			 M 0 0 L 0 500
+			 M 50 0 L 50 500
+			 M 100 0 L 100 500
+			 M 150 0 L 150 500
+			 "
+	  />
+</svg>
+
+</body>
+</html>
