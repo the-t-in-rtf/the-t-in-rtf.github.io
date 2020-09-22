@@ -298,8 +298,7 @@
 <p>
 	If we introduce blockers or obstacles (or define the boundaries of the grid as obstacles), we should indicate that
 	the proposed path is obstructed.  The segments leading to the obstruction are animated, indicating that motion up
-	to the obstacle can take place.  The segments after are greyed out and dashed, but not animated, as no motion can
-	take place beyond the obstacle.
+	to the obstacle can take place.  No path is displayed beyond the obstacle.
 </p>
 
 <svg width="150" height="150">
@@ -310,16 +309,7 @@
 	L 75 75"/>
 	
 	
-	<path class="dashed neutral"
-	d="M 75 75
-	L 119 75
-	A 5 5 180 0 1 125 80
-	L 125 85
-	"/>
-	
-	<polygon points="125 93 120 83 130 83" class="neutral"/>
-
-	<path class="grid"
+    <path class="grid"
 		d="M 0 0 L 500 0
 		   M 0 50 L 500 50
 		   M 0 100 L 500 100
