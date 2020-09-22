@@ -363,6 +363,12 @@
 <h3>Looping (Iteration)</h3>
 
 <p>
+	It's already possible to construct a sequence of commands that will cause the cursor to cross its own path.  This
+	will become much easier to accomplish once we add iteration.  We need some way to represent these kinds of loops.
+	First, let's talk about "tight" loops, such as would be created by turning left and moving forward repeatedly.
+</p>
+
+<p>
 	Here's one model, where most of the arcs and positioning remaing the same as in non-looping paths.  The
 	loop is a smaller circle centered around a corner.  The incoming and outgoing arcs are the only non-standard ones,
 	they allow the path to deviate from and then rejoin the normal pathing strategy.  An arc has an X and Y radius,
@@ -480,6 +486,12 @@
 
 	<text x=109 y=137 style="font-size:32px">🏆</text>
 </svg>
+
+<p>
+	Of course, you could just as easily create a loop that is more of a rounded square than a circle.  You can also have
+	paths which cross but which do not create a loop.   We will need to sketch out a few examples of these and come up
+	with patterns for both.
+</p>
 
 </body>
 </html>
