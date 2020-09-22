@@ -370,5 +370,126 @@
 	<text x=109 y=137 style="font-size:32px">🏆</text>
 </svg>
 
+<h3>Looping (Iteration)</h3>
+
+<p>
+	Here's one model, where most of the arcs and positioning remaing the same as in non-looping paths.  The
+	loop is a smaller circle centered around a corner.  The incoming and outgoing arcs are the only non-standard ones,
+	they allow the path to deviate from and then rejoin the normal pathing strategy.  An arc has an X and Y radius,
+	in the incoming arc we set the x radius to match the inner circle of the loop, 15 pixels, and we set the y radius
+	to match the radius of a "normal" arc, 25 pixels.  We do the opposite for the arc that exits the inner loop.  This
+	approach lends itself to adding a counter label centred on the crossing that the inner circle rotates around.
+</p>
+
+<svg width="150" height="150">
+	<defs>
+	  <marker
+	  id="markerArrow"
+	  markerWidth="2"
+	  markerHeight="2"
+	  refX="-0.5"
+	  refY="0"
+	  orient="auto"
+	  markerUnits="strokeWidth"
+	  >
+		  <polygon points="1 0 -2 1 -2 -1">
+	  </marker>
+	</defs>
+
+	<path class="dashed animated success"
+	  d="M 25 25
+		 L 25 99
+
+		 A 25 25 180 0 0 49 124
+
+		 A 15 25 0 0 0 65 100
+		 A 15 15 0 0 0 50 85
+		 A 15 15 0 0 0 35 100
+		 A 15 15 0 0 0 50 115
+		 A 25 15 0 0 0 75 100
+
+		 L 75 50
+		 A 25 25 180 0 1 100 25
+		 A 25 25 90  0 1 125 49
+		 L 125 85"/>
+
+	<polygon points="125 93 120 83 130 83" style="fill:green"/>
+
+	<path class="grid"
+		d="M 0 0 L 500 0
+		   M 0 50 L 500 50
+		   M 0 100 L 500 100
+		   M 0 150 L 500 150
+		   M 0 0 L 0 500
+		   M 50 0 L 50 500
+		   M 100 0 L 100 500
+		   M 150 0 L 150 500
+		   "
+	/>
+
+	<circle class="robot"  cx=25 cy=25 r=15></circle>
+
+	<text x=109 y=137 style="font-size:32px">🏆</text>
+</svg>
+
+<p>
+	Here's a slightly more complex model where the inner loop has the same radius as the regular arcs (25 pixels), and
+	the path bends outward around it (you can think of the "detour" as tracing arcs of 35 px).  This approach requires
+	more adjustments to the baseline path, three segments leading toward and three segments leading away from the inner
+	loop have to be adjusted.  However, the inner loop frames an even larger area to allow for larger labels such as
+	counters.
+</p>
+
+<svg width="150" height="150">
+	<defs>
+	  <marker
+	  id="markerArrow"
+	  markerWidth="2"
+	  markerHeight="2"
+	  refX="-0.5"
+	  refY="0"
+	  orient="auto"
+	  markerUnits="strokeWidth"
+	  >
+		  <polygon points="1 0 -2 1 -2 -1">
+	  </marker>
+	</defs>
+
+	<path class="dashed animated success"
+	  d="M 25 25
+		 L 15 99
+
+		 A 35 35 180 0 0 50 135
+
+		 A 25 35 0 0 0 75 100
+		 A 25 25 0 0 0 50 75
+		 A 25 25 0 0 0 25 100
+		 A 25 25 0 0 0 50 125
+		 A 35 25 0 0 0 85 100
+
+		 L 75 50
+		 A 25 25 180 0 1 100 25
+		 A 25 25 90  0 1 125 49
+		 L 125 85"/>
+
+	<polygon points="125 93 120 83 130 83" style="fill:green"/>
+
+	<path class="grid"
+		d="M 0 0 L 500 0
+		   M 0 50 L 500 50
+		   M 0 100 L 500 100
+		   M 0 150 L 500 150
+		   M 0 0 L 0 500
+		   M 50 0 L 50 500
+		   M 100 0 L 100 500
+		   M 150 0 L 150 500
+		   "
+	/>
+
+	<circle class="robot"  cx=25 cy=25 r=15></circle>
+
+	<text x=109 y=137 style="font-size:32px">🏆</text>
+</svg>
+
 </body>
 </html>
